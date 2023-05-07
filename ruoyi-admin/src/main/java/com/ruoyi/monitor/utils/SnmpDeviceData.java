@@ -26,7 +26,7 @@ public class SnmpDeviceData extends SnmpConfig {
     TbDevice tbDevice;
     Target target;
 
-    public SnmpDeviceData(TbDevice tbDevice){
+        public SnmpDeviceData(TbDevice tbDevice){
         this.tbDevice = tbDevice;
     }
 

@@ -19,6 +19,8 @@ public interface TbDeviceMapper
      */
     public TbDevice selectTbDeviceById(Long id);
 
+
+
     /**
      * 查询设备列列表
      * 

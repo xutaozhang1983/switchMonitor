@@ -12,5 +12,4 @@ public class DeviceInfoDTO {
     private Long total; //内存总容量
     private Long free;  //内存空闲大小
     private Double memoryUsage; //内存使用率
-
 }
