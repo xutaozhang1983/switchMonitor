@@ -1040,9 +1040,9 @@ CREATE TABLE `tb_device_item` (
   `device_id` bigint NOT NULL DEFAULT '0' COMMENT '主机IP',
   `item_name` varchar(64) DEFAULT '' COMMENT '监控指标名称',
   `value` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '' COMMENT '监控值',
-  `laste_value` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '' COMMENT '上次监控值',
+  `last_value` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '' COMMENT '上次监控值',
   `clock` int DEFAULT '0' COMMENT '收集时间',
-  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '公告状态（0正常 1异常）',
+  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '状态（0正常 1异常）',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
@@ -1061,8 +1061,8 @@ COMMIT;
 -- ----------------------------
 -- Table structure for tb_events
 -- ----------------------------
-DROP TABLE IF EXISTS `tb_events`;
-CREATE TABLE `tb_events` (
+DROP TABLE IF EXISTS `tb_alarm_events`;
+CREATE TABLE `tb_alarm_events` (
   `id` int NOT NULL AUTO_INCREMENT,
   `event_id` bigint DEFAULT NULL,
   `step` int unsigned DEFAULT NULL,
@@ -1106,6 +1106,34 @@ CREATE TABLE `tb_smtp_conf` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='smtp 服务配置';
 
+DROP TABLE IF EXISTS `tb_alarm_event`;
+CREATE TABLE `tb_alarm_event` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `device_id` bigint(11) DEFAULT NULL,
+  `item_id` bigint(20) DEFAULT NULL COMMENT '监控指标ID',
+  `item_name` varchar(200) DEFAULT NULL COMMENT '监控指标',
+  `alarm_content` varchar(200) DEFAULT NULL COMMENT '报警内容',
+  `alarm_level` varchar(64) DEFAULT '' COMMENT '报警级别',
+  `alarm_send_times` smallint(6) DEFAULT '0' COMMENT '报警发送次数',
+  `closed_at` timestamp NULL DEFAULT NULL COMMENT '报警关闭时间',
+  `closed_note` varchar(250) DEFAULT NULL COMMENT '报警关闭内容',
+  `closed_user` varchar(250) DEFAULT NULL COMMENT '报警关闭人姓名',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  key(device_id,item_id),
+  key(create_time)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报警信息';
+
+-- ----------------------------
+-- Records of tb_alarm_event
+-- ----------------------------
+BEGIN;
+COMMIT;
 -- ----------------------------
 -- Records of tb_smtp_conf
 -- ----------------------------

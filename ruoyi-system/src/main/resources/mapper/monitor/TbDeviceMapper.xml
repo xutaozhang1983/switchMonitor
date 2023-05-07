@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.TbDeviceMapper">
+    
+    <resultMap type="TbDevice" id="TbDeviceResult">
+        <result property="id"    column="id"    />
+        <result property="groupId"    column="group_id"    />
+        <result property="hostname"    column="hostname"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="deviceIp"    column="device_ip"    />
+        <result property="protocol"    column="protocol"    />
+        <result property="snmpCommunity"    column="snmp_community"    />
+        <result property="snmpVersion"    column="snmp_version"    />
+        <result property="snmpPort"    column="snmp_port"    />
+        <result property="snmpUsername"    column="snmp_username"    />
+        <result property="snmpPassword"    column="snmp_password"    />
+        <result property="snmpAuthProtocol"    column="snmp_auth_protocol"    />
+        <result property="snmpPrivPassphrase"    column="snmp_priv_passphrase"    />
+        <result property="snmpPrivProtocol"    column="snmp_priv_protocol"    />
+        <result property="snmpContext"    column="snmp_context"    />
+        <result property="snmpEngineId"    column="snmp_engine_id"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="status"    column="status"    />
+        <result property="enable"    column="enable"    />
+        <result property="uptime"    column="uptime"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTbDeviceVo">
+        select id, group_id, hostname, device_type, device_ip, protocol, snmp_community, snmp_version, snmp_port, snmp_username, snmp_password, snmp_auth_protocol, snmp_priv_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id, manufacturer, status, enable, uptime, create_by, create_time, update_by, update_time, remark from tb_device
+    </sql>
+
+    <select id="selectTbDeviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
+        <include refid="selectTbDeviceVo"/>
+        <where>  
+            <if test="groupId != null "> and group_id = #{groupId}</if>
+            <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="deviceIp != null  and deviceIp != ''"> and device_ip = #{deviceIp}</if>
+            <if test="protocol != null  and protocol != ''"> and protocol = #{protocol}</if>
+            <if test="snmpCommunity != null  and snmpCommunity != ''"> and snmp_community = #{snmpCommunity}</if>
+            <if test="snmpVersion != null "> and snmp_version = #{snmpVersion}</if>
+            <if test="snmpPort != null "> and snmp_port = #{snmpPort}</if>
+            <if test="snmpUsername != null  and snmpUsername != ''"> and snmp_username like concat('%', #{snmpUsername}, '%')</if>
+            <if test="snmpPassword != null  and snmpPassword != ''"> and snmp_password = #{snmpPassword}</if>
+            <if test="snmpAuthProtocol != null  and snmpAuthProtocol != ''"> and snmp_auth_protocol = #{snmpAuthProtocol}</if>
+            <if test="snmpPrivPassphrase != null  and snmpPrivPassphrase != ''"> and snmp_priv_passphrase = #{snmpPrivPassphrase}</if>
+            <if test="snmpPrivProtocol != null  and snmpPrivProtocol != ''"> and snmp_priv_protocol = #{snmpPrivProtocol}</if>
+            <if test="snmpContext != null  and snmpContext != ''"> and snmp_context = #{snmpContext}</if>
+            <if test="snmpEngineId != null  and snmpEngineId != ''"> and snmp_engine_id = #{snmpEngineId}</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="enable != null "> and enable = #{enable}</if>
+            <if test="uptime != null "> and uptime = #{uptime}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbDeviceById" parameterType="Long" resultMap="TbDeviceResult">
+        <include refid="selectTbDeviceVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbDevice" parameterType="TbDevice" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_device
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">group_id,</if>
+            <if test="hostname != null">hostname,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="deviceIp != null">device_ip,</if>
+            <if test="protocol != null">protocol,</if>
+            <if test="snmpCommunity != null and snmpCommunity != ''">snmp_community,</if>
+            <if test="snmpVersion != null">snmp_version,</if>
+            <if test="snmpPort != null">snmp_port,</if>
+            <if test="snmpUsername != null">snmp_username,</if>
+            <if test="snmpPassword != null">snmp_password,</if>
+            <if test="snmpAuthProtocol != null">snmp_auth_protocol,</if>
+            <if test="snmpPrivPassphrase != null">snmp_priv_passphrase,</if>
+            <if test="snmpPrivProtocol != null">snmp_priv_protocol,</if>
+            <if test="snmpContext != null">snmp_context,</if>
+            <if test="snmpEngineId != null">snmp_engine_id,</if>
+            <if test="manufacturer != null">manufacturer,</if>
+            <if test="status != null">status,</if>
+            <if test="enable != null">enable,</if>
+            <if test="uptime != null">uptime,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="groupId != null">#{groupId},</if>
+            <if test="hostname != null">#{hostname},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="deviceIp != null">#{deviceIp},</if>
+            <if test="protocol != null">#{protocol},</if>
+            <if test="snmpCommunity != null and snmpCommunity != ''">#{snmpCommunity},</if>
+            <if test="snmpVersion != null">#{snmpVersion},</if>
+            <if test="snmpPort != null">#{snmpPort},</if>
+            <if test="snmpUsername != null">#{snmpUsername},</if>
+            <if test="snmpPassword != null">#{snmpPassword},</if>
+            <if test="snmpAuthProtocol != null">#{snmpAuthProtocol},</if>
+            <if test="snmpPrivPassphrase != null">#{snmpPrivPassphrase},</if>
+            <if test="snmpPrivProtocol != null">#{snmpPrivProtocol},</if>
+            <if test="snmpContext != null">#{snmpContext},</if>
+            <if test="snmpEngineId != null">#{snmpEngineId},</if>
+            <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="status != null">#{status},</if>
+            <if test="enable != null">#{enable},</if>
+            <if test="uptime != null">#{uptime},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbDevice" parameterType="TbDevice">
+        update tb_device
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="groupId != null">group_id = #{groupId},</if>
+            <if test="hostname != null">hostname = #{hostname},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceIp != null">device_ip = #{deviceIp},</if>
+            <if test="protocol != null">protocol = #{protocol},</if>
+            <if test="snmpCommunity != null and snmpCommunity != ''">snmp_community = #{snmpCommunity},</if>
+            <if test="snmpVersion != null">snmp_version = #{snmpVersion},</if>
+            <if test="snmpPort != null">snmp_port = #{snmpPort},</if>
+            <if test="snmpUsername != null">snmp_username = #{snmpUsername},</if>
+            <if test="snmpPassword != null">snmp_password = #{snmpPassword},</if>
+            <if test="snmpAuthProtocol != null">snmp_auth_protocol = #{snmpAuthProtocol},</if>
+            <if test="snmpPrivPassphrase != null">snmp_priv_passphrase = #{snmpPrivPassphrase},</if>
+            <if test="snmpPrivProtocol != null">snmp_priv_protocol = #{snmpPrivProtocol},</if>
+            <if test="snmpContext != null">snmp_context = #{snmpContext},</if>
+            <if test="snmpEngineId != null">snmp_engine_id = #{snmpEngineId},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="enable != null">enable = #{enable},</if>
+            <if test="uptime != null">uptime = #{uptime},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbDeviceById" parameterType="Long">
+        delete from tb_device where id = #{id}
+    </delete>
+
+    <delete id="deleteTbDeviceByIds" parameterType="String">
+        delete from tb_device where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
