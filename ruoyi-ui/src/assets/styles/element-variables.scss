@@ -1,0 +1,12 @@
+// 自定义elementUI变量
+/*@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': ('base': #2d8cf0),
+    'success': ('base': #19be6b),
+    'warning': ('base': #ff9900),
+    'danger': ('base': #ed4014),
+  ),
+);*/
+
+// 导入所有样式(必须在最后导入)
+@use "element-plus/theme-chalk/src/index.scss" as *;
