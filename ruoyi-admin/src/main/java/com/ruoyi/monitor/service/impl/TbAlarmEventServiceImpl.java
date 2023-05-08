@@ -2,11 +2,11 @@ package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.monitor.domain.TbAlarmEvent;
+import com.ruoyi.monitor.mapper.TbAlarmEventMapper;
+import com.ruoyi.monitor.service.ITbAlarmEventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.monitor.mapper.TbAlarmEventMapper;
-import com.ruoyi.monitor.domain.TbAlarmEvent;
-import com.ruoyi.monitor.service.ITbAlarmEventService;
 
 /**
  * 报警信息Service业务层处理
@@ -15,7 +15,7 @@ import com.ruoyi.monitor.service.ITbAlarmEventService;
  * @date 2023-05-07
  */
 @Service
-public class TbAlarmEventServiceImpl implements ITbAlarmEventService 
+public class TbAlarmEventServiceImpl implements ITbAlarmEventService
 {
     @Autowired
     private TbAlarmEventMapper tbAlarmEventMapper;

@@ -22,6 +22,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="snmpContext"    column="snmp_context"    />
         <result property="snmpEngineId"    column="snmp_engine_id"    />
         <result property="manufacturer"    column="manufacturer"    />
+        <result property="username"    column="username"    />
+        <result property="passwd"    column="passwd"    />
+        <result property="appKey"    column="app_key"    />
+        <result property="appSecret"    column="app_secret"    />
         <result property="status"    column="status"    />
         <result property="enable"    column="enable"    />
         <result property="uptime"    column="uptime"    />
@@ -33,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceVo">
-        select id, group_id, hostname, device_type, device_ip, protocol, snmp_community, snmp_version, snmp_port, snmp_username, snmp_password, snmp_auth_protocol, snmp_priv_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id, manufacturer, status, enable, uptime, create_by, create_time, update_by, update_time, remark from tb_device
+        select id, group_id, hostname, device_type, device_ip, protocol, snmp_community, snmp_version, snmp_port, snmp_username, snmp_password, snmp_auth_protocol, snmp_priv_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id, manufacturer, status,username,passwd,app_key,app_secret, enable, uptime, create_by, create_time, update_by, update_time, remark from tb_device
     </sql>
 
     <select id="selectTbDeviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
@@ -85,6 +89,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpContext != null">snmp_context,</if>
             <if test="snmpEngineId != null">snmp_engine_id,</if>
             <if test="manufacturer != null">manufacturer,</if>
+            <if test="username != null">username,</if>
+            <if test="passwd != null">passwd,</if>
+            <if test="appKey != null">appKey,</if>
+            <if test="appSecret != null">app_secret,</if>
             <if test="status != null">status,</if>
             <if test="enable != null">enable,</if>
             <if test="uptime != null">uptime,</if>
@@ -111,6 +119,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpContext != null">#{snmpContext},</if>
             <if test="snmpEngineId != null">#{snmpEngineId},</if>
             <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="username != null">#{username},</if>
+            <if test="passwd != null">#{passwd},</if>
+            <if test="appKey != null">#{appKey},</if>
+            <if test="appSecret != null">#{appSecret},</if>
             <if test="status != null">#{status},</if>
             <if test="enable != null">#{enable},</if>
             <if test="uptime != null">#{uptime},</if>
@@ -141,6 +153,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpContext != null">snmp_context = #{snmpContext},</if>
             <if test="snmpEngineId != null">snmp_engine_id = #{snmpEngineId},</if>
             <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="username != null">username = #{username},</if>
+            <if test="passwd != null">passwd = #{passwd},</if>
+            <if test="appKey != null">app_key = #{appKey},</if>
+            <if test="appSecret != null">app_secret = #{appSecret},</if>
             <if test="status != null">status = #{status},</if>
             <if test="enable != null">enable = #{enable},</if>
             <if test="uptime != null">uptime = #{uptime},</if>

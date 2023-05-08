@@ -2,11 +2,11 @@ package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.monitor.domain.TbDeviceGroup;
+import com.ruoyi.monitor.mapper.TbDeviceGroupMapper;
+import com.ruoyi.monitor.service.ITbDeviceGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.monitor.mapper.TbDeviceGroupMapper;
-import com.ruoyi.monitor.domain.TbDeviceGroup;
-import com.ruoyi.monitor.service.ITbDeviceGroupService;
 
 /**
  * 设备列Service业务层处理
@@ -15,7 +15,7 @@ import com.ruoyi.monitor.service.ITbDeviceGroupService;
  * @date 2023-05-07
  */
 @Service
-public class TbDeviceGroupServiceImpl implements ITbDeviceGroupService 
+public class TbDeviceGroupServiceImpl implements ITbDeviceGroupService
 {
     @Autowired
     private TbDeviceGroupMapper tbDeviceGroupMapper;

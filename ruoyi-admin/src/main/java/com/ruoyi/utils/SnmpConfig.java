@@ -1,4 +1,4 @@
-package com.ruoyi.monitor.utils;
+package com.ruoyi.utils;
 
 import org.snmp4j.*;
 import org.snmp4j.event.ResponseEvent;

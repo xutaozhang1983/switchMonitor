@@ -2,10 +2,10 @@ package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.monitor.domain.TbSmtpConf;
+import com.ruoyi.monitor.mapper.TbSmtpConfMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.monitor.mapper.TbSmtpConfMapper;
-import com.ruoyi.monitor.domain.TbSmtpConf;
 import com.ruoyi.monitor.service.ITbSmtpConfService;
 
 /**

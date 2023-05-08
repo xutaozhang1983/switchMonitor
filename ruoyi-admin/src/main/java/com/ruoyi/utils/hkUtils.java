@@ -1,8 +1,10 @@
-package com.ruoyi.monitor.utils;
+package com.ruoyi.utils;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
 import com.hikvision.artemis.sdk.ArtemisHttpUtil;
 import com.hikvision.artemis.sdk.config.ArtemisConfig;
+import com.ruoyi.monitor.domain.TbDevice;
 import lombok.extern.log4j.Log4j2;
 
 import java.util.HashMap;
@@ -29,6 +31,10 @@ public class hkUtils {
         try {
             res = ArtemisHttpUtil.doPostStringArtemis(config,path, body, null, null, "application/json");
             log.info(res);
+
+            JSONObject jsonObject = new JSONObject();
+          
+            TbDevice tbDevice = JSONObject.parseObject(String.valueOf(jsonObject),TbDevice.class);
         }catch (Exception e) {
             log.error(e);
         }

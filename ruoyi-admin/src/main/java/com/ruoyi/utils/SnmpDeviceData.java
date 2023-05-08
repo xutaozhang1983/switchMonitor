@@ -1,4 +1,4 @@
-package com.ruoyi.monitor.utils;
+package com.ruoyi.utils;
 
 
 import com.ruoyi.monitor.constants.DeviceOidConstants;

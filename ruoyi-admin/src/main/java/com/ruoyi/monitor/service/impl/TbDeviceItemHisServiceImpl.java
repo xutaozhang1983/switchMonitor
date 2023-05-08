@@ -2,11 +2,11 @@ package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.monitor.domain.TbDeviceItemHis;
+import com.ruoyi.monitor.mapper.TbDeviceItemHisMapper;
+import com.ruoyi.monitor.service.ITbDeviceItemHisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.monitor.mapper.TbDeviceItemHisMapper;
-import com.ruoyi.monitor.domain.TbDeviceItemHis;
-import com.ruoyi.monitor.service.ITbDeviceItemHisService;
 
 /**
  * 设备监控指标Service业务层处理
@@ -15,7 +15,7 @@ import com.ruoyi.monitor.service.ITbDeviceItemHisService;
  * @date 2023-05-07
  */
 @Service
-public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService 
+public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
 {
     @Autowired
     private TbDeviceItemHisMapper tbDeviceItemHisMapper;

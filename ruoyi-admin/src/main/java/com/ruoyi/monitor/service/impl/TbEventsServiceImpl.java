@@ -2,11 +2,11 @@ package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.monitor.domain.TbEvents;
+import com.ruoyi.monitor.mapper.TbEventsMapper;
+import com.ruoyi.monitor.service.ITbEventsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.monitor.mapper.TbEventsMapper;
-import com.ruoyi.monitor.domain.TbEvents;
-import com.ruoyi.monitor.service.ITbEventsService;
 
 /**
  * 事件信息Service业务层处理
@@ -15,7 +15,7 @@ import com.ruoyi.monitor.service.ITbEventsService;
  * @date 2023-05-07
  */
 @Service
-public class TbEventsServiceImpl implements ITbEventsService 
+public class TbEventsServiceImpl implements ITbEventsService
 {
     @Autowired
     private TbEventsMapper tbEventsMapper;
