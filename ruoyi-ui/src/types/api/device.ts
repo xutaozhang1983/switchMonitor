@@ -6,7 +6,7 @@ import { PageQueryParam } from "./base"
 export interface DeviceQueryParam extends PageQueryParam {
   groupName: string | undefined, // 设备组
   deviceName: string | undefined, // 设备名称
-  device_ip: string | undefined, // 设备IP
+  deviceIp: string | undefined, // 设备IP
   status: string | undefined // 状态,
   enable: number | undefined // 是否启用监控
 }
@@ -15,7 +15,7 @@ export interface DeviceQueryParam extends PageQueryParam {
  * 设备表单类型声明
  */
 export interface DeviceFormData {
-  deviceId?: number | undefined, // 设备ID
+  id?: number | undefined, // 设备ID
   groupId: number | undefined, // 设备组ID
   deviceName: string | undefined, // 设备名称
   deviceType: string | undefined, // 设备类型
@@ -36,6 +36,6 @@ export interface DeviceFormData {
  * 设备监控状态修改类型声明
  */
 export interface DeviceChangeEnable {
-  deviceId: number,
+  id: number,
   enable: number
 }

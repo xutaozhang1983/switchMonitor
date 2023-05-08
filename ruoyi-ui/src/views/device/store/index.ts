@@ -1,5 +1,6 @@
 import { DeviceQueryParam, DeviceFormData } from '@/types/api/device'
 import { listDevice, getDevice, addDevice, updateDevice, delDevice, changeDeviceEnable } from "@/api/device"
+import { listDeviceGroup } from '@/api/deviceGroup'
 
 const useDeviceStore = defineStore('useDeviceStore',
   {
@@ -10,6 +11,7 @@ const useDeviceStore = defineStore('useDeviceStore',
       showSearch: true, // 是否显示搜索区域
       total: 0, // 设备数据总条目数
       deviceData: [] as any[], // 设备数据
+      deviceGroupData: [] as any[], // 设备组数据
       showFormDialog: false, // 显示设备新增、修改对话框
       formTitle: '', // 设备新增、修改对话框标题
       single: true, // 选择1条数据
@@ -27,6 +29,13 @@ const useDeviceStore = defineStore('useDeviceStore',
         this.formData.enable = 0
         this.formData.snmpCommunity = 'public'
         this.formData.snmpPort = 16
+      },
+      // 查询设备组数据
+      async getDeviceGroupData() {
+        try {
+          let { rows }: any = await listDeviceGroup({ pageNum: 1, pageSize: 9999 })
+          this.deviceGroupData = rows
+        } catch {}
       },
       // 查询设备数据
       async getDeviceData() {

@@ -21,10 +21,10 @@
   const deviceGroupStore = useDeviceGroupStore()
 
   onBeforeMount(async () => {
-    // 获取设备组数据
-    await deviceGroupStore.getDeviceGroupData()
     // 获取用户数据
     await deviceGroupStore.getUserData()
+    // 获取设备组数据
+    await deviceGroupStore.getDeviceGroupData()
   })
 
 </script>

@@ -30,14 +30,10 @@ const useDeviceGroupStore = defineStore('useDeviceGroupStore',
       },
       // 查询用户数据
       async getUserData() {
-        this.loading = true
         try {
           let { rows }: any = await listUser({ pageNum: 1, pageSize: 9999 })
           this.userData = rows
-        } catch (error: any) {
-        } finally {
-          this.loading = false
-        }
+        } catch {}
       },
       // 查询设备组数据
       async getDeviceGroupData() {

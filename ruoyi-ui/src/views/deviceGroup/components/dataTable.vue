@@ -74,7 +74,7 @@
       return
     }
     let text = row.status === "0" ? "启用" : "停用";
-    ElMessageBox.confirm('确认要"' + text + '""' + row.groupName + '"设备组吗?', '系统提示', { type: 'warning' }).then(async () => {
+    ElMessageBox.confirm(`确认要${text}"${row.groupName}"设备组吗?`, '系统提示', { type: 'warning' }).then(async () => {
       let sendData = {
         id: row.id,
         status: row.status

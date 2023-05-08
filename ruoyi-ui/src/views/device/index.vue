@@ -21,6 +21,8 @@
   const deviceStore = useDeviceStore()
 
   onBeforeMount(async () => {
+    // 获取设备组数据
+    await deviceStore.getDeviceGroupData()
     // 获取设备数据
     await deviceStore.getDeviceData()
   })

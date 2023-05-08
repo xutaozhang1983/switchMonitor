@@ -4,8 +4,8 @@ import { PageQueryParam } from "./base"
  * 设备组查询参数类型声明
  */
 export interface DeviceGroupQueryParam extends PageQueryParam {
-  groupName: string | undefined, // 设备组名字
-  status: string | undefined // 状态
+  groupName?: string | undefined, // 设备组名字
+  status?: string | undefined // 状态
 }
 
 /**

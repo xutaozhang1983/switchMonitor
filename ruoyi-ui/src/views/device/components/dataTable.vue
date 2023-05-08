@@ -1,8 +1,13 @@
 <template>
   <el-table v-loading="deviceStore.loading" :data="deviceStore.deviceData" @selection-change="handleSelectionChange" @row-click="handleClickRow">
     <el-table-column type="selection" width="55" align="center" />
-    <el-table-column label="设备名称" prop="deviceName" :show-overflow-tooltip="true"/>
-    <el-table-column label="所在组" prop="deviceName" :show-overflow-tooltip="true"/>
+    <el-table-column label="编号" prop="id" width="100"/>
+    <el-table-column label="名称" prop="deviceName"/>
+    <el-table-column label="所在组">
+      <template #default="scope">
+        <div>{{ findDeviceGroupName(scope.row.groupId) }}</div>
+      </template>
+    </el-table-column>
     <el-table-column label="设备状态" align="center">
       <template #default="scope">
         <div class="deviceStatus" v-if="scope.row.deviceStatus === '0'">
@@ -15,21 +20,23 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column label="接口状态" align="center">
+    <el-table-column label="型号" prop="deviceModel"/>
+    <el-table-column label="IP地址" prop="deviceIp" />
+    <el-table-column label="接口数量" prop="snmpPort" />
+    <el-table-column label="团体名" prop="snmpCommunity"/>
+    <el-table-column label="厂商" prop="manufacturer"/>
+    <el-table-column label="监控状态" align="center">
       <template #default="scope">
-        <div class="deviceStatus font-bold">
-          <span style="color: #59a9fc">{{ scope.row.port }}</span>
-          <span style="color: #C0C4CC"> / </span>
-          <span style="color: #79c155">{{ scope.row.port - scope.row.num }}</span>
-          <span style="color: #C0C4CC"> / </span>
-          <span style="color: #f67f7f">{{ scope.row.num }}</span>
+        <div @click.stop="() => {}">
+          <el-switch
+            v-model="scope.row.enable"
+            :active-value="0"
+            :inactive-value="1"
+            @change="handleEnableChange(scope.row)"
+          ></el-switch>
         </div>
       </template>
     </el-table-column>
-    <el-table-column label="IP地址" prop="ip" :show-overflow-tooltip="true"/>
-    <el-table-column label="设备型号" prop="deviceModel" :show-overflow-tooltip="true"/>
-    <el-table-column label="厂商" prop="factoryName" :show-overflow-tooltip="true"/>
-    <el-table-column label="接口数量" prop="port" :show-overflow-tooltip="true"/>
     <el-table-column label="备注" prop="remark" />
     <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
       <template #default="scope">
@@ -58,7 +65,13 @@
 
   const deviceStore = useDeviceStore()
   const router = useRouter()
-  const emits = defineEmits(['setMenuChecked', 'setDeptChecked'])
+
+  // 通过设备组id查名字
+  function findDeviceGroupName(groupId: number) {
+    if (groupId) {
+      return deviceStore.deviceGroupData.filter((item: any) => item.id === groupId)[0].groupName
+    }
+  }
 
   // 跳转到监控
   function handleClickRow(row: any) {
@@ -77,15 +90,15 @@
     deviceStore.multiple = !selection.length
   }
 
-  // 设备状态修改
-  function handleStatusChange(row: any) {
+  // 设备监控状态修改
+  function handleEnableChange(row: any) {
     let text = row.status === "0" ? "启用" : "停用";
-    ElMessageBox.confirm('确认要"' + text + '""' + row.roleName + '"设备吗?', '系统提示', { type: 'warning' }).then(async () => {
+    ElMessageBox.confirm(`确认要${text}"${row.deviceName}"设备吗?`, '系统提示', { type: 'warning' }).then(async () => {
       let sendData = {
-        roleId: row.roleId,
-        status: row.status
+        id: row.id,
+        enable: row.enable
       }
-      await deviceStore.changeDeviceStatus(sendData)
+      await deviceStore.changeDeviceEnable(sendData)
     }).then(() => {
       ElMessage.success(text + "成功")
     }).catch(function () {
@@ -109,7 +122,6 @@
     await deviceStore.getDeviceInfo(row.roleId)
     deviceStore.formTitle = "修改设备"
     deviceStore.showFormDialog = true
-    emits('setMenuChecked')
   }
 </script>
 

@@ -1,7 +1,12 @@
 <template>
   <el-form :model="deviceGroupStore.queryParams" ref="queryRef" v-show="deviceGroupStore.showSearch" :inline="true">
-      <el-form-item label="设备组名称" prop="groupName">
+      <el-form-item label="名称" prop="groupName">
         <el-input v-model="deviceGroupStore.queryParams.groupName" placeholder="请输入" clearable @keyup.enter="handleQuery"/>
+      </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="deviceGroupStore.queryParams.status" placeholder="状态" clearable style="width: 240px">
+          <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value"/>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
@@ -15,6 +20,10 @@
 
   const { proxy } = getCurrentInstance() as any
   const deviceGroupStore = useDeviceGroupStore()
+
+  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
+    "sys_normal_disable"
+  )
 
   /** 搜索按钮操作 */
   function handleQuery() {
