@@ -20,7 +20,7 @@ public class TbDeviceItem
 {
     private static final long serialVersionUID = 1L;
 
-    /** $column.columnComment */
+
     private Long id;
 
     /** 主机IP */

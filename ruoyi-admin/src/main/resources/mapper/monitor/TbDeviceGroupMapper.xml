@@ -19,7 +19,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceGroupVo">
-        select g.*,count(d.id) deviceCount from tb_device_group g, tb_device d
+        select g.* from tb_device_group g
+        left join tb_device d
+        on g.id = d.group_id
     </sql>
 
     <select id="selectTbDeviceGroupList" parameterType="TbDeviceGroup" resultMap="TbDeviceGroupResult">
@@ -33,15 +35,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="deviceGroupList" parameterType="TbDeviceGroup" resultMap="TbDeviceGroupResult">
-        select g.*,count(d.id) as deviceCount from tb_device_group g ,tb_device d
+        select g.*,count(d.id) as deviceCount from tb_device_group g
+        left join tb_device d
+        on g.id = d.group_id
         <where>
             <if test="groupName != null  and groupName != ''"> and g.group_name like concat('%', #{groupName}, '%')</if>
             <if test="id != null  and alarmUserGrpId != ''"> and g.id = #{id}</if>
         </where>
+        GROUP BY g.id
     </select>
 
     <select id="selectTbDeviceGroupById" parameterType="Long" resultMap="TbDeviceGroupResult">
-        <include refid="selectTbDeviceGroupVo"/>
+        select g.*,count(d.id) deviceCount from tb_device_group g
+        left join tb_device d
+        on g.id = d.group_id
         where g.id = #{id}
     </select>
         

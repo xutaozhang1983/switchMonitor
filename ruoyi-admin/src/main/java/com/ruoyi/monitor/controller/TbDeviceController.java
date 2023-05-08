@@ -3,6 +3,7 @@ package com.ruoyi.monitor.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.vo.DeviceVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -113,6 +114,7 @@ public class TbDeviceController extends BaseController
     {
         TbDevice device = tbDeviceService.selectTbDeviceById(tbDevice.getId());
         device.setEnable(tbDevice.getEnable());
+        device.setUpdateBy(getUsername());
         return toAjax(tbDeviceService.updateTbDevice(device));
     }
 }

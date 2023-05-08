@@ -3,11 +3,8 @@ package com.ruoyi.common.utils;
 import java.lang.management.ManagementFactory;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
+import java.time.*;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -108,6 +105,18 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         return DateFormatUtils.format(now, "yyyyMMdd");
     }
 
+    public static long timestamp() {
+        return  System.currentTimeMillis() / 1000;
+    }
+
+    public static String timestamp2Date(long timestamp) {
+//        Long time  = 1527816283000L;
+        SimpleDateFormat sdf = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS);
+        return sdf.format(new Date(timestamp*1000L));
+
+
+    }
+
     /**
      * 日期型字符串转化为日期 格式
      */
@@ -147,7 +156,7 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     /**
      * 计算时间差
      *
-     * @param endTime 最后时间
+     * @param endDate 最后时间
      * @param startTime 开始时间
      * @return 时间差（天/小时/分钟）
      */
@@ -187,5 +196,10 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         LocalDateTime localDateTime = LocalDateTime.of(temporalAccessor, LocalTime.of(0, 0, 0));
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
+    }
+
+    public static void main(String[] args) {
+        System.out.println(timestamp());
+        System.out.println(timestamp2Date(timestamp()));
     }
 }
