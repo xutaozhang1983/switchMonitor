@@ -3,8 +3,10 @@ package com.ruoyi.monitor.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.monitor.domain.TbDevice;
 import com.ruoyi.monitor.domain.vo.DeviceGroupVO;
 import com.ruoyi.monitor.service.ITbDeviceService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,5 +111,15 @@ public class TbDeviceGroupController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tbDeviceGroupService.deleteTbDeviceGroupByIds(ids));
+    }
+
+    @ApiOperation("设备组启用禁用")
+    @PutMapping("/changeStatus")
+    public AjaxResult changeStatus(@RequestBody TbDeviceGroup deviceGroup)
+    {
+        TbDeviceGroup deviceGrp = tbDeviceGroupService.selectTbDeviceGroupById(deviceGroup.getId());
+        deviceGrp.setStatus(deviceGrp.getStatus());
+        deviceGrp.setUpdateBy(getUsername());
+        return toAjax(tbDeviceGroupService.updateTbDeviceGroup(deviceGrp));
     }
 }

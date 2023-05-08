@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="alarmMaxTimes != null "> and g.alarm_max_times = #{alarmMaxTimes}</if>
             <if test="status != null  and status != ''"> and g.status = #{status}</if>
         </where>
+        ${params.dataScope}
     </select>
 
     <select id="deviceGroupList" parameterType="TbDeviceGroup" resultMap="TbDeviceGroupResult">
@@ -42,6 +43,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupName != null  and groupName != ''"> and g.group_name like concat('%', #{groupName}, '%')</if>
             <if test="id != null  and alarmUserGrpId != ''"> and g.id = #{id}</if>
         </where>
+        ${params.dataScope}
         GROUP BY g.id
     </select>
 

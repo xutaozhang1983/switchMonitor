@@ -1,6 +1,8 @@
 package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.annotation.DataScope;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.TbDeviceGroup;
 import com.ruoyi.monitor.domain.vo.DeviceGroupVO;
@@ -34,6 +36,7 @@ public class TbDeviceGroupServiceImpl implements ITbDeviceGroupService
     }
 
     @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
     public List<DeviceGroupVO> deviceGroupList(TbDeviceGroup tbDeviceGroup) {
         return tbDeviceGroupMapper.deviceGroupList(tbDeviceGroup);
     }
@@ -45,6 +48,7 @@ public class TbDeviceGroupServiceImpl implements ITbDeviceGroupService
      * @return 设备列
      */
     @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
     public List<TbDeviceGroup> selectTbDeviceGroupList(TbDeviceGroup tbDeviceGroup)
     {
         return tbDeviceGroupMapper.selectTbDeviceGroupList(tbDeviceGroup);
