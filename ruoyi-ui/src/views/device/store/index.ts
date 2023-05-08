@@ -1,5 +1,5 @@
 import { DeviceQueryParam, DeviceFormData } from '@/types/api/device'
-import { listDevice, getDevice, addDevice, updateDevice, delDevice } from "@/api/device"
+import { listDevice, getDevice, addDevice, updateDevice, delDevice, changeDeviceEnable } from "@/api/device"
 
 const useDeviceStore = defineStore('useDeviceStore',
   {
@@ -19,11 +19,14 @@ const useDeviceStore = defineStore('useDeviceStore',
     actions: {
       /** 重置操作表单 */
       resetFormData() {
-        let key: keyof any
+        let key: keyof DeviceFormData
         for (key in this.formData) {
           this.formData[key] = undefined
         }
         this.formData.status = '0'
+        this.formData.enable = 0
+        this.formData.snmpCommunity = 'public'
+        this.formData.snmpPort = 16
       },
       // 查询设备数据
       async getDeviceData() {
@@ -38,33 +41,33 @@ const useDeviceStore = defineStore('useDeviceStore',
         }
       },
       // 查询设备详情
-      async getDeviceInfo(id: number) {
+      async getDeviceInfo(deviceId: number) {
         try {
-          //await addRole(this.formData)
+          await getDevice(deviceId)
         } catch {}
       },
       // 新增设备
       async addDevice() {
         try {
-          //await addRole(this.formData)
+          await addDevice(this.formData)
         } catch {}
       },
       // 修改设备
       async updateDevice() {
         try {
-          //await updateRole(this.formData)
+          await updateDevice(this.formData)
         } catch {}
       },
       // 删除设备
       async delDevice() {
         try {
-          // await delRole(this.ids.join(','))
+          await delDevice(this.ids.join(','))
         } catch {}
       },
-      // 更改设备状态
-      async changeDeviceStatus(data: any) {
+      // 启用或关闭设备
+      async changeDeviceEnable(data: any) {
         try {
-          //await changeRoleStatus(data)
+          await changeDeviceEnable(data)
         } catch {}
       }
     }

@@ -4,12 +4,12 @@ import { PageQueryParam } from "../base"
  * 用户查询参数类型声明
  */
 export interface UserQueryParam extends PageQueryParam {
-  userName: string | undefined,
-  phonenumber: string | undefined,
-  status: string | undefined,
-  deptId: number | undefined,
-  beginTime: string | undefined,
-  endTime: string | undefined
+  userName?: string | undefined,
+  phonenumber?: string | undefined,
+  status?: string | undefined,
+  deptId?: number | undefined,
+  beginTime?: string | undefined,
+  endTime?: string | undefined
 }
 
 /**

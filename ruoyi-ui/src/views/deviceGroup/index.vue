@@ -4,25 +4,27 @@
     <Query></Query>
     <!--操作区域-->
     <Operate></Operate>
-    <!--厂商数据-->
+    <!--设备组数据-->
     <DataTable></DataTable>
-    <!-- 添加、修改厂商配置对话框 -->
+    <!-- 添加、修改设备组配置对话框 -->
     <FormDialog ref="formDialog"></FormDialog>
   </div>
 </template>
 
-<script setup name="Factory" lang="ts">
+<script setup name="DeviceGroup" lang="ts">
   import Query from './components/query.vue'
   import Operate from './components/operate.vue'
   import DataTable from './components/dataTable.vue'
   import FormDialog from './components/formDialog.vue'
-  import useFactoryStore from './store'
+  import useDeviceGroupStore from './store'
 
-  const factoryStore = useFactoryStore()
+  const deviceGroupStore = useDeviceGroupStore()
 
   onBeforeMount(async () => {
-    // 获取厂商数据
-    await factoryStore.getFactoryData()
+    // 获取设备组数据
+    await deviceGroupStore.getDeviceGroupData()
+    // 获取用户数据
+    await deviceGroupStore.getUserData()
   })
 
 </script>

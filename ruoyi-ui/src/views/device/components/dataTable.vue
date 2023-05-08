@@ -1,8 +1,8 @@
 <template>
   <el-table v-loading="deviceStore.loading" :data="deviceStore.deviceData" @selection-change="handleSelectionChange" @row-click="handleClickRow">
     <el-table-column type="selection" width="55" align="center" />
-    <el-table-column label="设备编号" prop="deviceId" width="100"/>
     <el-table-column label="设备名称" prop="deviceName" :show-overflow-tooltip="true"/>
+    <el-table-column label="所在组" prop="deviceName" :show-overflow-tooltip="true"/>
     <el-table-column label="设备状态" align="center">
       <template #default="scope">
         <div class="deviceStatus" v-if="scope.row.deviceStatus === '0'">

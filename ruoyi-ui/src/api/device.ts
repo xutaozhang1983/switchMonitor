@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import { DeviceQueryParam, DeviceFormData } from '@/types/api/device'
+import { DeviceQueryParam, DeviceFormData, DeviceChangeEnable } from '@/types/api/device'
 
 // 查询设备列表
 export function listDevice(query: DeviceQueryParam) {
@@ -19,7 +19,7 @@ export function getDevice(deviceId: number) {
 }
 
 // 新增设备
-export function addDevice(data: deviceFormData) {
+export function addDevice(data: DeviceFormData) {
   return request({
     url: '/monitor/device',
     method: 'post',
@@ -28,7 +28,7 @@ export function addDevice(data: deviceFormData) {
 }
 
 // 修改设备
-export function updateDevice(data: deviceFormData) {
+export function updateDevice(data: DeviceFormData) {
   return request({
     url: '/monitor/device',
     method: 'put',
@@ -41,5 +41,14 @@ export function delDevice(deviceId: string) {
   return request({
     url: '/monitor/device/' + deviceId,
     method: 'delete'
+  })
+}
+
+// 设备监控状态修改
+export function changeDeviceEnable(data: DeviceChangeEnable) {
+  return request({
+    url: '/monitor/device/changeEnable',
+    method: 'put',
+    data: data
   })
 }
