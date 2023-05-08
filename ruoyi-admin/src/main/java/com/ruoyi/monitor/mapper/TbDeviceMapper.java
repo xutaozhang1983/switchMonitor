@@ -2,7 +2,7 @@ package com.ruoyi.monitor.mapper;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbDevice;
-import com.ruoyi.monitor.domain.dto.DeviceDTO;
+import com.ruoyi.monitor.domain.vo.DeviceVO;
 
 /**
  * 设备列Mapper接口
@@ -30,7 +30,7 @@ public interface TbDeviceMapper
      */
     public List<TbDevice> selectTbDeviceList(TbDevice tbDevice);
 
-    List<DeviceDTO> deviceList(TbDevice tbDevice);
+    List<DeviceVO> deviceList(TbDevice tbDevice);
 
     /**
      * 新增设备列

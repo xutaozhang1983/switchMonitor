@@ -4,11 +4,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.monitor.mapper.TbDeviceMapper">
     
-    <resultMap type="DeviceDTO" id="TbDeviceResult">
+    <resultMap type="DeviceVO" id="TbDeviceResult">
         <result property="id"    column="id"    />
         <result property="groupId"    column="group_id"    />
         <result property="deviceName"    column="device_name"    />
         <result property="deviceType"    column="device_type"    />
+        <result property="deviceModel"    column="device_model"    />
         <result property="deviceIp"    column="device_ip"    />
         <result property="protocol"    column="protocol"    />
         <result property="snmpCommunity"    column="snmp_community"    />
@@ -38,7 +39,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceVo">
-        select id, group_id, device_name, device_type, device_ip, protocol, snmp_community, snmp_version, snmp_port, snmp_username, snmp_password, snmp_auth_protocol, snmp_priv_passphrase, snmp_priv_protocol, snmp_context, port_num, manufacturer, status,username,passwd,app_key,app_secret, enable, uptime, create_by, create_time, update_by, update_time, remark from tb_device
+        select d.*,g.group_name group_name from tb_device d,tb_device_group g
     </sql>
 
     <select id="selectTbDeviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
@@ -70,14 +71,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="groupId != null "> and d.group_id = #{groupId}</if>
             <if test="deviceType != null "> and d.device_type = #{deviceType}</if>
-            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
-            <if test="enable != null "> and enable = #{enable}</if>
+            <if test="deviceName != null  and deviceName != ''"> and d.device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="status != null  and status != ''"> and d.status = #{status}</if>
+            <if test="enable != null "> and d.enable = #{enable}</if>
         </where>
     </select>
     <select id="selectTbDeviceById" parameterType="Long" resultMap="TbDeviceResult">
         <include refid="selectTbDeviceVo"/>
-        where id = #{id}
+        where d.id = #{id}
     </select>
         
     <insert id="insertTbDevice" parameterType="TbDevice" useGeneratedKeys="true" keyProperty="id">
@@ -86,6 +87,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupId != null">group_id,</if>
             <if test="deviceName != null">device_name,</if>
             <if test="deviceType != null">device_type,</if>
+            <if test="deviceModel != null">device_model,</if>
             <if test="deviceIp != null">device_ip,</if>
             <if test="protocol != null">protocol,</if>
             <if test="snmpCommunity != null and snmpCommunity != ''">snmp_community,</if>
@@ -116,6 +118,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupId != null">#{groupId},</if>
             <if test="deviceName != null">#{deviceName},</if>
             <if test="deviceType != null">#{deviceType},</if>
+            <if test="deviceModel != null">#{deviceModel},</if>
             <if test="deviceIp != null">#{deviceIp},</if>
             <if test="protocol != null">#{protocol},</if>
             <if test="snmpCommunity != null and snmpCommunity != ''">#{snmpCommunity},</if>
@@ -150,6 +153,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="groupId != null">group_id = #{groupId},</if>
             <if test="deviceName != null">device_name = #{deviceName},</if>
             <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="deviceModel != null">device_model = #{deviceModel},</if>
             <if test="deviceIp != null">device_ip = #{deviceIp},</if>
             <if test="protocol != null">protocol = #{protocol},</if>
             <if test="snmpCommunity != null and snmpCommunity != ''">snmp_community = #{snmpCommunity},</if>

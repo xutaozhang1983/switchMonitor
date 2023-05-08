@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="com.ruoyi.monitor.mapper.TbDeviceItemHisMapper">
     
     <resultMap type="TbDeviceItemHis" id="TbDeviceItemHisResult">
-        <result property="id"    column="id"    />
+        <result property="id"       column="id"    />
         <result property="deviceId"    column="device_id"    />
         <result property="itemId"    column="item_id"    />
         <result property="itemName"    column="item_name"    />

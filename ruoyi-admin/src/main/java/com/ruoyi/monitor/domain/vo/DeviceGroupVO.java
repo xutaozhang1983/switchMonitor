@@ -1,4 +1,4 @@
-package com.ruoyi.monitor.domain.dto;
+package com.ruoyi.monitor.domain.vo;
 
 import com.ruoyi.monitor.domain.TbDeviceGroup;
 import lombok.Data;

@@ -1,4 +1,4 @@
-package com.ruoyi.monitor.domain.dto;
+package com.ruoyi.monitor.domain.vo;
 
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.monitor.domain.TbDevice;
@@ -12,7 +12,7 @@ import lombok.Data;
  * @date 2023-05-07
  */
 @Data
-public class DeviceDTO extends TbDevice
+public class DeviceVO extends TbDevice
 {
     private static final long serialVersionUID = 1L;
 

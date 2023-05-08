@@ -2,6 +2,7 @@ package com.ruoyi.monitor.domain;
 
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
@@ -13,6 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2023-05-07
  */
+@Data
 public class TbAlarmEvent extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
@@ -21,7 +23,7 @@ public class TbAlarmEvent extends BaseEntity
     private Long id;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "设备ID")
     private Long deviceId;
 
     /** 监控指标ID */
@@ -61,125 +63,4 @@ public class TbAlarmEvent extends BaseEntity
     @Excel(name = "状态", readConverterExp = "0=正常,1=异常")
     private String status;
 
-    public void setId(Long id) 
-    {
-        this.id = id;
-    }
-
-    public Long getId() 
-    {
-        return id;
-    }
-    public void setDeviceId(Long deviceId) 
-    {
-        this.deviceId = deviceId;
-    }
-
-    public Long getDeviceId() 
-    {
-        return deviceId;
-    }
-    public void setItemId(Long itemId) 
-    {
-        this.itemId = itemId;
-    }
-
-    public Long getItemId() 
-    {
-        return itemId;
-    }
-    public void setItemName(String itemName) 
-    {
-        this.itemName = itemName;
-    }
-
-    public String getItemName() 
-    {
-        return itemName;
-    }
-    public void setAlarmContent(String alarmContent) 
-    {
-        this.alarmContent = alarmContent;
-    }
-
-    public String getAlarmContent() 
-    {
-        return alarmContent;
-    }
-    public void setAlarmLevel(String alarmLevel) 
-    {
-        this.alarmLevel = alarmLevel;
-    }
-
-    public String getAlarmLevel() 
-    {
-        return alarmLevel;
-    }
-    public void setAlarmSendTimes(Integer alarmSendTimes) 
-    {
-        this.alarmSendTimes = alarmSendTimes;
-    }
-
-    public Integer getAlarmSendTimes() 
-    {
-        return alarmSendTimes;
-    }
-    public void setClosedAt(Date closedAt) 
-    {
-        this.closedAt = closedAt;
-    }
-
-    public Date getClosedAt() 
-    {
-        return closedAt;
-    }
-    public void setClosedNote(String closedNote) 
-    {
-        this.closedNote = closedNote;
-    }
-
-    public String getClosedNote() 
-    {
-        return closedNote;
-    }
-    public void setClosedUser(String closedUser) 
-    {
-        this.closedUser = closedUser;
-    }
-
-    public String getClosedUser() 
-    {
-        return closedUser;
-    }
-    public void setStatus(String status) 
-    {
-        this.status = status;
-    }
-
-    public String getStatus() 
-    {
-        return status;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("deviceId", getDeviceId())
-            .append("itemId", getItemId())
-            .append("itemName", getItemName())
-            .append("alarmContent", getAlarmContent())
-            .append("alarmLevel", getAlarmLevel())
-            .append("alarmSendTimes", getAlarmSendTimes())
-            .append("closedAt", getClosedAt())
-            .append("closedNote", getClosedNote())
-            .append("closedUser", getClosedUser())
-            .append("status", getStatus())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
-    }
 }

@@ -32,24 +32,28 @@ public class TbDevice extends BaseEntity
     @Excel(name = "设备类型")
     private String deviceType;
 
+
+
     /** 设备IP */
     @Excel(name = "设备IP")
     private String deviceIp;
+    @Excel(name = "设备型号")
+    private String device_model;
 
     /** 协议 */
     @Excel(name = "协议")
     private String protocol;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "snmpCommunity")
     private String snmpCommunity;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "snmp版本")
     private Integer snmpVersion;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "snmp端口")
     private Integer snmpPort;
 
     /** $column.columnComment */

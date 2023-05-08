@@ -3,11 +3,9 @@ package com.ruoyi.monitor.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.monitor.domain.dto.DeviceGroupVO;
+import com.ruoyi.monitor.domain.vo.DeviceGroupVO;
 import com.ruoyi.monitor.service.ITbDeviceService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

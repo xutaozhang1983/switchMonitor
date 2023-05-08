@@ -2,7 +2,7 @@ package com.ruoyi.monitor.service;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbDeviceGroup;
-import com.ruoyi.monitor.domain.dto.DeviceGroupVO;
+import com.ruoyi.monitor.domain.vo.DeviceGroupVO;
 
 /**
  * 设备列Service接口
