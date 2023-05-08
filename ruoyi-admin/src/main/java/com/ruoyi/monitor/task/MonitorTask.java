@@ -34,12 +34,12 @@ public class MonitorTask {
                 device.setStatus(StatusEnum.ERROR.getCode());
                 tbDeviceService.updateTbDevice(device);
                 // 保存报警事件
-                String content = String.format(StatusEnum.ERROR.getContent(),"设备",device.getHostname()+device.getDeviceIp());
+                String content = String.format(StatusEnum.ERROR.getContent(),"设备",device.getDeviceName()+device.getDeviceIp());
                 saveAlarmEvent(StatusEnum.ERROR.getCode(),content,device.getId());
             } else {
                 // 如果之前不通，现在检查通了发送一个通知
                 if (lastStatus.equals(StatusEnum.ERROR.getCode())){
-                    String content = String.format(StatusEnum.OK.getContent(),"设备",device.getHostname()+device.getDeviceIp());
+                    String content = String.format(StatusEnum.OK.getContent(),"设备",device.getDeviceName()+device.getDeviceIp());
                     saveAlarmEvent(StatusEnum.OK.getCode(),content,device.getId());
                 }
             }
