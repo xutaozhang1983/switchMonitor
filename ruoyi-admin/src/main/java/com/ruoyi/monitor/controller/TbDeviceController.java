@@ -4,6 +4,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.monitor.domain.vo.DeviceVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -103,5 +105,14 @@ public class TbDeviceController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tbDeviceService.deleteTbDeviceByIds(ids));
+    }
+
+    @ApiOperation("设备启用禁用")
+    @PutMapping("/changeEnable")
+    public AjaxResult changeEnable(@RequestBody TbDevice tbDevice)
+    {
+        TbDevice device = tbDeviceService.selectTbDeviceById(tbDevice.getId());
+        device.setEnable(tbDevice.getEnable());
+        return toAjax(tbDeviceService.updateTbDevice(device));
     }
 }
