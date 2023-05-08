@@ -1,12 +1,15 @@
+import { DeviceQueryParam, DeviceFormData } from '@/types/api/device'
+import { listDevice, getDevice, addDevice, updateDevice, delDevice } from "@/api/device"
+
 const useDeviceStore = defineStore('useDeviceStore',
   {
     state: () => ({
       loading: false, // 设备数据loading状态
-      queryParams: { pageNum: 1, pageSize: 10 } as any, // 查询参数
-      formData: {} as any, // 设备新增、修改提交参数
+      queryParams: { pageNum: 1, pageSize: 10 } as DeviceQueryParam, // 查询参数
+      formData: {} as DeviceFormData, // 设备新增、修改提交参数
       showSearch: true, // 是否显示搜索区域
       total: 0, // 设备数据总条目数
-      deviceData: [] as any, // 设备数据
+      deviceData: [] as any[], // 设备数据
       showFormDialog: false, // 显示设备新增、修改对话框
       formTitle: '', // 设备新增、修改对话框标题
       single: true, // 选择1条数据
@@ -26,13 +29,7 @@ const useDeviceStore = defineStore('useDeviceStore',
       async getDeviceData() {
         this.loading = true
         try {
-          //let { rows, total }: any = await listRole(this.queryParams)
-          let rows = [
-            { deviceId: 1, deviceName: 'switch1', factoryName: 'Cisco', deviceModel: 'CBS110-16T-CN', ip: '192.168.1.1', deviceStatus: '0', num: 0, port: 16, remark: '' },
-            { deviceId: 2, deviceName: 'switch2', factoryName: 'Cisco', deviceModel: 'CBS110-16T-CN', ip: '192.168.1.1', deviceStatus: '1', num: 2, port: 16, remark: '' },
-            { deviceId: 3, deviceName: 'switch3', factoryName: 'Cisco', deviceModel: 'CBS110-16T-CN', ip: '192.168.1.1', deviceStatus: '1', num: 2, port: 16, remark: '' }
-          ]
-          let total = 3
+          let { rows, total }: any = await listDevice(this.queryParams)
           this.deviceData = rows
           this.total = total
         } catch (error: any) {
