@@ -2,7 +2,7 @@ package com.ruoyi.monitor.service;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbDeviceGroup;
-import com.ruoyi.monitor.domain.dto.DeviceGroupDTO;
+import com.ruoyi.monitor.domain.dto.DeviceGroupVO;
 
 /**
  * 设备列Service接口
@@ -20,7 +20,7 @@ public interface ITbDeviceGroupService
      */
     public TbDeviceGroup selectTbDeviceGroupById(Long id);
 
-    List<DeviceGroupDTO>  deviceGroupList(TbDeviceGroup tbDeviceGroup);
+    List<DeviceGroupVO>  deviceGroupList(TbDeviceGroup tbDeviceGroup);
 
     /**
      * 查询设备列列表

@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.monitor.mapper.TbDeviceGroupMapper">
     
-    <resultMap type="TbDeviceGroup" id="TbDeviceGroupResult">
+    <resultMap type="DeviceGroupVO" id="TbDeviceGroupResult">
         <result property="id"    column="id"    />
         <result property="groupName"    column="group_name"    />
         <result property="alarmUserGrpId"    column="alarm_user_grp_id"    />
@@ -19,16 +19,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceGroupVo">
-        select id, group_name, alarm_user_grp_id, alarm_max_times, status, create_by, create_time, update_by, update_time, remark from tb_device_group
+        select g.*,count(d.id) deviceCount from tb_device_group g, tb_device d
     </sql>
 
     <select id="selectTbDeviceGroupList" parameterType="TbDeviceGroup" resultMap="TbDeviceGroupResult">
         <include refid="selectTbDeviceGroupVo"/>
         <where>  
-            <if test="groupName != null  and groupName != ''"> and group_name like concat('%', #{groupName}, '%')</if>
-            <if test="alarmUserGrpId != null  and alarmUserGrpId != ''"> and alarm_user_grp_id = #{alarmUserGrpId}</if>
-            <if test="alarmMaxTimes != null "> and alarm_max_times = #{alarmMaxTimes}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="groupName != null  and groupName != ''"> and g.group_name like concat('%', #{groupName}, '%')</if>
+            <if test="alarmUserGrpId != null  and alarmUserGrpId != ''"> and g.alarm_user_grp_id = #{alarmUserGrpId}</if>
+            <if test="alarmMaxTimes != null "> and g.alarm_max_times = #{alarmMaxTimes}</if>
+            <if test="status != null  and status != ''"> and g.status = #{status}</if>
         </where>
     </select>
 
@@ -42,7 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTbDeviceGroupById" parameterType="Long" resultMap="TbDeviceGroupResult">
         <include refid="selectTbDeviceGroupVo"/>
-        where id = #{id}
+        where g.id = #{id}
     </select>
         
     <insert id="insertTbDeviceGroup" parameterType="TbDeviceGroup" useGeneratedKeys="true" keyProperty="id">

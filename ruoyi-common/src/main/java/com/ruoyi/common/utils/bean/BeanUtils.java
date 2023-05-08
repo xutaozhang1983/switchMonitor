@@ -1,9 +1,15 @@
 package com.ruoyi.common.utils.bean;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.regex.Matcher;
+import com.fasterxml.jackson.databind.BeanProperty;
+import com.ruoyi.common.utils.BladeBeanCopier;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.PropertyAccessorFactory;
+import org.springframework.cglib.core.Converter;
+import org.springframework.lang.Nullable;
+import org.springframework.util.ClassUtils;
+
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -21,7 +27,8 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
 
     /** * 匹配setter方法的正则表达式 */
     private static final Pattern SET_PATTERN = Pattern.compile("set(\\p{javaUpperCase}\\w*)");
-
+    public BeanUtils() {
+    }
     /**
      * Bean属性复制工具方法。
      * 
@@ -40,71 +47,153 @@ public class BeanUtils extends org.springframework.beans.BeanUtils
         }
     }
 
-    /**
-     * 获取对象的setter方法。
-     * 
-     * @param obj 对象
-     * @return 对象的setter方法列表
-     */
-    public static List<Method> getSetterMethods(Object obj)
-    {
-        // setter方法列表
-        List<Method> setterMethods = new ArrayList<Method>();
 
-        // 获取所有方法
-        Method[] methods = obj.getClass().getMethods();
+        public static <T> T newInstance(Class<?> clazz) {
+            return (T) instantiateClass(clazz);
+        }
 
-        // 查找setter方法
-
-        for (Method method : methods)
-        {
-            Matcher m = SET_PATTERN.matcher(method.getName());
-            if (m.matches() && (method.getParameterTypes().length == 1))
-            {
-                setterMethods.add(method);
+        public static <T> T newInstance(String clazzStr) {
+            try {
+                Class<?> clazz = ClassUtils.forName(clazzStr, (ClassLoader)null);
+                return newInstance(clazz);
+            } catch (ClassNotFoundException var2) {
+                throw new RuntimeException(var2);
             }
         }
-        // 返回setter方法列表
-        return setterMethods;
-    }
 
-    /**
-     * 获取对象的getter方法。
-     * 
-     * @param obj 对象
-     * @return 对象的getter方法列表
-     */
-
-    public static List<Method> getGetterMethods(Object obj)
-    {
-        // getter方法列表
-        List<Method> getterMethods = new ArrayList<Method>();
-        // 获取所有方法
-        Method[] methods = obj.getClass().getMethods();
-        // 查找getter方法
-        for (Method method : methods)
-        {
-            Matcher m = GET_PATTERN.matcher(method.getName());
-            if (m.matches() && (method.getParameterTypes().length == 0))
-            {
-                getterMethods.add(method);
+        @Nullable
+        public static Object getProperty(@Nullable Object bean, String propertyName) {
+            if (bean == null) {
+                return null;
+            } else {
+                BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(bean);
+                return beanWrapper.getPropertyValue(propertyName);
             }
         }
-        // 返回getter方法列表
-        return getterMethods;
-    }
 
-    /**
-     * 检查Bean方法名中的属性名是否相等。<br>
-     * 如getName()和setName()属性名一样，getName()和setAge()属性名不一样。
-     * 
-     * @param m1 方法名1
-     * @param m2 方法名2
-     * @return 属性名一样返回true，否则返回false
-     */
+        public static void setProperty(Object bean, String propertyName, Object value) {
+            Objects.requireNonNull(bean, "bean Could not null");
+            BeanWrapper beanWrapper = PropertyAccessorFactory.forBeanPropertyAccess(bean);
+            beanWrapper.setPropertyValue(propertyName, value);
+        }
 
-    public static boolean isMethodPropEquals(String m1, String m2)
-    {
-        return m1.substring(BEAN_METHOD_PROP_INDEX).equals(m2.substring(BEAN_METHOD_PROP_INDEX));
-    }
+
+        @Nullable
+        public static <T> T copy(@Nullable Object source, Class<T> clazz) {
+            return source == null ? null : copy(source, source.getClass(), clazz);
+        }
+
+        @Nullable
+        public static <T> T copy(@Nullable Object source, Class sourceClazz, Class<T> targetClazz) {
+            if (source == null) {
+                return null;
+            } else {
+                BladeBeanCopier copier = BladeBeanCopier.create(sourceClazz, targetClazz, false);
+                T to = newInstance(targetClazz);
+                copier.copy(source, to, (Converter)null);
+                return to;
+            }
+        }
+
+        public static <T> List<T> copy(@Nullable Collection<?> sourceList, Class<T> targetClazz) {
+            if (sourceList != null && !sourceList.isEmpty()) {
+                List<T> outList = new ArrayList(sourceList.size());
+                Class<?> sourceClazz = null;
+                Iterator var4 = sourceList.iterator();
+
+                while(var4.hasNext()) {
+                    Object source = var4.next();
+                    if (source != null) {
+                        if (sourceClazz == null) {
+                            sourceClazz = source.getClass();
+                        }
+
+                        T bean = copy(source, sourceClazz, targetClazz);
+                        outList.add(bean);
+                    }
+                }
+
+                return outList;
+            } else {
+                return Collections.emptyList();
+            }
+        }
+
+        public static void copy(@Nullable Object source, @Nullable Object targetBean) {
+            if (source != null && targetBean != null) {
+                BladeBeanCopier copier = BladeBeanCopier.create(source.getClass(), targetBean.getClass(), false);
+                copier.copy(source, targetBean, (Converter)null);
+            }
+        }
+
+        public static void copyNonNull(@Nullable Object source, @Nullable Object targetBean) {
+            if (source != null && targetBean != null) {
+                BladeBeanCopier copier = BladeBeanCopier.create(source.getClass(), targetBean.getClass(), false, true);
+                copier.copy(source, targetBean, (Converter)null);
+            }
+        }
+
+        @Nullable
+        public static <T> T copyWithConvert(@Nullable Object source, Class<T> targetClazz, Class<T> clazz) {
+            return source == null ? null : copyWithConvert(source, (Class<T>) source.getClass(), targetClazz);
+        }
+
+
+        @Nullable
+        public static <T> T copyProperties(@Nullable Object source, Class<T> targetClazz) throws BeansException {
+            if (source == null) {
+                return null;
+            } else {
+                T to = newInstance(targetClazz);
+                copyProperties((Object)source, (Object)to);
+                return to;
+            }
+        }
+
+        public static <T> List<T> copyProperties(@Nullable Collection<?> sourceList, Class<T> targetClazz) throws BeansException {
+            if (sourceList != null && !sourceList.isEmpty()) {
+                List<T> outList = new ArrayList(sourceList.size());
+                Iterator var3 = sourceList.iterator();
+
+                while(var3.hasNext()) {
+                    Object source = var3.next();
+                    if (source != null) {
+                        T bean = copyProperties(source, targetClazz);
+                        outList.add(bean);
+                    }
+                }
+
+                return outList;
+            } else {
+                return Collections.emptyList();
+            }
+        }
+
+
+        public static <T> T toBean(Map<String, Object> beanMap, Class<T> valueType) {
+            Objects.requireNonNull(beanMap, "beanMap Could not null");
+            T to = newInstance(valueType);
+            if (beanMap.isEmpty()) {
+                return to;
+            } else {
+                copy((Object)beanMap, (Object)to);
+                return to;
+            }
+        }
+
+        @Nullable
+        public static Object generator(@Nullable Object superBean, BeanProperty... props) {
+            if (superBean == null) {
+                return null;
+            } else {
+                Class<?> superclass = superBean.getClass();
+                Object genBean = generator(superclass, props);
+                copy(superBean, genBean);
+                return genBean;
+            }
+        }
+
+
+
+
 }
