@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.monitor.mapper.TbDeviceMapper">
     
-    <resultMap type="TbDevice" id="TbDeviceResult">
+    <resultMap type="DeviceDTO" id="TbDeviceResult">
         <result property="id"    column="id"    />
         <result property="groupId"    column="group_id"    />
         <result property="hostname"    column="hostname"    />
@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <result property="groupName" column="group_name"/>
     </resultMap>
 
     <sql id="selectTbDeviceVo">
@@ -64,7 +65,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="uptime != null "> and uptime = #{uptime}</if>
         </where>
     </select>
-    
+    <select id="deviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
+      select d.* ,d_g.group_name from tb_device d, tb_device_group d_g
+        <where>
+            <if test="groupId != null "> and d.group_id = #{groupId}</if>
+            <if test="deviceType != null "> and d.device_type = #{deviceType}</if>
+            <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="enable != null "> and enable = #{enable}</if>
+        </where>
+    </select>
     <select id="selectTbDeviceById" parameterType="Long" resultMap="TbDeviceResult">
         <include refid="selectTbDeviceVo"/>
         where id = #{id}

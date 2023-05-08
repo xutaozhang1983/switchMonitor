@@ -2,6 +2,7 @@ package com.ruoyi.monitor.service;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbDevice;
+import com.ruoyi.monitor.domain.dto.DeviceDTO;
 
 /**
  * 设备列Service接口
@@ -25,7 +26,7 @@ public interface ITbDeviceService
      * @param tbDevice 设备列
      * @return 设备列集合
      */
-    public List<TbDevice> selectTbDeviceList(TbDevice tbDevice);
+    List<DeviceDTO> selectTbDeviceList(TbDevice tbDevice);
 
     /**
      * 新增设备列

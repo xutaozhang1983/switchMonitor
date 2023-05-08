@@ -3,6 +3,7 @@ package com.ruoyi.monitor.service.impl;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.TbDevice;
+import com.ruoyi.monitor.domain.dto.DeviceDTO;
 import com.ruoyi.monitor.mapper.TbDeviceMapper;
 import com.ruoyi.monitor.service.ITbDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +40,9 @@ public class TbDeviceServiceImpl implements ITbDeviceService
      * @return 设备列
      */
     @Override
-    public List<TbDevice> selectTbDeviceList(TbDevice tbDevice)
+    public List<DeviceDTO> selectTbDeviceList(TbDevice tbDevice)
     {
-        return tbDeviceMapper.selectTbDeviceList(tbDevice);
+        return tbDeviceMapper.deviceList(tbDevice);
     }
 
     /**

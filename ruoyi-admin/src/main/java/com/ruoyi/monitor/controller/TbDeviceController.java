@@ -2,6 +2,8 @@ package com.ruoyi.monitor.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.monitor.domain.dto.DeviceDTO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,7 +44,7 @@ public class TbDeviceController extends BaseController
     public TableDataInfo list(TbDevice tbDevice)
     {
         startPage();
-        List<TbDevice> list = tbDeviceService.selectTbDeviceList(tbDevice);
+        List<DeviceDTO> list = tbDeviceService.selectTbDeviceList(tbDevice);
         return getDataTable(list);
     }
 
@@ -54,8 +56,9 @@ public class TbDeviceController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, TbDevice tbDevice)
     {
-        List<TbDevice> list = tbDeviceService.selectTbDeviceList(tbDevice);
-        ExcelUtil<TbDevice> util = new ExcelUtil<TbDevice>(TbDevice.class);
+        List<DeviceDTO> list = tbDeviceService.selectTbDeviceList(tbDevice);
+
+        ExcelUtil<DeviceDTO> util = new ExcelUtil<DeviceDTO>(DeviceDTO.class);
         util.exportExcel(response, list, "设备列数据");
     }
 
