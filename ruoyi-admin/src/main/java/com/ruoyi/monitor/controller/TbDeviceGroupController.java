@@ -4,7 +4,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.monitor.domain.dto.DeviceGroupDTO;
+import com.ruoyi.monitor.domain.dto.DeviceGroupVO;
 import com.ruoyi.monitor.service.ITbDeviceService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.Bean;
@@ -50,7 +50,7 @@ public class TbDeviceGroupController extends BaseController
     public TableDataInfo list(TbDeviceGroup tbDeviceGroup)
     {
         startPage();
-        List<DeviceGroupDTO> list = tbDeviceGroupService.deviceGroupList(tbDeviceGroup);
+        List<DeviceGroupVO> list = tbDeviceGroupService.deviceGroupList(tbDeviceGroup);
         return getDataTable(list);
     }
 
@@ -62,8 +62,8 @@ public class TbDeviceGroupController extends BaseController
     @PostMapping("/export")
     public void export(HttpServletResponse response, TbDeviceGroup tbDeviceGroup)
     {
-        List<DeviceGroupDTO> list = tbDeviceGroupService.deviceGroupList(tbDeviceGroup);
-        ExcelUtil<DeviceGroupDTO> util = new ExcelUtil<DeviceGroupDTO>(DeviceGroupDTO.class);
+        List<DeviceGroupVO> list = tbDeviceGroupService.deviceGroupList(tbDeviceGroup);
+        ExcelUtil<DeviceGroupVO> util = new ExcelUtil<DeviceGroupVO>(DeviceGroupVO.class);
         util.exportExcel(response, list, "设备列数据");
     }
 
@@ -75,8 +75,8 @@ public class TbDeviceGroupController extends BaseController
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
         TbDeviceGroup group = tbDeviceGroupService.selectTbDeviceGroupById(id);
-        DeviceGroupDTO groupDTO = new DeviceGroupDTO();
-        BeanUtils.copyProperties(group,groupDTO,DeviceGroupDTO.class);
+        DeviceGroupVO groupDTO = new DeviceGroupVO();
+        BeanUtils.copyProperties(group,groupDTO,DeviceGroupVO.class);
         return success(groupDTO);
     }
 

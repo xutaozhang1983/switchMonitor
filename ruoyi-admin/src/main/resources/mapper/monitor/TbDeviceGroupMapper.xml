@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.monitor.mapper.TbDeviceGroupMapper">
     
-    <resultMap type="TbDeviceGroup" id="TbDeviceGroupResult">
+    <resultMap type="DeviceGroupVO" id="TbDeviceGroupResult">
         <result property="id"    column="id"    />
         <result property="groupName"    column="group_name"    />
         <result property="alarmUserGrpId"    column="alarm_user_grp_id"    />
@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceGroupVo">
-        select id, group_name, alarm_user_grp_id, alarm_max_times, status, create_by, create_time, update_by, update_time, remark from tb_device_group
+        select g.*,d.count(d.id) deviceCount from tb_device_group g, tb_device d
     </sql>
 
     <select id="selectTbDeviceGroupList" parameterType="TbDeviceGroup" resultMap="TbDeviceGroupResult">
