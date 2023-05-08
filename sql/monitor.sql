@@ -1,3 +1,18 @@
+/*
+ Navicat Premium Data Transfer
+
+ Source Server         : 47.100.94.40
+ Source Server Type    : MySQL
+ Source Server Version : 50737
+ Source Host           : 47.100.94.40:3306
+ Source Schema         : monitor
+
+ Target Server Type    : MySQL
+ Target Server Version : 50737
+ File Encoding         : 65001
+
+ Date: 08/05/2023 09:38:54
+*/
 
 SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
@@ -13,7 +28,7 @@ CREATE TABLE `QRTZ_BLOB_TRIGGERS` (
   `blob_data` blob COMMENT '存放持久化Trigger对象',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   CONSTRAINT `QRTZ_BLOB_TRIGGERS_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='Blob类型的触发器表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Blob类型的触发器表';
 
 -- ----------------------------
 -- Records of QRTZ_BLOB_TRIGGERS
@@ -30,7 +45,7 @@ CREATE TABLE `QRTZ_CALENDARS` (
   `calendar_name` varchar(200) NOT NULL COMMENT '日历名称',
   `calendar` blob NOT NULL COMMENT '存放持久化calendar对象',
   PRIMARY KEY (`sched_name`,`calendar_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='日历信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='日历信息表';
 
 -- ----------------------------
 -- Records of QRTZ_CALENDARS
@@ -50,7 +65,7 @@ CREATE TABLE `QRTZ_CRON_TRIGGERS` (
   `time_zone_id` varchar(80) DEFAULT NULL COMMENT '时区',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   CONSTRAINT `QRTZ_CRON_TRIGGERS_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='Cron类型的触发器表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Cron类型的触发器表';
 
 -- ----------------------------
 -- Records of QRTZ_CRON_TRIGGERS
@@ -68,16 +83,16 @@ CREATE TABLE `QRTZ_FIRED_TRIGGERS` (
   `trigger_name` varchar(200) NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
   `trigger_group` varchar(200) NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   `instance_name` varchar(200) NOT NULL COMMENT '调度器实例名',
-  `fired_time` bigint NOT NULL COMMENT '触发的时间',
-  `sched_time` bigint NOT NULL COMMENT '定时器制定的时间',
-  `priority` int NOT NULL COMMENT '优先级',
+  `fired_time` bigint(20) NOT NULL COMMENT '触发的时间',
+  `sched_time` bigint(20) NOT NULL COMMENT '定时器制定的时间',
+  `priority` int(11) NOT NULL COMMENT '优先级',
   `state` varchar(16) NOT NULL COMMENT '状态',
   `job_name` varchar(200) DEFAULT NULL COMMENT '任务名称',
   `job_group` varchar(200) DEFAULT NULL COMMENT '任务组名',
   `is_nonconcurrent` varchar(1) DEFAULT NULL COMMENT '是否并发',
   `requests_recovery` varchar(1) DEFAULT NULL COMMENT '是否接受恢复执行',
   PRIMARY KEY (`sched_name`,`entry_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='已触发的触发器表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='已触发的触发器表';
 
 -- ----------------------------
 -- Records of QRTZ_FIRED_TRIGGERS
@@ -101,7 +116,7 @@ CREATE TABLE `QRTZ_JOB_DETAILS` (
   `requests_recovery` varchar(1) NOT NULL COMMENT '是否接受恢复执行',
   `job_data` blob COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`,`job_name`,`job_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='任务详细信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='任务详细信息表';
 
 -- ----------------------------
 -- Records of QRTZ_JOB_DETAILS
@@ -117,7 +132,7 @@ CREATE TABLE `QRTZ_LOCKS` (
   `sched_name` varchar(120) NOT NULL COMMENT '调度名称',
   `lock_name` varchar(40) NOT NULL COMMENT '悲观锁名称',
   PRIMARY KEY (`sched_name`,`lock_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='存储的悲观锁信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='存储的悲观锁信息表';
 
 -- ----------------------------
 -- Records of QRTZ_LOCKS
@@ -133,7 +148,7 @@ CREATE TABLE `QRTZ_PAUSED_TRIGGER_GRPS` (
   `sched_name` varchar(120) NOT NULL COMMENT '调度名称',
   `trigger_group` varchar(200) NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
   PRIMARY KEY (`sched_name`,`trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='暂停的触发器表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='暂停的触发器表';
 
 -- ----------------------------
 -- Records of QRTZ_PAUSED_TRIGGER_GRPS
@@ -148,10 +163,10 @@ DROP TABLE IF EXISTS `QRTZ_SCHEDULER_STATE`;
 CREATE TABLE `QRTZ_SCHEDULER_STATE` (
   `sched_name` varchar(120) NOT NULL COMMENT '调度名称',
   `instance_name` varchar(200) NOT NULL COMMENT '实例名称',
-  `last_checkin_time` bigint NOT NULL COMMENT '上次检查时间',
-  `checkin_interval` bigint NOT NULL COMMENT '检查间隔时间',
+  `last_checkin_time` bigint(20) NOT NULL COMMENT '上次检查时间',
+  `checkin_interval` bigint(20) NOT NULL COMMENT '检查间隔时间',
   PRIMARY KEY (`sched_name`,`instance_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='调度器状态表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='调度器状态表';
 
 -- ----------------------------
 -- Records of QRTZ_SCHEDULER_STATE
@@ -167,12 +182,12 @@ CREATE TABLE `QRTZ_SIMPLE_TRIGGERS` (
   `sched_name` varchar(120) NOT NULL COMMENT '调度名称',
   `trigger_name` varchar(200) NOT NULL COMMENT 'qrtz_triggers表trigger_name的外键',
   `trigger_group` varchar(200) NOT NULL COMMENT 'qrtz_triggers表trigger_group的外键',
-  `repeat_count` bigint NOT NULL COMMENT '重复的次数统计',
-  `repeat_interval` bigint NOT NULL COMMENT '重复的间隔时间',
-  `times_triggered` bigint NOT NULL COMMENT '已经触发的次数',
+  `repeat_count` bigint(20) NOT NULL COMMENT '重复的次数统计',
+  `repeat_interval` bigint(20) NOT NULL COMMENT '重复的间隔时间',
+  `times_triggered` bigint(20) NOT NULL COMMENT '已经触发的次数',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   CONSTRAINT `QRTZ_SIMPLE_TRIGGERS_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='简单触发器的信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='简单触发器的信息表';
 
 -- ----------------------------
 -- Records of QRTZ_SIMPLE_TRIGGERS
@@ -191,17 +206,17 @@ CREATE TABLE `QRTZ_SIMPROP_TRIGGERS` (
   `str_prop_1` varchar(512) DEFAULT NULL COMMENT 'String类型的trigger的第一个参数',
   `str_prop_2` varchar(512) DEFAULT NULL COMMENT 'String类型的trigger的第二个参数',
   `str_prop_3` varchar(512) DEFAULT NULL COMMENT 'String类型的trigger的第三个参数',
-  `int_prop_1` int DEFAULT NULL COMMENT 'int类型的trigger的第一个参数',
-  `int_prop_2` int DEFAULT NULL COMMENT 'int类型的trigger的第二个参数',
-  `long_prop_1` bigint DEFAULT NULL COMMENT 'long类型的trigger的第一个参数',
-  `long_prop_2` bigint DEFAULT NULL COMMENT 'long类型的trigger的第二个参数',
+  `int_prop_1` int(11) DEFAULT NULL COMMENT 'int类型的trigger的第一个参数',
+  `int_prop_2` int(11) DEFAULT NULL COMMENT 'int类型的trigger的第二个参数',
+  `long_prop_1` bigint(20) DEFAULT NULL COMMENT 'long类型的trigger的第一个参数',
+  `long_prop_2` bigint(20) DEFAULT NULL COMMENT 'long类型的trigger的第二个参数',
   `dec_prop_1` decimal(13,4) DEFAULT NULL COMMENT 'decimal类型的trigger的第一个参数',
   `dec_prop_2` decimal(13,4) DEFAULT NULL COMMENT 'decimal类型的trigger的第二个参数',
   `bool_prop_1` varchar(1) DEFAULT NULL COMMENT 'Boolean类型的trigger的第一个参数',
   `bool_prop_2` varchar(1) DEFAULT NULL COMMENT 'Boolean类型的trigger的第二个参数',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   CONSTRAINT `QRTZ_SIMPROP_TRIGGERS_ibfk_1` FOREIGN KEY (`sched_name`, `trigger_name`, `trigger_group`) REFERENCES `QRTZ_TRIGGERS` (`sched_name`, `trigger_name`, `trigger_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='同步机制的行锁表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='同步机制的行锁表';
 
 -- ----------------------------
 -- Records of QRTZ_SIMPROP_TRIGGERS
@@ -220,20 +235,20 @@ CREATE TABLE `QRTZ_TRIGGERS` (
   `job_name` varchar(200) NOT NULL COMMENT 'qrtz_job_details表job_name的外键',
   `job_group` varchar(200) NOT NULL COMMENT 'qrtz_job_details表job_group的外键',
   `description` varchar(250) DEFAULT NULL COMMENT '相关介绍',
-  `next_fire_time` bigint DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
-  `prev_fire_time` bigint DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
-  `priority` int DEFAULT NULL COMMENT '优先级',
+  `next_fire_time` bigint(20) DEFAULT NULL COMMENT '上一次触发时间（毫秒）',
+  `prev_fire_time` bigint(20) DEFAULT NULL COMMENT '下一次触发时间（默认为-1表示不触发）',
+  `priority` int(11) DEFAULT NULL COMMENT '优先级',
   `trigger_state` varchar(16) NOT NULL COMMENT '触发器状态',
   `trigger_type` varchar(8) NOT NULL COMMENT '触发器的类型',
-  `start_time` bigint NOT NULL COMMENT '开始时间',
-  `end_time` bigint DEFAULT NULL COMMENT '结束时间',
+  `start_time` bigint(20) NOT NULL COMMENT '开始时间',
+  `end_time` bigint(20) DEFAULT NULL COMMENT '结束时间',
   `calendar_name` varchar(200) DEFAULT NULL COMMENT '日程表名称',
-  `misfire_instr` smallint DEFAULT NULL COMMENT '补偿执行的策略',
+  `misfire_instr` smallint(6) DEFAULT NULL COMMENT '补偿执行的策略',
   `job_data` blob COMMENT '存放持久化job对象',
   PRIMARY KEY (`sched_name`,`trigger_name`,`trigger_group`),
   KEY `sched_name` (`sched_name`,`job_name`,`job_group`),
   CONSTRAINT `QRTZ_TRIGGERS_ibfk_1` FOREIGN KEY (`sched_name`, `job_name`, `job_group`) REFERENCES `QRTZ_JOB_DETAILS` (`sched_name`, `job_name`, `job_group`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='触发器详细信息表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='触发器详细信息表';
 
 -- ----------------------------
 -- Records of QRTZ_TRIGGERS
@@ -246,7 +261,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table`;
 CREATE TABLE `gen_table` (
-  `table_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `table_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `table_name` varchar(200) DEFAULT '' COMMENT '表名称',
   `table_comment` varchar(500) DEFAULT '' COMMENT '表描述',
   `sub_table_name` varchar(64) DEFAULT NULL COMMENT '关联子表的表名',
@@ -267,12 +282,19 @@ CREATE TABLE `gen_table` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`table_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='代码生成业务表';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='代码生成业务表';
 
 -- ----------------------------
 -- Records of gen_table
 -- ----------------------------
 BEGIN;
+INSERT INTO `gen_table` VALUES (14, 'tb_device_group', '设备列表', NULL, NULL, 'TbDeviceGroup', 'crud', 'com.ruoyi.monitor', 'monitor', 'group', '设备列', 'ruoyi', '0', '/', '{\"parentMenuId\":\"\"}', 'admin', '2023-05-07 19:37:24', '', '2023-05-07 19:38:06', NULL);
+INSERT INTO `gen_table` VALUES (15, 'tb_alarm_event', '报警信息', NULL, NULL, 'TbAlarmEvent', 'crud', 'com.ruoyi.monitor', 'monitor', 'event', '报警信息', 'ruoyi', '0', '/', '{\"parentMenuId\":\"\"}', 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:39', NULL);
+INSERT INTO `gen_table` VALUES (16, 'tb_device', '设备列表', NULL, NULL, 'TbDevice', 'crud', 'com.ruoyi.monitor', 'monitor', 'device', '设备列', 'ruoyi', '0', '/', '{\"parentMenuId\":\"\"}', 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:50', NULL);
+INSERT INTO `gen_table` VALUES (17, 'tb_device_item', '设备监控指标', NULL, NULL, 'TbDeviceItem', 'crud', 'com.ruoyi.monitor', 'monitor', 'item', '设备监控指标', 'ruoyi', '0', '/', '{\"parentMenuId\":\"\"}', 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:39:03', NULL);
+INSERT INTO `gen_table` VALUES (18, 'tb_device_item_his', '设备监控指标', NULL, NULL, 'TbDeviceItemHis', 'crud', 'com.ruoyi.monitor', 'monitor', 'his', '设备监控指标', 'ruoyi', '0', '/', '{\"parentMenuId\":\"\"}', 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:13', NULL);
+INSERT INTO `gen_table` VALUES (19, 'tb_events', '事件信息', NULL, NULL, 'TbEvents', 'crud', 'com.ruoyi.monitor', 'monitor', 'events', '事件信息', 'ruoyi', '0', '/', '{\"parentMenuId\":\"\"}', 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:38:30', NULL);
+INSERT INTO `gen_table` VALUES (20, 'tb_smtp_conf', 'smtp 服务配置', NULL, NULL, 'TbSmtpConf', 'crud', 'com.ruoyi.monitor', 'monitor', 'conf', 'smtp 服务配置', 'ruoyi', '0', '/', '{\"parentMenuId\":\"\"}', 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:39:22', NULL);
 COMMIT;
 
 -- ----------------------------
@@ -280,7 +302,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `gen_table_column`;
 CREATE TABLE `gen_table_column` (
-  `column_id` bigint NOT NULL AUTO_INCREMENT COMMENT '编号',
+  `column_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
   `table_id` varchar(64) DEFAULT NULL COMMENT '归属表编号',
   `column_name` varchar(200) DEFAULT NULL COMMENT '列名称',
   `column_comment` varchar(500) DEFAULT NULL COMMENT '列描述',
@@ -297,18 +319,109 @@ CREATE TABLE `gen_table_column` (
   `query_type` varchar(200) DEFAULT 'EQ' COMMENT '查询方式（等于、不等于、大于、小于、范围）',
   `html_type` varchar(200) DEFAULT NULL COMMENT '显示类型（文本框、文本域、下拉框、复选框、单选框、日期控件）',
   `dict_type` varchar(200) DEFAULT '' COMMENT '字典类型',
-  `sort` int DEFAULT NULL COMMENT '排序',
+  `sort` int(11) DEFAULT NULL COMMENT '排序',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`column_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='代码生成业务表字段';
+) ENGINE=InnoDB AUTO_INCREMENT=275 DEFAULT CHARSET=utf8 COMMENT='代码生成业务表字段';
 
 -- ----------------------------
 -- Records of gen_table_column
 -- ----------------------------
 BEGIN;
+INSERT INTO `gen_table_column` VALUES (184, '14', 'id', '设备ID', 'bigint(20)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2023-05-07 19:37:24', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (185, '14', 'group_name', '设备名称', 'varchar(64)', 'String', 'groupName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2023-05-07 19:37:24', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (186, '14', 'alarm_user_grp_id', '报警接收用户组，多个逗号隔开', 'varchar(64)', 'String', 'alarmUserGrpId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2023-05-07 19:37:24', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (187, '14', 'alarm_max_times', '报警发送次数', 'smallint(6)', 'Integer', 'alarmMaxTimes', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2023-05-07 19:37:24', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (188, '14', 'status', '状态（0正常 1异常）', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 5, 'admin', '2023-05-07 19:37:24', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (189, '14', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 6, 'admin', '2023-05-07 19:37:25', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (190, '14', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 7, 'admin', '2023-05-07 19:37:25', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (191, '14', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'input', '', 8, 'admin', '2023-05-07 19:37:25', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (192, '14', 'update_time', NULL, 'timestamp', 'Date', 'updateTime', '0', '0', '1', '1', '1', NULL, NULL, 'EQ', 'datetime', '', 9, 'admin', '2023-05-07 19:37:25', '', '2023-05-07 19:38:06');
+INSERT INTO `gen_table_column` VALUES (193, '14', 'remark', '备注', 'varchar(255)', 'String', 'remark', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'input', '', 10, 'admin', '2023-05-07 19:37:25', '', '2023-05-07 19:38:07');
+INSERT INTO `gen_table_column` VALUES (194, '15', 'id', NULL, 'bigint(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:39');
+INSERT INTO `gen_table_column` VALUES (195, '15', 'device_id', NULL, 'bigint(11)', 'Long', 'deviceId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:39');
+INSERT INTO `gen_table_column` VALUES (196, '15', 'item_id', '监控指标ID', 'bigint(20)', 'Long', 'itemId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (197, '15', 'item_name', '监控指标', 'varchar(200)', 'String', 'itemName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (198, '15', 'alarm_content', '报警内容', 'varchar(200)', 'String', 'alarmContent', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'editor', '', 5, 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (199, '15', 'alarm_level', '报警级别', 'varchar(64)', 'String', 'alarmLevel', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (200, '15', 'alarm_send_times', '报警发送次数', 'smallint(6)', 'Integer', 'alarmSendTimes', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2023-05-07 19:37:37', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (201, '15', 'closed_at', '报警关闭时间', 'timestamp', 'Date', 'closedAt', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'datetime', '', 8, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (202, '15', 'closed_note', '报警关闭内容', 'varchar(250)', 'String', 'closedNote', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (203, '15', 'closed_user', '报警关闭人姓名', 'varchar(250)', 'String', 'closedUser', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 10, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (204, '15', 'status', '状态（0正常 1异常）', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 11, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:40');
+INSERT INTO `gen_table_column` VALUES (205, '15', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 12, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:41');
+INSERT INTO `gen_table_column` VALUES (206, '15', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 13, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:41');
+INSERT INTO `gen_table_column` VALUES (207, '15', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'input', '', 14, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:41');
+INSERT INTO `gen_table_column` VALUES (208, '15', 'update_time', NULL, 'timestamp', 'Date', 'updateTime', '0', '0', '1', '1', '1', NULL, NULL, 'EQ', 'datetime', '', 15, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:41');
+INSERT INTO `gen_table_column` VALUES (209, '15', 'remark', '备注', 'varchar(255)', 'String', 'remark', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'input', '', 16, 'admin', '2023-05-07 19:37:38', '', '2023-05-07 19:38:41');
+INSERT INTO `gen_table_column` VALUES (210, '16', 'id', '设备ID', 'bigint(20)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:50');
+INSERT INTO `gen_table_column` VALUES (211, '16', 'group_id', '组ID', 'bigint(20)', 'Long', 'groupId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:50');
+INSERT INTO `gen_table_column` VALUES (212, '16', 'hostname', '主机名', 'varchar(255)', 'String', 'hostname', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:50');
+INSERT INTO `gen_table_column` VALUES (213, '16', 'device_type', '设备类型', 'varchar(64)', 'String', 'deviceType', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'select', '', 4, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:50');
+INSERT INTO `gen_table_column` VALUES (214, '16', 'device_ip', '设备IP', 'varchar(20)', 'String', 'deviceIp', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:50');
+INSERT INTO `gen_table_column` VALUES (215, '16', 'protocol', '协议', 'varchar(20)', 'String', 'protocol', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:50');
+INSERT INTO `gen_table_column` VALUES (216, '16', 'snmp_community', NULL, 'varchar(100)', 'String', 'snmpCommunity', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (217, '16', 'snmp_version', NULL, 'tinyint(3) unsigned', 'Integer', 'snmpVersion', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (218, '16', 'snmp_port', NULL, 'mediumint(8) unsigned', 'Integer', 'snmpPort', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 9, 'admin', '2023-05-07 19:37:39', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (219, '16', 'snmp_username', NULL, 'varchar(50)', 'String', 'snmpUsername', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 10, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (220, '16', 'snmp_password', NULL, 'varchar(50)', 'String', 'snmpPassword', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 11, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (221, '16', 'snmp_auth_protocol', NULL, 'char(6)', 'String', 'snmpAuthProtocol', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 12, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (222, '16', 'snmp_priv_passphrase', NULL, 'varchar(200)', 'String', 'snmpPrivPassphrase', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 13, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (223, '16', 'snmp_priv_protocol', NULL, 'char(6)', 'String', 'snmpPrivProtocol', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 14, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (224, '16', 'snmp_context', NULL, 'varchar(64)', 'String', 'snmpContext', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 15, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:51');
+INSERT INTO `gen_table_column` VALUES (225, '16', 'snmp_engine_id', NULL, 'varchar(64)', 'String', 'snmpEngineId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 16, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (226, '16', 'manufacturer', '制造商', 'varchar(64)', 'String', 'manufacturer', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 17, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (227, '16', 'status', '状态（0正常 1异常）', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 18, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (228, '16', 'enable', '是否启用', 'tinyint(4)', 'Integer', 'enable', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 19, 'admin', '2023-05-07 19:37:40', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (229, '16', 'uptime', NULL, 'bigint(20) unsigned', 'Long', 'uptime', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 20, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (230, '16', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 21, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (231, '16', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 22, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (232, '16', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'input', '', 23, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (233, '16', 'update_time', NULL, 'timestamp', 'Date', 'updateTime', '0', '0', '1', '1', '1', NULL, NULL, 'EQ', 'datetime', '', 24, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (234, '16', 'remark', '备注', 'varchar(255)', 'String', 'remark', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'input', '', 25, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:38:52');
+INSERT INTO `gen_table_column` VALUES (235, '17', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (236, '17', 'device_id', '主机IP', 'bigint(20)', 'Long', 'deviceId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2023-05-07 19:37:41', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (237, '17', 'item_name', '监控指标名称', 'varchar(64)', 'String', 'itemName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 3, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (238, '17', 'value', '监控值', 'varchar(32)', 'String', 'value', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (239, '17', 'last_value', '上次监控值', 'varchar(32)', 'String', 'lastValue', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (240, '17', 'clock', '收集时间', 'int(11)', 'Long', 'clock', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (241, '17', 'status', '状态（0正常 1异常）', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 7, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (242, '17', 'create_time', NULL, 'timestamp', 'Date', 'createTime', '0', '0', '1', '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 8, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:03');
+INSERT INTO `gen_table_column` VALUES (243, '18', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:13');
+INSERT INTO `gen_table_column` VALUES (244, '18', 'device_id', '主机IP', 'bigint(20)', 'Long', 'deviceId', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2023-05-07 19:37:42', '', '2023-05-07 19:39:13');
+INSERT INTO `gen_table_column` VALUES (245, '18', 'item_id', NULL, 'bigint(20)', 'Long', 'itemId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:39:13');
+INSERT INTO `gen_table_column` VALUES (246, '18', 'item_name', '监控指标名称', 'varchar(64)', 'String', 'itemName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 4, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:39:13');
+INSERT INTO `gen_table_column` VALUES (247, '18', 'value', '监控值', 'varchar(32)', 'String', 'value', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:39:13');
+INSERT INTO `gen_table_column` VALUES (248, '18', 'clock', '收集时间', 'int(11)', 'Long', 'clock', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:39:13');
+INSERT INTO `gen_table_column` VALUES (249, '18', 'create_time', NULL, 'timestamp', 'Date', 'createTime', '0', '0', '1', '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 7, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:39:14');
+INSERT INTO `gen_table_column` VALUES (250, '19', 'id', NULL, 'int(11)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (251, '19', 'event_id', NULL, 'bigint(20)', 'Long', 'eventId', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 2, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (252, '19', 'step', NULL, 'int(10) unsigned', 'Integer', 'step', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2023-05-07 19:37:43', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (253, '19', 'cond', NULL, 'varchar(200)', 'String', 'cond', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (254, '19', 'user_name', '接收人', 'varchar(64)', 'String', 'userName', '0', '0', NULL, '1', '1', '1', '1', 'LIKE', 'input', '', 5, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (255, '19', 'status', '状态（0正常 1异常）', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 6, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (256, '19', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 7, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (257, '19', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 8, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (258, '19', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'input', '', 9, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:30');
+INSERT INTO `gen_table_column` VALUES (259, '19', 'update_time', NULL, 'timestamp', 'Date', 'updateTime', '0', '0', '1', '1', '1', NULL, NULL, 'EQ', 'datetime', '', 10, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:31');
+INSERT INTO `gen_table_column` VALUES (260, '19', 'remark', '备注', 'varchar(255)', 'String', 'remark', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'input', '', 11, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:38:31');
+INSERT INTO `gen_table_column` VALUES (261, '20', 'id', NULL, 'bigint(20)', 'Long', 'id', '1', '1', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 1, 'admin', '2023-05-07 19:37:44', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (262, '20', 'smtp_name', '名称', 'varchar(64)', 'String', 'smtpName', '0', '0', '1', '1', '1', '1', '1', 'LIKE', 'input', '', 2, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (263, '20', 'smtp_host', 'smtp主机', 'varchar(64)', 'String', 'smtpHost', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 3, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (264, '20', 'sender', 'sender', 'varchar(64)', 'String', 'sender', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 4, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (265, '20', 'port', '端口', 'int(11)', 'Long', 'port', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 5, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (266, '20', 'enable_ssl', '0关闭1 开启', 'int(11)', 'Long', 'enableSsl', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 6, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (267, '20', 'smtp_user', '用户名', 'varchar(64)', 'String', 'smtpUser', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 7, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (268, '20', 'smtp_passwd', '密码', 'varchar(64)', 'String', 'smtpPasswd', '0', '0', '1', '1', '1', '1', '1', 'EQ', 'input', '', 8, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (269, '20', 'status', '状态（0正常 1异常）', 'char(1)', 'String', 'status', '0', '0', NULL, '1', '1', '1', '1', 'EQ', 'radio', '', 9, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:22');
+INSERT INTO `gen_table_column` VALUES (270, '20', 'create_by', '创建者', 'varchar(64)', 'String', 'createBy', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'input', '', 10, 'admin', '2023-05-07 19:37:45', '', '2023-05-07 19:39:23');
+INSERT INTO `gen_table_column` VALUES (271, '20', 'create_time', '创建时间', 'datetime', 'Date', 'createTime', '0', '0', NULL, '1', NULL, NULL, NULL, 'EQ', 'datetime', '', 11, 'admin', '2023-05-07 19:37:46', '', '2023-05-07 19:39:23');
+INSERT INTO `gen_table_column` VALUES (272, '20', 'update_by', '更新者', 'varchar(64)', 'String', 'updateBy', '0', '0', NULL, '1', '1', NULL, NULL, 'EQ', 'input', '', 12, 'admin', '2023-05-07 19:37:46', '', '2023-05-07 19:39:23');
+INSERT INTO `gen_table_column` VALUES (273, '20', 'update_time', NULL, 'timestamp', 'Date', 'updateTime', '0', '0', '1', '1', '1', NULL, NULL, 'EQ', 'datetime', '', 13, 'admin', '2023-05-07 19:37:46', '', '2023-05-07 19:39:23');
+INSERT INTO `gen_table_column` VALUES (274, '20', 'remark', '备注', 'varchar(255)', 'String', 'remark', '0', '0', NULL, '1', '1', '1', NULL, 'EQ', 'input', '', 14, 'admin', '2023-05-07 19:37:46', '', '2023-05-07 19:39:23');
 COMMIT;
 
 -- ----------------------------
@@ -316,7 +429,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_config`;
 CREATE TABLE `sys_config` (
-  `config_id` int NOT NULL AUTO_INCREMENT COMMENT '参数主键',
+  `config_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '参数主键',
   `config_name` varchar(100) DEFAULT '' COMMENT '参数名称',
   `config_key` varchar(100) DEFAULT '' COMMENT '参数键名',
   `config_value` varchar(500) DEFAULT '' COMMENT '参数键值',
@@ -327,7 +440,7 @@ CREATE TABLE `sys_config` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`config_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8  COMMENT='参数配置表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='参数配置表';
 
 -- ----------------------------
 -- Records of sys_config
@@ -346,11 +459,11 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dept`;
 CREATE TABLE `sys_dept` (
-  `dept_id` bigint NOT NULL AUTO_INCREMENT COMMENT '部门id',
-  `parent_id` bigint DEFAULT '0' COMMENT '父部门id',
+  `dept_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '部门id',
+  `parent_id` bigint(20) DEFAULT '0' COMMENT '父部门id',
   `ancestors` varchar(50) DEFAULT '' COMMENT '祖级列表',
   `dept_name` varchar(30) DEFAULT '' COMMENT '部门名称',
-  `order_num` int DEFAULT '0' COMMENT '显示顺序',
+  `order_num` int(11) DEFAULT '0' COMMENT '显示顺序',
   `leader` varchar(20) DEFAULT NULL COMMENT '负责人',
   `phone` varchar(11) DEFAULT NULL COMMENT '联系电话',
   `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
@@ -361,7 +474,7 @@ CREATE TABLE `sys_dept` (
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`dept_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8  COMMENT='部门表';
+) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8 COMMENT='部门表';
 
 -- ----------------------------
 -- Records of sys_dept
@@ -377,8 +490,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_data`;
 CREATE TABLE `sys_dict_data` (
-  `dict_code` bigint NOT NULL AUTO_INCREMENT COMMENT '字典编码',
-  `dict_sort` int DEFAULT '0' COMMENT '字典排序',
+  `dict_code` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典编码',
+  `dict_sort` int(11) DEFAULT '0' COMMENT '字典排序',
   `dict_label` varchar(100) DEFAULT '' COMMENT '字典标签',
   `dict_value` varchar(100) DEFAULT '' COMMENT '字典键值',
   `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
@@ -392,7 +505,7 @@ CREATE TABLE `sys_dict_data` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_code`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8  COMMENT='字典数据表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='字典数据表';
 
 -- ----------------------------
 -- Records of sys_dict_data
@@ -434,7 +547,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_type`;
 CREATE TABLE `sys_dict_type` (
-  `dict_id` bigint NOT NULL AUTO_INCREMENT COMMENT '字典主键',
+  `dict_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '字典主键',
   `dict_name` varchar(100) DEFAULT '' COMMENT '字典名称',
   `dict_type` varchar(100) DEFAULT '' COMMENT '字典类型',
   `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1停用）',
@@ -445,7 +558,7 @@ CREATE TABLE `sys_dict_type` (
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`dict_id`),
   UNIQUE KEY `dict_type` (`dict_type`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8  COMMENT='字典类型表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='字典类型表';
 
 -- ----------------------------
 -- Records of sys_dict_type
@@ -468,7 +581,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job`;
 CREATE TABLE `sys_job` (
-  `job_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务ID',
+  `job_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务ID',
   `job_name` varchar(64) NOT NULL DEFAULT '' COMMENT '任务名称',
   `job_group` varchar(64) NOT NULL DEFAULT 'DEFAULT' COMMENT '任务组名',
   `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
@@ -482,7 +595,7 @@ CREATE TABLE `sys_job` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT '' COMMENT '备注信息',
   PRIMARY KEY (`job_id`,`job_name`,`job_group`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8  COMMENT='定时任务调度表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='定时任务调度表';
 
 -- ----------------------------
 -- Records of sys_job
@@ -498,7 +611,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_job_log`;
 CREATE TABLE `sys_job_log` (
-  `job_log_id` bigint NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
+  `job_log_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务日志ID',
   `job_name` varchar(64) NOT NULL COMMENT '任务名称',
   `job_group` varchar(64) NOT NULL COMMENT '任务组名',
   `invoke_target` varchar(500) NOT NULL COMMENT '调用目标字符串',
@@ -507,7 +620,7 @@ CREATE TABLE `sys_job_log` (
   `exception_info` varchar(2000) DEFAULT '' COMMENT '异常信息',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`job_log_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='定时任务调度日志表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='定时任务调度日志表';
 
 -- ----------------------------
 -- Records of sys_job_log
@@ -520,7 +633,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_logininfor`;
 CREATE TABLE `sys_logininfor` (
-  `info_id` bigint NOT NULL AUTO_INCREMENT COMMENT '访问ID',
+  `info_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '访问ID',
   `user_name` varchar(50) DEFAULT '' COMMENT '用户账号',
   `ipaddr` varchar(128) DEFAULT '' COMMENT '登录IP地址',
   `login_location` varchar(255) DEFAULT '' COMMENT '登录地点',
@@ -532,13 +645,18 @@ CREATE TABLE `sys_logininfor` (
   PRIMARY KEY (`info_id`),
   KEY `idx_sys_logininfor_s` (`status`),
   KEY `idx_sys_logininfor_lt` (`login_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=101 DEFAULT CHARSET=utf8mb3 COMMENT='系统访问记录';
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8 COMMENT='系统访问记录';
 
 -- ----------------------------
 -- Records of sys_logininfor
 -- ----------------------------
 BEGIN;
 INSERT INTO `sys_logininfor` VALUES (100, 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Mac OS X', '0', '登录成功', '2023-05-07 06:50:34');
+INSERT INTO `sys_logininfor` VALUES (101, 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Mac OS X', '0', '登录成功', '2023-05-07 19:24:12');
+INSERT INTO `sys_logininfor` VALUES (102, 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Mac OS X', '0', '登录成功', '2023-05-07 19:26:54');
+INSERT INTO `sys_logininfor` VALUES (103, 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Mac OS X', '0', '登录成功', '2023-05-08 09:24:19');
+INSERT INTO `sys_logininfor` VALUES (104, 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Mac OS X', '0', '登录成功', '2023-05-08 09:29:21');
+INSERT INTO `sys_logininfor` VALUES (105, 'admin', '127.0.0.1', '内网IP', 'Chrome 11', 'Mac OS X', '0', '登录成功', '2023-05-08 09:31:46');
 COMMIT;
 
 -- ----------------------------
@@ -546,15 +664,15 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_menu`;
 CREATE TABLE `sys_menu` (
-  `menu_id` bigint NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
+  `menu_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '菜单ID',
   `menu_name` varchar(50) NOT NULL COMMENT '菜单名称',
-  `parent_id` bigint DEFAULT '0' COMMENT '父菜单ID',
-  `order_num` int DEFAULT '0' COMMENT '显示顺序',
+  `parent_id` bigint(20) DEFAULT '0' COMMENT '父菜单ID',
+  `order_num` int(11) DEFAULT '0' COMMENT '显示顺序',
   `path` varchar(200) DEFAULT '' COMMENT '路由地址',
   `component` varchar(255) DEFAULT NULL COMMENT '组件路径',
   `query` varchar(255) DEFAULT NULL COMMENT '路由参数',
-  `is_frame` int DEFAULT '1' COMMENT '是否为外链（0是 1否）',
-  `is_cache` int DEFAULT '0' COMMENT '是否缓存（0缓存 1不缓存）',
+  `is_frame` int(11) DEFAULT '1' COMMENT '是否为外链（0是 1否）',
+  `is_cache` int(11) DEFAULT '0' COMMENT '是否缓存（0缓存 1不缓存）',
   `menu_type` char(1) DEFAULT '' COMMENT '菜单类型（M目录 C菜单 F按钮）',
   `visible` char(1) DEFAULT '0' COMMENT '菜单状态（0显示 1隐藏）',
   `status` char(1) DEFAULT '0' COMMENT '菜单状态（0正常 1停用）',
@@ -566,7 +684,7 @@ CREATE TABLE `sys_menu` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`menu_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2000 DEFAULT CHARSET=utf8mb3 COMMENT='菜单权限表';
+) ENGINE=InnoDB AUTO_INCREMENT=2000 DEFAULT CHARSET=utf8 COMMENT='菜单权限表';
 
 -- ----------------------------
 -- Records of sys_menu
@@ -664,7 +782,7 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_notice`;
 CREATE TABLE `sys_notice` (
-  `notice_id` int NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `notice_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
   `notice_title` varchar(50) NOT NULL COMMENT '公告标题',
   `notice_type` char(1) NOT NULL COMMENT '公告类型（1通知 2公告）',
   `notice_content` longblob COMMENT '公告内容',
@@ -675,7 +793,7 @@ CREATE TABLE `sys_notice` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`notice_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8  COMMENT='通知公告表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COMMENT='通知公告表';
 
 -- ----------------------------
 -- Records of sys_notice
@@ -690,12 +808,12 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_oper_log`;
 CREATE TABLE `sys_oper_log` (
-  `oper_id` bigint NOT NULL AUTO_INCREMENT COMMENT '日志主键',
+  `oper_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '日志主键',
   `title` varchar(50) DEFAULT '' COMMENT '模块标题',
-  `business_type` int DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
+  `business_type` int(11) DEFAULT '0' COMMENT '业务类型（0其它 1新增 2修改 3删除）',
   `method` varchar(100) DEFAULT '' COMMENT '方法名称',
   `request_method` varchar(10) DEFAULT '' COMMENT '请求方式',
-  `operator_type` int DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
+  `operator_type` int(11) DEFAULT '0' COMMENT '操作类别（0其它 1后台用户 2手机端用户）',
   `oper_name` varchar(50) DEFAULT '' COMMENT '操作人员',
   `dept_name` varchar(50) DEFAULT '' COMMENT '部门名称',
   `oper_url` varchar(255) DEFAULT '' COMMENT '请求URL',
@@ -703,20 +821,41 @@ CREATE TABLE `sys_oper_log` (
   `oper_location` varchar(255) DEFAULT '' COMMENT '操作地点',
   `oper_param` varchar(2000) DEFAULT '' COMMENT '请求参数',
   `json_result` varchar(2000) DEFAULT '' COMMENT '返回参数',
-  `status` int DEFAULT '0' COMMENT '操作状态（0正常 1异常）',
+  `status` int(11) DEFAULT '0' COMMENT '操作状态（0正常 1异常）',
   `error_msg` varchar(2000) DEFAULT '' COMMENT '错误消息',
   `oper_time` datetime DEFAULT NULL COMMENT '操作时间',
-  `cost_time` bigint DEFAULT '0' COMMENT '消耗时间',
+  `cost_time` bigint(20) DEFAULT '0' COMMENT '消耗时间',
   PRIMARY KEY (`oper_id`),
   KEY `idx_sys_oper_log_bt` (`business_type`),
   KEY `idx_sys_oper_log_s` (`status`),
   KEY `idx_sys_oper_log_ot` (`oper_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8  COMMENT='操作日志记录';
+) ENGINE=InnoDB AUTO_INCREMENT=121 DEFAULT CHARSET=utf8 COMMENT='操作日志记录';
 
 -- ----------------------------
 -- Records of sys_oper_log
 -- ----------------------------
 BEGIN;
+INSERT INTO `sys_oper_log` VALUES (100, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"tb_device,tb_alarm_event,tb_device_item,tb_smtp_conf,tb_events,tb_device_group\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:27:45', 10394);
+INSERT INTO `sys_oper_log` VALUES (101, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"tb_device,tb_alarm_event,tb_device_item,tb_smtp_conf,tb_events,tb_device_group\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:28:02', 10463);
+INSERT INTO `sys_oper_log` VALUES (102, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/7,8,9,10', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:29:29', 360);
+INSERT INTO `sys_oper_log` VALUES (103, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/11,12', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:29:36', 363);
+INSERT INTO `sys_oper_log` VALUES (104, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"event\",\"className\":\"TbAlarmEvent\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":1,\"columnName\":\"id\",\"columnType\":\"bigint(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"DeviceId\",\"columnId\":2,\"columnName\":\"device_id\",\"columnType\":\"bigint(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"deviceId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemId\",\"columnComment\":\"监控指标ID\",\"columnId\":3,\"columnName\":\"item_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemName\",\"columnComment\":\"监控指标\",\"columnId\":4,\"columnName\":\"item_name\",\"columnType\":\"varchar(200)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:31:54', 2100);
+INSERT INTO `sys_oper_log` VALUES (105, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"tb_device_item_his\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:32:21', 1135);
+INSERT INTO `sys_oper_log` VALUES (106, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"event\",\"className\":\"TbAlarmEvent\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":1,\"columnName\":\"id\",\"columnType\":\"bigint(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2023-05-07 19:31:52\",\"usableColumn\":false},{\"capJavaField\":\"DeviceId\",\"columnId\":2,\"columnName\":\"device_id\",\"columnType\":\"bigint(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"deviceId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2023-05-07 19:31:52\",\"usableColumn\":false},{\"capJavaField\":\"ItemId\",\"columnComment\":\"监控指标ID\",\"columnId\":3,\"columnName\":\"item_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":1,\"updateBy\":\"\",\"updateTime\":\"2023-05-07 19:31:52\",\"usableColumn\":false},{\"capJavaField\":\"ItemName\",\"columnComment\":\"监控指标\",\"columnId\":4,\"columnName\":\"item_name\",\"columnType\":\"varchar(200)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:35\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemName\",', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:33:01', 2037);
+INSERT INTO `sys_oper_log` VALUES (107, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"device\",\"className\":\"TbDevice\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"设备ID\",\"columnId\":17,\"columnName\":\"id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:37\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"GroupId\",\"columnComment\":\"组ID\",\"columnId\":18,\"columnName\":\"group_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:37\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"groupId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Hostname\",\"columnComment\":\"主机名\",\"columnId\":19,\"columnName\":\"hostname\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:37\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"hostname\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":2,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"DeviceType\",\"columnComment\":\"设备类型\",\"columnId\":20,\"columnName\":\"device_type\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:37\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"select\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"deviceType\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:33:14', 2856);
+INSERT INTO `sys_oper_log` VALUES (108, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"group\",\"className\":\"TbDeviceGroup\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"设备ID\",\"columnId\":42,\"columnName\":\"id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:40\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"GroupName\",\"columnComment\":\"设备名称\",\"columnId\":43,\"columnName\":\"group_name\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:40\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"groupName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"AlarmUserGrpId\",\"columnComment\":\"报警接收用户组，多个逗号隔开\",\"columnId\":44,\"columnName\":\"alarm_user_grp_id\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:40\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"alarmUserGrpId\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":3,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"AlarmMaxTimes\",\"columnComment\":\"报警发送次数\",\"columnId\":45,\"columnName\":\"alarm_max_times\",\"columnType\":\"smallint(6)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:40\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"alarmMa', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:33:24', 1317);
+INSERT INTO `sys_oper_log` VALUES (109, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"item\",\"className\":\"TbDeviceItem\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":52,\"columnName\":\"id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:41\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":4,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"DeviceId\",\"columnComment\":\"主机IP\",\"columnId\":53,\"columnName\":\"device_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:41\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"deviceId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":4,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemName\",\"columnComment\":\"监控指标名称\",\"columnId\":54,\"columnName\":\"item_name\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:41\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":4,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Value\",\"columnComment\":\"监控值\",\"columnId\":55,\"columnName\":\"value\",\"columnType\":\"varchar(32)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:27:41\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"value\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:33:40', 1497);
+INSERT INTO `sys_oper_log` VALUES (110, '代码生成', 3, 'com.ruoyi.generator.controller.GenController.remove()', 'DELETE', 1, 'admin', NULL, '/tool/gen/1,2,3,4,5,6,13', '127.0.0.1', '内网IP', '{}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:37:04', 466);
+INSERT INTO `sys_oper_log` VALUES (111, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"tb_device_group\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:37:25', 1378);
+INSERT INTO `sys_oper_log` VALUES (112, '代码生成', 6, 'com.ruoyi.generator.controller.GenController.importTableSave()', 'POST', 1, 'admin', NULL, '/tool/gen/importTable', '127.0.0.1', '内网IP', '{\"tables\":\"tb_device_item,tb_device_item_his,tb_device,tb_alarm_event,tb_smtp_conf,tb_events\"}', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:37:46', 9515);
+INSERT INTO `sys_oper_log` VALUES (113, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"group\",\"className\":\"TbDeviceGroup\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"设备ID\",\"columnId\":184,\"columnName\":\"id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:24\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":14,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"GroupName\",\"columnComment\":\"设备名称\",\"columnId\":185,\"columnName\":\"group_name\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:24\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"groupName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":14,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"AlarmUserGrpId\",\"columnComment\":\"报警接收用户组，多个逗号隔开\",\"columnId\":186,\"columnName\":\"alarm_user_grp_id\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:24\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"alarmUserGrpId\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":14,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"AlarmMaxTimes\",\"columnComment\":\"报警发送次数\",\"columnId\":187,\"columnName\":\"alarm_max_times\",\"columnType\":\"smallint(6)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:24\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:38:07', 1283);
+INSERT INTO `sys_oper_log` VALUES (114, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"events\",\"className\":\"TbEvents\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":250,\"columnName\":\"id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:43\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":19,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"EventId\",\"columnId\":251,\"columnName\":\"event_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:43\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"eventId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":19,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Step\",\"columnId\":252,\"columnName\":\"step\",\"columnType\":\"int(10) unsigned\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:43\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"step\",\"javaType\":\"Integer\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":19,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Cond\",\"columnId\":253,\"columnName\":\"cond\",\"columnType\":\"varchar(200)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:44\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"cond\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":4,\"superColumn\":false,\"tableId\":19,\"u', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:38:31', 1383);
+INSERT INTO `sys_oper_log` VALUES (115, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"event\",\"className\":\"TbAlarmEvent\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":194,\"columnName\":\"id\",\"columnType\":\"bigint(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:37\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":15,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"DeviceId\",\"columnId\":195,\"columnName\":\"device_id\",\"columnType\":\"bigint(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:37\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"deviceId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":15,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemId\",\"columnComment\":\"监控指标ID\",\"columnId\":196,\"columnName\":\"item_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:37\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":15,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemName\",\"columnComment\":\"监控指标\",\"columnId\":197,\"columnName\":\"item_name\",\"columnType\":\"varchar(200)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:37\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"requir', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:38:41', 1917);
+INSERT INTO `sys_oper_log` VALUES (116, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"device\",\"className\":\"TbDevice\",\"columns\":[{\"capJavaField\":\"Id\",\"columnComment\":\"设备ID\",\"columnId\":210,\"columnName\":\"id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:39\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":16,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"GroupId\",\"columnComment\":\"组ID\",\"columnId\":211,\"columnName\":\"group_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:39\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"groupId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":2,\"superColumn\":false,\"tableId\":16,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Hostname\",\"columnComment\":\"主机名\",\"columnId\":212,\"columnName\":\"hostname\",\"columnType\":\"varchar(255)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:39\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"hostname\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":16,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"DeviceType\",\"columnComment\":\"设备类型\",\"columnId\":213,\"columnName\":\"device_type\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:39\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"select\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"deviceType\",\"javaType\":\"String\",\"list\":true,\"params\":', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:38:53', 2909);
+INSERT INTO `sys_oper_log` VALUES (117, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"item\",\"className\":\"TbDeviceItem\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":235,\"columnName\":\"id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:41\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":17,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"DeviceId\",\"columnComment\":\"主机IP\",\"columnId\":236,\"columnName\":\"device_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:41\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"deviceId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":17,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemName\",\"columnComment\":\"监控指标名称\",\"columnId\":237,\"columnName\":\"item_name\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:42\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":17,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Value\",\"columnComment\":\"监控值\",\"columnId\":238,\"columnName\":\"value\",\"columnType\":\"varchar(32)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:42\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"value\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"quer', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:39:04', 1082);
+INSERT INTO `sys_oper_log` VALUES (118, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"his\",\"className\":\"TbDeviceItemHis\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":243,\"columnName\":\"id\",\"columnType\":\"int(11)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:42\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":18,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"DeviceId\",\"columnComment\":\"主机IP\",\"columnId\":244,\"columnName\":\"device_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:42\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"deviceId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":18,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemId\",\"columnId\":245,\"columnName\":\"item_id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:43\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemId\",\"javaType\":\"Long\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":false,\"sort\":3,\"superColumn\":false,\"tableId\":18,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"ItemName\",\"columnComment\":\"监控指标名称\",\"columnId\":246,\"columnName\":\"item_name\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:43\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"javaField\":\"itemName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:39:14', 981);
+INSERT INTO `sys_oper_log` VALUES (119, '代码生成', 2, 'com.ruoyi.generator.controller.GenController.editSave()', 'PUT', 1, 'admin', NULL, '/tool/gen', '127.0.0.1', '内网IP', '{\"businessName\":\"conf\",\"className\":\"TbSmtpConf\",\"columns\":[{\"capJavaField\":\"Id\",\"columnId\":261,\"columnName\":\"id\",\"columnType\":\"bigint(20)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:44\",\"dictType\":\"\",\"edit\":false,\"htmlType\":\"input\",\"increment\":true,\"insert\":true,\"isIncrement\":\"1\",\"isInsert\":\"1\",\"isPk\":\"1\",\"javaField\":\"id\",\"javaType\":\"Long\",\"list\":false,\"params\":{},\"pk\":true,\"query\":false,\"queryType\":\"EQ\",\"required\":false,\"sort\":1,\"superColumn\":false,\"tableId\":20,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"SmtpName\",\"columnComment\":\"名称\",\"columnId\":262,\"columnName\":\"smtp_name\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:45\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"smtpName\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"LIKE\",\"required\":true,\"sort\":2,\"superColumn\":false,\"tableId\":20,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"SmtpHost\",\"columnComment\":\"smtp主机\",\"columnId\":263,\"columnName\":\"smtp_host\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:45\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"smtpHost\",\"javaType\":\"String\",\"list\":true,\"params\":{},\"pk\":false,\"query\":true,\"queryType\":\"EQ\",\"required\":true,\"sort\":3,\"superColumn\":false,\"tableId\":20,\"updateBy\":\"\",\"usableColumn\":false},{\"capJavaField\":\"Sender\",\"columnComment\":\"sender\",\"columnId\":264,\"columnName\":\"sender\",\"columnType\":\"varchar(64)\",\"createBy\":\"admin\",\"createTime\":\"2023-05-07 19:37:45\",\"dictType\":\"\",\"edit\":true,\"htmlType\":\"input\",\"increment\":false,\"insert\":true,\"isEdit\":\"1\",\"isIncrement\":\"0\",\"isInsert\":\"1\",\"isList\":\"1\",\"isPk\":\"0\",\"isQuery\":\"1\",\"isRequired\":\"1\",\"javaField\":\"sender\",\"javaType\":\"String\"', '{\"msg\":\"操作成功\",\"code\":200}', 0, NULL, '2023-05-07 19:39:23', 1712);
+INSERT INTO `sys_oper_log` VALUES (120, '代码生成', 8, 'com.ruoyi.generator.controller.GenController.batchGenCode()', 'GET', 1, 'admin', NULL, '/tool/gen/batchGenCode', '127.0.0.1', '内网IP', '{\"tables\":\"tb_device_group,tb_alarm_event,tb_device,tb_device_item,tb_device_item_his,tb_events,tb_smtp_conf\"}', NULL, 0, NULL, '2023-05-07 19:39:30', 1082);
 COMMIT;
 
 -- ----------------------------
@@ -724,10 +863,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_post`;
 CREATE TABLE `sys_post` (
-  `post_id` bigint NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
+  `post_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '岗位ID',
   `post_code` varchar(64) NOT NULL COMMENT '岗位编码',
   `post_name` varchar(50) NOT NULL COMMENT '岗位名称',
-  `post_sort` int NOT NULL COMMENT '显示顺序',
+  `post_sort` int(11) NOT NULL COMMENT '显示顺序',
   `status` char(1) NOT NULL COMMENT '状态（0正常 1停用）',
   `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
@@ -735,7 +874,7 @@ CREATE TABLE `sys_post` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8  COMMENT='岗位信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COMMENT='岗位信息表';
 
 -- ----------------------------
 -- Records of sys_post
@@ -752,10 +891,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
-  `role_id` bigint NOT NULL AUTO_INCREMENT COMMENT '角色ID',
+  `role_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
   `role_name` varchar(30) NOT NULL COMMENT '角色名称',
   `role_key` varchar(100) NOT NULL COMMENT '角色权限字符串',
-  `role_sort` int NOT NULL COMMENT '显示顺序',
+  `role_sort` int(11) NOT NULL COMMENT '显示顺序',
   `data_scope` char(1) DEFAULT '1' COMMENT '数据范围（1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限）',
   `menu_check_strictly` tinyint(1) DEFAULT '1' COMMENT '菜单树选择项是否关联显示',
   `dept_check_strictly` tinyint(1) DEFAULT '1' COMMENT '部门树选择项是否关联显示',
@@ -767,7 +906,7 @@ CREATE TABLE `sys_role` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8  COMMENT='角色信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='角色信息表';
 
 -- ----------------------------
 -- Records of sys_role
@@ -782,10 +921,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_dept`;
 CREATE TABLE `sys_role_dept` (
-  `role_id` bigint NOT NULL COMMENT '角色ID',
-  `dept_id` bigint NOT NULL COMMENT '部门ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+  `dept_id` bigint(20) NOT NULL COMMENT '部门ID',
   PRIMARY KEY (`role_id`,`dept_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='角色和部门关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色和部门关联表';
 
 -- ----------------------------
 -- Records of sys_role_dept
@@ -801,10 +940,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_menu`;
 CREATE TABLE `sys_role_menu` (
-  `role_id` bigint NOT NULL COMMENT '角色ID',
-  `menu_id` bigint NOT NULL COMMENT '菜单ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
+  `menu_id` bigint(20) NOT NULL COMMENT '菜单ID',
   PRIMARY KEY (`role_id`,`menu_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='角色和菜单关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色和菜单关联表';
 
 -- ----------------------------
 -- Records of sys_role_menu
@@ -902,8 +1041,8 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `user_id` bigint NOT NULL AUTO_INCREMENT COMMENT '用户ID',
-  `dept_id` bigint DEFAULT NULL COMMENT '部门ID',
+  `user_id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '用户ID',
+  `dept_id` bigint(20) DEFAULT NULL COMMENT '部门ID',
   `user_name` varchar(30) NOT NULL COMMENT '用户账号',
   `nick_name` varchar(30) NOT NULL COMMENT '用户昵称',
   `user_type` varchar(2) DEFAULT '00' COMMENT '用户类型（00系统用户）',
@@ -922,13 +1061,13 @@ CREATE TABLE `sys_user` (
   `update_time` datetime DEFAULT NULL COMMENT '更新时间',
   `remark` varchar(500) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb3 COMMENT='用户信息表';
+) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
 BEGIN;
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-05-07 14:50:33', 'admin', '2023-05-07 06:02:14', '', '2023-05-07 06:50:34', '管理员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '若依', '00', 'ry@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-05-08 09:31:46', 'admin', '2023-05-07 06:02:14', '', '2023-05-08 09:31:46', '管理员');
 INSERT INTO `sys_user` VALUES (2, 105, 'ry', '若依', '00', 'ry@qq.com', '15666666666', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '0', '0', '127.0.0.1', '2023-05-07 06:02:14', 'admin', '2023-05-07 06:02:14', '', NULL, '测试员');
 COMMIT;
 
@@ -937,10 +1076,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_post`;
 CREATE TABLE `sys_user_post` (
-  `user_id` bigint NOT NULL COMMENT '用户ID',
-  `post_id` bigint NOT NULL COMMENT '岗位ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `post_id` bigint(20) NOT NULL COMMENT '岗位ID',
   PRIMARY KEY (`user_id`,`post_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='用户与岗位关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户与岗位关联表';
 
 -- ----------------------------
 -- Records of sys_user_post
@@ -955,10 +1094,10 @@ COMMIT;
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-  `user_id` bigint NOT NULL COMMENT '用户ID',
-  `role_id` bigint NOT NULL COMMENT '角色ID',
+  `user_id` bigint(20) NOT NULL COMMENT '用户ID',
+  `role_id` bigint(20) NOT NULL COMMENT '角色ID',
   PRIMARY KEY (`user_id`,`role_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8  COMMENT='用户和角色关联表';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户和角色关联表';
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -967,180 +1106,6 @@ BEGIN;
 INSERT INTO `sys_user_role` VALUES (1, 1);
 INSERT INTO `sys_user_role` VALUES (2, 2);
 COMMIT;
-
--- ----------------------------
--- Table structure for tb_device
--- ----------------------------
-DROP TABLE IF EXISTS `tb_device`;
-CREATE TABLE `tb_device` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '设备ID',
-  `group_id` bigint DEFAULT '0' COMMENT '组ID',
-  `hostname` varchar(64) DEFAULT '' COMMENT '设备名称',
-  `device_ip` varchar(20) DEFAULT '' COMMENT '设备IP',
-  `protocol` varchar(20) DEFAULT '' COMMENT '协议',
-  `snmp_community` varchar(100) NOT NULL DEFAULT 'public',
-  `snmp_version` tinyint unsigned NOT NULL DEFAULT '1',
-  `snmp_port` mediumint unsigned NOT NULL DEFAULT '161',
-  `snmp_username` varchar(50) DEFAULT NULL,
-  `snmp_password` varchar(50) DEFAULT NULL,
-  `snmp_auth_protocol` char(6) DEFAULT '',
-  `snmp_priv_passphrase` varchar(200) DEFAULT '',
-  `snmp_priv_protocol` char(6) DEFAULT '',
-  `snmp_context` varchar(64) DEFAULT '',
-  `snmp_engine_id` varchar(64) DEFAULT '',
-  `manufacturer` varchar(64) DEFAULT NULL COMMENT '制造商',
-  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
-  `enable` tinyint DEFAULT '1' COMMENT '是否启用',
-  `uptime` bigint unsigned NOT NULL DEFAULT '0',
-  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='设备列表';
-
--- ----------------------------
--- Records of tb_device
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for tb_device_group
--- ----------------------------
-DROP TABLE IF EXISTS `tb_device_group`;
-CREATE TABLE `tb_device_group` (
-  `id` bigint NOT NULL AUTO_INCREMENT COMMENT '设备ID',
-  `group_name` varchar(64) DEFAULT '' COMMENT '设备名称',
-  `alarm_user_grp_id` varchar(64) DEFAULT '' COMMENT '报警接收用户组，多个逗号隔开',
-  `alarm_max_times` smallint DEFAULT '3' COMMENT '报警发送次数',
-  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
-  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_host_grp_grp_name` (`group_name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='设备列表';
-
--- ----------------------------
--- Records of tb_device_group
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for tb_device_item
--- ----------------------------
-DROP TABLE IF EXISTS `tb_device_item`;
-CREATE TABLE `tb_device_item` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `device_id` bigint NOT NULL DEFAULT '0' COMMENT '主机IP',
-  `item_name` varchar(64) DEFAULT '' COMMENT '监控指标名称',
-  `value` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '' COMMENT '监控值',
-  `last_value` varchar(32) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT '' COMMENT '上次监控值',
-  `clock` int DEFAULT '0' COMMENT '收集时间',
-  `status` char(1) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci DEFAULT NULL COMMENT '状态（0正常 1异常）',
-  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`),
-  KEY `device_id` (`device_id`,`clock`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='设备监控指标';
-
--- ----------------------------
--- Records of tb_device_item
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for tb_events
--- ----------------------------
-DROP TABLE IF EXISTS `tb_alarm_events`;
-CREATE TABLE `tb_alarm_events` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `event_id` bigint DEFAULT NULL,
-  `step` int unsigned DEFAULT NULL,
-  `cond` varchar(200) NOT NULL,
-  `user_name` varchar(64) DEFAULT NULL COMMENT '接收人',
-  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
-  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`),
-  KEY `event_id` (`event_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
-
--- ----------------------------
--- Records of tb_events
--- ----------------------------
-BEGIN;
-COMMIT;
-
--- ----------------------------
--- Table structure for tb_smtp_conf
--- ----------------------------
-DROP TABLE IF EXISTS `tb_smtp_conf`;
-CREATE TABLE `tb_smtp_conf` (
-  `id` bigint NOT NULL AUTO_INCREMENT,
-  `smtp_name` varchar(64) NOT NULL DEFAULT '' COMMENT '名称',
-  `smtp_host` varchar(64) NOT NULL DEFAULT '' COMMENT 'smtp主机',
-  `sender` varchar(64) NOT NULL DEFAULT '' COMMENT 'sender',
-  `port` int NOT NULL DEFAULT '0' COMMENT '端口',
-  `enable_ssl` int NOT NULL DEFAULT '0' COMMENT '0关闭1 开启',
-  `smtp_user` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
-  `smtp_passwd` varchar(64) NOT NULL DEFAULT '' COMMENT '密码',
-  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
-  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='smtp 服务配置';
-
-DROP TABLE IF EXISTS `tb_alarm_event`;
-CREATE TABLE `tb_alarm_event` (
-  `id` bigint(11) NOT NULL AUTO_INCREMENT,
-  `device_id` bigint(11) DEFAULT NULL,
-  `item_id` bigint(20) DEFAULT NULL COMMENT '监控指标ID',
-  `item_name` varchar(200) DEFAULT NULL COMMENT '监控指标',
-  `alarm_content` varchar(200) DEFAULT NULL COMMENT '报警内容',
-  `alarm_level` varchar(64) DEFAULT '' COMMENT '报警级别',
-  `alarm_send_times` smallint(6) DEFAULT '0' COMMENT '报警发送次数',
-  `closed_at` timestamp NULL DEFAULT NULL COMMENT '报警关闭时间',
-  `closed_note` varchar(250) DEFAULT NULL COMMENT '报警关闭内容',
-  `closed_user` varchar(250) DEFAULT NULL COMMENT '报警关闭人姓名',
-  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
-  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
-  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`),
-  key(device_id,item_id),
-  key(create_time)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报警信息';
-
--- ----------------------------
--- Records of tb_alarm_event
--- ----------------------------
-BEGIN;
-COMMIT;
--- ----------------------------
--- Records of tb_smtp_conf
--- ----------------------------
-BEGIN;
-COMMIT;
-
-SET FOREIGN_KEY_CHECKS = 1;
 
 -- ----------------------------
 -- Table structure for tb_alarm_event
@@ -1163,9 +1128,7 @@ CREATE TABLE `tb_alarm_event` (
   `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `remark` varchar(255) DEFAULT NULL COMMENT '备注',
-  PRIMARY KEY (`id`),
-  key(device_id,item_id),
-  key(create_time)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='报警信息';
 
 -- ----------------------------
@@ -1173,3 +1136,177 @@ CREATE TABLE `tb_alarm_event` (
 -- ----------------------------
 BEGIN;
 COMMIT;
+
+-- ----------------------------
+-- Table structure for tb_device
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_device`;
+CREATE TABLE `tb_device` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '设备ID',
+  `group_id` bigint(20) DEFAULT '0' COMMENT '组ID',
+  `hostname` varchar(255) DEFAULT NULL COMMENT '主机名',
+  `device_type` varchar(64) DEFAULT '' COMMENT '设备类型',
+  `device_ip` varchar(20) DEFAULT '' COMMENT '设备IP',
+  `protocol` varchar(20) DEFAULT '' COMMENT '协议',
+  `snmp_community` varchar(100) NOT NULL DEFAULT 'public',
+  `snmp_version` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `snmp_port` mediumint(8) unsigned NOT NULL DEFAULT '161',
+  `snmp_username` varchar(50) DEFAULT NULL,
+  `snmp_password` varchar(50) DEFAULT NULL,
+  `snmp_auth_protocol` char(6) DEFAULT '',
+  `snmp_priv_passphrase` varchar(200) DEFAULT '',
+  `snmp_priv_protocol` char(6) DEFAULT '',
+  `snmp_context` varchar(64) DEFAULT '',
+  `snmp_engine_id` varchar(64) DEFAULT '',
+  `manufacturer` varchar(64) DEFAULT NULL COMMENT '制造商',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
+  `passwd` varchar(64) DEFAULT NULL COMMENT '密码',
+  `username` varchar(64) DEFAULT NULL COMMENT '用户名',
+  `app_key` varchar(64) DEFAULT NULL,
+  `app_secret` varchar(64) DEFAULT NULL,
+  `enable` tinyint(4) DEFAULT '1' COMMENT '是否启用',
+  `uptime` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  KEY `group_id` (`group_id`),
+  CONSTRAINT `group_id` FOREIGN KEY (`group_id`) REFERENCES `tb_device_group` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='设备列表';
+
+-- ----------------------------
+-- Records of tb_device
+-- ----------------------------
+BEGIN;
+INSERT INTO `tb_device` VALUES (1, 1, 'sw_01', 'switch', '192.168.0.1', '', 'public', 1, 161, NULL, NULL, '', '', '', '', '', NULL, '0', NULL, NULL, NULL, NULL, 1, 0, '', NULL, '', '2023-05-08 09:25:28', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for tb_device_group
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_device_group`;
+CREATE TABLE `tb_device_group` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '设备ID',
+  `group_name` varchar(64) DEFAULT '' COMMENT '设备名称',
+  `alarm_user_grp_id` varchar(64) DEFAULT '' COMMENT '报警接收用户组，多个逗号隔开',
+  `alarm_max_times` smallint(6) DEFAULT '3' COMMENT '报警发送次数',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_host_grp_grp_name` (`group_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='设备列表';
+
+-- ----------------------------
+-- Records of tb_device_group
+-- ----------------------------
+BEGIN;
+INSERT INTO `tb_device_group` VALUES (1, '默认设备组', '', 3, '0', '', NULL, '', '2023-05-08 09:24:06', NULL);
+COMMIT;
+
+-- ----------------------------
+-- Table structure for tb_device_item
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_device_item`;
+CREATE TABLE `tb_device_item` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `device_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '主机IP',
+  `item_name` varchar(64) DEFAULT '' COMMENT '监控指标名称',
+  `value` varchar(32) DEFAULT '' COMMENT '监控值',
+  `last_value` varchar(32) DEFAULT '' COMMENT '上次监控值',
+  `clock` int(11) DEFAULT '0' COMMENT '收集时间',
+  `status` char(1) DEFAULT NULL COMMENT '状态（0正常 1异常）',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `device_id` (`device_id`,`clock`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设备监控指标';
+
+-- ----------------------------
+-- Records of tb_device_item
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for tb_device_item_his
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_device_item_his`;
+CREATE TABLE `tb_device_item_his` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `device_id` bigint(20) NOT NULL DEFAULT '0' COMMENT '主机IP',
+  `item_id` bigint(20) DEFAULT '0',
+  `item_name` varchar(64) DEFAULT '' COMMENT '监控指标名称',
+  `value` varchar(32) DEFAULT '' COMMENT '监控值',
+  `clock` int(11) DEFAULT '0' COMMENT '收集时间',
+  `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `device_id` (`device_id`,`clock`),
+  KEY `idx_item_id_clock` (`item_id`,`clock`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='设备监控指标';
+
+-- ----------------------------
+-- Records of tb_device_item_his
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for tb_events
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_events`;
+CREATE TABLE `tb_events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `event_id` bigint(20) DEFAULT NULL,
+  `step` int(10) unsigned DEFAULT NULL,
+  `cond` varchar(200) NOT NULL,
+  `user_name` varchar(64) DEFAULT NULL COMMENT '接收人',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`),
+  KEY `event_id` (`event_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of tb_events
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+-- ----------------------------
+-- Table structure for tb_smtp_conf
+-- ----------------------------
+DROP TABLE IF EXISTS `tb_smtp_conf`;
+CREATE TABLE `tb_smtp_conf` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `smtp_name` varchar(64) NOT NULL DEFAULT '' COMMENT '名称',
+  `smtp_host` varchar(64) NOT NULL DEFAULT '' COMMENT 'smtp主机',
+  `sender` varchar(64) NOT NULL DEFAULT '' COMMENT 'sender',
+  `port` int(11) NOT NULL DEFAULT '0' COMMENT '端口',
+  `enable_ssl` int(11) NOT NULL DEFAULT '0' COMMENT '0关闭1 开启',
+  `smtp_user` varchar(64) NOT NULL DEFAULT '' COMMENT '用户名',
+  `smtp_passwd` varchar(64) NOT NULL DEFAULT '' COMMENT '密码',
+  `status` char(1) DEFAULT '0' COMMENT '状态（0正常 1异常）',
+  `create_by` varchar(64) DEFAULT '' COMMENT '创建者',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_by` varchar(64) DEFAULT '' COMMENT '更新者',
+  `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='smtp 服务配置';
+
+-- ----------------------------
+-- Records of tb_smtp_conf
+-- ----------------------------
+BEGIN;
+COMMIT;
+
+SET FOREIGN_KEY_CHECKS = 1;

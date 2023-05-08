@@ -19,7 +19,7 @@ public interface ITbDeviceService
      * @return 设备列
      */
     public TbDevice selectTbDeviceById(Long id);
-
+    List<TbDevice> selectDeviceList(TbDevice tbDevice);
     /**
      * 查询设备列列表
      * 

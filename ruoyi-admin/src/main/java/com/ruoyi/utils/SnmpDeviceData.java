@@ -232,16 +232,7 @@ public class SnmpDeviceData extends SnmpConfig {
     private String manufacturerEstimate(String objectOid){
         String[] idArray = objectOid.split("\\.");
         String objectId = idArray[6];
-
-        ManufacturerEnum[] manufacturerEnums = ManufacturerEnum.values();
-        //遍历枚举类，判断传递参数是否存在相同
-        for (ManufacturerEnum manufacturerEnum : manufacturerEnums) {
-            Integer enumObjectId = manufacturerEnum.getObjectId();
-            if (enumObjectId.equals(Integer.parseInt(objectId))) {
-                return manufacturerEnum.getManufacturerName();
-            }
-        }
-        return "unknow";
+        return ManufacturerEnum.getManufactureName(objectId);
     }
 
 }

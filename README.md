@@ -1,7 +1,7 @@
 
 # switchMonitor
 =======
-```mvn install:install-file -Dfile=ruoyi-admin/src/main/resources/lib/artemis-http-client-1.1.8.jar -DgroupId=com.hikvision.ga -DartifactId=artemis-http-client -Dversion=1.1.8 -Dpackaging=jar```
+```mvn install:install-file -Dfile=ruoyi-admin/lib/artemis-http-client-1.1.8.jar -DgroupId=com.hikvision.ga -DartifactId=artemis-http-client -Dversion=1.1.8 -Dpackaging=jar```
 
 
 ## 平台简介

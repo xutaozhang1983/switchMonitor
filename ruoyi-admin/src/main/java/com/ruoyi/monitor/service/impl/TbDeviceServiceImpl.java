@@ -33,6 +33,11 @@ public class TbDeviceServiceImpl implements ITbDeviceService
         return tbDeviceMapper.selectTbDeviceById(id);
     }
 
+    @Override
+    public List<TbDevice> selectDeviceList(TbDevice tbDevice) {
+        return tbDeviceMapper.selectTbDeviceList(tbDevice);
+    }
+
     /**
      * 查询设备列列表
      * 

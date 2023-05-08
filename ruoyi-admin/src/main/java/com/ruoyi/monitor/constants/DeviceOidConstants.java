@@ -6,6 +6,8 @@ public class DeviceOidConstants {
      * 设备名
      * */
     public static final String sysDescr = ".1.3.6.1.2.1.1.5.0";
+
+    public static String oidSysDescr = ".1.3.6.1.2.1.1.1.0"; // sysDescr OID
     /**
      * 设备时间（从打开设备时开始计算的时间）
      * */
@@ -62,6 +64,10 @@ public class DeviceOidConstants {
      * 端口状态
      * */
     public static final String IF_OPER_STATUS = "1.3.6.1.2.1.2.2.1.8";
+    /**
+     * 端口上次状态
+     * */
+    public static final String IF_LAST_OPER_STATUS = "1.3.6.1.2.1.2.2.1.9";
     /**
      * 端口当前预估带宽
      * */

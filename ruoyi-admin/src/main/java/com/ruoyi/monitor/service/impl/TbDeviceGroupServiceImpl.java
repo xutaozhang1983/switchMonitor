@@ -3,6 +3,7 @@ package com.ruoyi.monitor.service.impl;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.TbDeviceGroup;
+import com.ruoyi.monitor.domain.dto.DeviceGroupDTO;
 import com.ruoyi.monitor.mapper.TbDeviceGroupMapper;
 import com.ruoyi.monitor.service.ITbDeviceGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class TbDeviceGroupServiceImpl implements ITbDeviceGroupService
     public TbDeviceGroup selectTbDeviceGroupById(Long id)
     {
         return tbDeviceGroupMapper.selectTbDeviceGroupById(id);
+    }
+
+    @Override
+    public List<DeviceGroupDTO> deviceGroupList(TbDeviceGroup tbDeviceGroup) {
+        return tbDeviceGroupMapper.deviceGroupList(tbDeviceGroup);
     }
 
     /**

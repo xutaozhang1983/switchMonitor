@@ -7,7 +7,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="DeviceDTO" id="TbDeviceResult">
         <result property="id"    column="id"    />
         <result property="groupId"    column="group_id"    />
-        <result property="hostname"    column="hostname"    />
+        <result property="deviceName"    column="device_name"    />
         <result property="deviceType"    column="device_type"    />
         <result property="deviceIp"    column="device_ip"    />
         <result property="protocol"    column="protocol"    />
@@ -20,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="snmpPrivPassphrase"    column="snmp_priv_passphrase"    />
         <result property="snmpPrivProtocol"    column="snmp_priv_protocol"    />
         <result property="snmpContext"    column="snmp_context"    />
-        <result property="snmpEngineId"    column="snmp_engine_id"    />
+        <result property="portNum"    column="port_num"    />
         <result property="manufacturer"    column="manufacturer"    />
         <result property="username"    column="username"    />
         <result property="passwd"    column="passwd"    />
@@ -38,14 +38,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceVo">
-        select id, group_id, hostname, device_type, device_ip, protocol, snmp_community, snmp_version, snmp_port, snmp_username, snmp_password, snmp_auth_protocol, snmp_priv_passphrase, snmp_priv_protocol, snmp_context, snmp_engine_id, manufacturer, status,username,passwd,app_key,app_secret, enable, uptime, create_by, create_time, update_by, update_time, remark from tb_device
+        select id, group_id, device_name, device_type, device_ip, protocol, snmp_community, snmp_version, snmp_port, snmp_username, snmp_password, snmp_auth_protocol, snmp_priv_passphrase, snmp_priv_protocol, snmp_context, port_num, manufacturer, status,username,passwd,app_key,app_secret, enable, uptime, create_by, create_time, update_by, update_time, remark from tb_device
     </sql>
 
     <select id="selectTbDeviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
         <include refid="selectTbDeviceVo"/>
         <where>  
             <if test="groupId != null "> and group_id = #{groupId}</if>
-            <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
             <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
             <if test="deviceIp != null  and deviceIp != ''"> and device_ip = #{deviceIp}</if>
             <if test="protocol != null  and protocol != ''"> and protocol = #{protocol}</if>
@@ -58,7 +58,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpPrivPassphrase != null  and snmpPrivPassphrase != ''"> and snmp_priv_passphrase = #{snmpPrivPassphrase}</if>
             <if test="snmpPrivProtocol != null  and snmpPrivProtocol != ''"> and snmp_priv_protocol = #{snmpPrivProtocol}</if>
             <if test="snmpContext != null  and snmpContext != ''"> and snmp_context = #{snmpContext}</if>
-            <if test="snmpEngineId != null  and snmpEngineId != ''"> and snmp_engine_id = #{snmpEngineId}</if>
+            <if test="portNum != null  and portNum != ''"> and port_num = #{portNum}</if>
             <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="enable != null "> and enable = #{enable}</if>
@@ -70,7 +70,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="groupId != null "> and d.group_id = #{groupId}</if>
             <if test="deviceType != null "> and d.device_type = #{deviceType}</if>
-            <if test="hostname != null  and hostname != ''"> and hostname like concat('%', #{hostname}, '%')</if>
+            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="enable != null "> and enable = #{enable}</if>
         </where>
@@ -84,7 +84,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into tb_device
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="groupId != null">group_id,</if>
-            <if test="hostname != null">hostname,</if>
+            <if test="deviceName != null">device_name,</if>
             <if test="deviceType != null">device_type,</if>
             <if test="deviceIp != null">device_ip,</if>
             <if test="protocol != null">protocol,</if>
@@ -97,7 +97,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpPrivPassphrase != null">snmp_priv_passphrase,</if>
             <if test="snmpPrivProtocol != null">snmp_priv_protocol,</if>
             <if test="snmpContext != null">snmp_context,</if>
-            <if test="snmpEngineId != null">snmp_engine_id,</if>
+            <if test="portNum != null">port_num,</if>
             <if test="manufacturer != null">manufacturer,</if>
             <if test="username != null">username,</if>
             <if test="passwd != null">passwd,</if>
@@ -114,7 +114,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="groupId != null">#{groupId},</if>
-            <if test="hostname != null">#{hostname},</if>
+            <if test="deviceName != null">#{deviceName},</if>
             <if test="deviceType != null">#{deviceType},</if>
             <if test="deviceIp != null">#{deviceIp},</if>
             <if test="protocol != null">#{protocol},</if>
@@ -127,7 +127,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpPrivPassphrase != null">#{snmpPrivPassphrase},</if>
             <if test="snmpPrivProtocol != null">#{snmpPrivProtocol},</if>
             <if test="snmpContext != null">#{snmpContext},</if>
-            <if test="snmpEngineId != null">#{snmpEngineId},</if>
+            <if test="portNum != null">#{port_num},</if>
             <if test="manufacturer != null">#{manufacturer},</if>
             <if test="username != null">#{username},</if>
             <if test="passwd != null">#{passwd},</if>
@@ -148,7 +148,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update tb_device
         <trim prefix="SET" suffixOverrides=",">
             <if test="groupId != null">group_id = #{groupId},</if>
-            <if test="hostname != null">hostname = #{hostname},</if>
+            <if test="deviceName != null">device_name = #{deviceName},</if>
             <if test="deviceType != null">device_type = #{deviceType},</if>
             <if test="deviceIp != null">device_ip = #{deviceIp},</if>
             <if test="protocol != null">protocol = #{protocol},</if>
@@ -161,7 +161,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpPrivPassphrase != null">snmp_priv_passphrase = #{snmpPrivPassphrase},</if>
             <if test="snmpPrivProtocol != null">snmp_priv_protocol = #{snmpPrivProtocol},</if>
             <if test="snmpContext != null">snmp_context = #{snmpContext},</if>
-            <if test="snmpEngineId != null">snmp_engine_id = #{snmpEngineId},</if>
+            <if test="portNum != null">port_num = #{portNum},</if>
             <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
             <if test="username != null">username = #{username},</if>
             <if test="passwd != null">passwd = #{passwd},</if>

@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updateBy"    column="update_by"    />
         <result property="updateTime"    column="update_time"    />
         <result property="remark"    column="remark"    />
+        <result property="deviceCount" column="deviceCount" />
     </resultMap>
 
     <sql id="selectTbDeviceGroupVo">
@@ -30,7 +31,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and status = #{status}</if>
         </where>
     </select>
-    
+
+    <select id="deviceGroupList" parameterType="TbDeviceGroup" resultMap="TbDeviceGroupResult">
+        select g.*,count(d.id) as deviceCount from tb_device_group g ,tb_device d
+        <where>
+            <if test="groupName != null  and groupName != ''"> and g.group_name like concat('%', #{groupName}, '%')</if>
+            <if test="id != null  and alarmUserGrpId != ''"> and g.id = #{id}</if>
+        </where>
+    </select>
+
     <select id="selectTbDeviceGroupById" parameterType="Long" resultMap="TbDeviceGroupResult">
         <include refid="selectTbDeviceGroupVo"/>
         where id = #{id}
@@ -88,4 +97,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+    
+    <select id="checkRepeat" resultType="Long" parameterType="TbDeviceGroup">
+        select count(*) from tb_device_group
+        where id != #{id} and group_name = #{groupName}
+    </select>
 </mapper>

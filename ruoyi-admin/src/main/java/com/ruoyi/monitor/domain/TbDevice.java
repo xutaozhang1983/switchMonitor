@@ -26,7 +26,7 @@ public class TbDevice extends BaseEntity
 
     /** 主机名 */
     @Excel(name = "主机名")
-    private String hostname;
+    private String deviceName;
 
     /** 设备类型 */
     @Excel(name = "设备类型")
@@ -77,8 +77,8 @@ public class TbDevice extends BaseEntity
     private String snmpContext;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
-    private String snmpEngineId;
+    @Excel(name = "端口数量")
+    private Integer portNum;
 
     /** 制造商 */
     @Excel(name = "制造商")

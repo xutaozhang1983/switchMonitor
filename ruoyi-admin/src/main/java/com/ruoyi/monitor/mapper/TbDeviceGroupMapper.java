@@ -2,6 +2,7 @@ package com.ruoyi.monitor.mapper;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbDeviceGroup;
+import com.ruoyi.monitor.domain.dto.DeviceGroupDTO;
 
 /**
  * 设备列Mapper接口
@@ -58,4 +59,6 @@ public interface TbDeviceGroupMapper
      * @return 结果
      */
     public int deleteTbDeviceGroupByIds(Long[] ids);
+
+    List<DeviceGroupDTO> deviceGroupList(TbDeviceGroup tbDeviceGroup);
 }

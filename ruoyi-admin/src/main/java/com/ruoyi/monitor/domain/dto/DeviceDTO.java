@@ -17,5 +17,5 @@ public class DeviceDTO extends TbDevice
     private static final long serialVersionUID = 1L;
 
     @Excel(name = "主机组")
-   private String groupName;
+    private String groupName;
 }

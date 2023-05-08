@@ -13,7 +13,7 @@ public class PageDomain
     private Integer pageNum;
 
     /** 每页显示记录数 */
-    private Integer pageSize;
+    private Integer pageSize =30;
 
     /** 排序列 */
     private String orderByColumn;
