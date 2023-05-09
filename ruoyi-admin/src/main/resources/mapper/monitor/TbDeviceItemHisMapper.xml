@@ -10,12 +10,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="itemId"    column="item_id"    />
         <result property="itemName"    column="item_name"    />
         <result property="value"    column="value"    />
+        <result property="counter"    column="counter"    />
         <result property="clock"    column="clock"    />
         <result property="createTime"    column="create_time"    />
     </resultMap>
 
     <sql id="selectTbDeviceItemHisVo">
-        select id, device_id, item_id, item_name, value, clock, create_time from tb_device_item_his
+        select * from tb_item_graph
     </sql>
 
     <select id="selectTbDeviceItemHisList" parameterType="TbDeviceItemHis" resultMap="TbDeviceItemHisResult">
@@ -25,6 +26,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="itemId != null "> and item_id = #{itemId}</if>
             <if test="itemName != null  and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
             <if test="value != null  and value != ''"> and value = #{value}</if>
+            <if test="counter != null  and counter != ''"> and counter = #{counter}</if>
             <if test="clock != null "> and clock = #{clock}</if>
         </where>
     </select>
@@ -35,10 +37,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertTbDeviceItemHis" parameterType="TbDeviceItemHis" useGeneratedKeys="true" keyProperty="id">
-        insert into tb_device_item_his
+        insert into tb_item_graph
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deviceId != null">device_id,</if>
             <if test="itemId != null">item_id,</if>
+            <if test="counter != null">counter,</if>
             <if test="itemName != null">item_name,</if>
             <if test="value != null">value,</if>
             <if test="clock != null">clock,</if>
@@ -47,6 +50,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deviceId != null">#{deviceId},</if>
             <if test="itemId != null">#{itemId},</if>
+            <if test="counter != null">#{counter},</if>
             <if test="itemName != null">#{itemName},</if>
             <if test="value != null">#{value},</if>
             <if test="clock != null">#{clock},</if>
@@ -55,10 +59,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateTbDeviceItemHis" parameterType="TbDeviceItemHis">
-        update tb_device_item_his
+        update tb_item_graph
         <trim prefix="SET" suffixOverrides=",">
             <if test="deviceId != null">device_id = #{deviceId},</if>
             <if test="itemId != null">item_id = #{itemId},</if>
+            <if test="counter != null">counter = #{counter},</if>
             <if test="itemName != null">item_name = #{itemName},</if>
             <if test="value != null">value = #{value},</if>
             <if test="clock != null">clock = #{clock},</if>
@@ -68,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteTbDeviceItemHisById" parameterType="Long">
-        delete from tb_device_item_his where id = #{id}
+        delete from tb_item_graph where id = #{id}
     </delete>
 
     <delete id="deleteTbDeviceItemHisByIds" parameterType="String">

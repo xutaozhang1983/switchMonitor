@@ -18,4 +18,12 @@ public class DeviceVO extends TbDevice
 
     @Excel(name = "主机组")
     private String groupName;
+
+    public String getGroupName() {
+        return groupName;
+    }
+
+    public void setGroupName(String groupName) {
+        this.groupName = groupName;
+    }
 }

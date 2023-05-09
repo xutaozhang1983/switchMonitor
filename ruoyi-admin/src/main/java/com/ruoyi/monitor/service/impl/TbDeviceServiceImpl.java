@@ -99,4 +99,7 @@ public class TbDeviceServiceImpl implements ITbDeviceService
     {
         return tbDeviceMapper.deleteTbDeviceById(id);
     }
+
+
+
 }

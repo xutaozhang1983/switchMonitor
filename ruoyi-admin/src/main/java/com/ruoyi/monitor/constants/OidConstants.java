@@ -1,6 +1,6 @@
 package com.ruoyi.monitor.constants;
 
-public class DeviceOidConstants {
+public class OidConstants {
 
     /**
      * 设备名
@@ -20,7 +20,7 @@ public class DeviceOidConstants {
     /**
      * CPU
      */
-    public static final String CPU_HR_PROCESSOR_LOAD = "1.3.6.1.2.1.25.3.3.1.2";
+    public static final String CPU_HR_PROCESSOR_LOAD = "1.3.6.1.4.1.2011.6.3.4.1.4";
 
 
     /**
@@ -44,6 +44,8 @@ public class DeviceOidConstants {
      * 端口数量
      * */
     public static final String IF_NUMBER = "1.3.6.1.2.1.2.1";
+
+    public static final String IF_NUM = ".1.3.6.1.2.1.2.2.1.3";
     /**
      * 端口名称
      * */

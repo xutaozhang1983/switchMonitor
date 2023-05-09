@@ -7,10 +7,7 @@ import org.snmp4j.mp.MPv2c;
 import org.snmp4j.mp.MPv3;
 import org.snmp4j.mp.SnmpConstants;
 import org.snmp4j.security.*;
-import org.snmp4j.smi.GenericAddress;
-import org.snmp4j.smi.OID;
-import org.snmp4j.smi.OctetString;
-import org.snmp4j.smi.VariableBinding;
+import org.snmp4j.smi.*;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 import org.snmp4j.util.DefaultPDUFactory;
 import org.snmp4j.util.TableEvent;
@@ -45,20 +42,26 @@ public class SnmpConfig {
         messageDispatcher.addMessageProcessingModel(new MPv1());
         messageDispatcher.addMessageProcessingModel(new MPv2c());
         //当要支持SNMPv3版本时，需要配置user
-        OctetString localEngineID = new OctetString(MPv3.createLocalEngineID());
-        USM usm = new USM(SecurityProtocols.getInstance().addDefaultProtocols(), localEngineID, 0);
 
-        OctetString username = new OctetString(uName);
-        OctetString authPass = new OctetString(authPasswd);
-        OctetString privPass = new OctetString(privPasswd);
-        UsmUser user = new UsmUser(username, AuthMD5.ID, authPass, PrivDES.ID, privPass);
+        USM usm = new USM(SecurityProtocols.getInstance(), new OctetString(MPv3.createLocalEngineID()), 0);
+
+        UsmUser user = new UsmUser(new OctetString(username),
+                AuthMD5.ID,
+                new OctetString(authPasswd),
+                PrivDES.ID,
+                new OctetString(privPasswd));
 
         usm.addUser(user.getSecurityName(),user);
+
         messageDispatcher.addMessageProcessingModel(new MPv3(usm));
 
         try {
             transportMapping = new DefaultUdpTransportMapping();
+            transportMapping.listen();
             snmp = new Snmp(messageDispatcher, transportMapping);
+            snmp.getUSM().addUser(new OctetString(username),user);
+            snmp.getMessageDispatcher().addMessageProcessingModel(new MPv3(usm));
+
             //开启snmp监听
             snmp.listen();
         } catch (IOException e) {
@@ -134,14 +137,18 @@ public class SnmpConfig {
      * @return String类型查询内容
      */
     public String createPDU(String oid, int pduRequest, Target target){
-        if (version == SnmpConstants.version3) { pdu = new ScopedPDU(); }
-        else { pdu = new PDUv1(); }
+        if (version == SnmpConstants.version3) {
+            pdu = new ScopedPDU();
+        } else {
+            pdu = new PDU();
+        }
         pdu.setType(pduRequest);
         pdu.add(new VariableBinding(new OID(oid)));
 
         try {
             ResponseEvent send = snmp.send(pdu, target);
             Vector<? extends VariableBinding> variableBindings = send.getResponse().getVariableBindings();
+            System.out.println(variableBindings);
             return variableBindings.get(0).getVariable().toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -157,10 +164,17 @@ public class SnmpConfig {
      * @return 结果集合
      */
     public List<String> createPDUs(List<String> oidList, int pduRequest, Target target){
-        if (version == SnmpConstants.version3) { pdu = new ScopedPDU(); }
-        else { pdu = new PDUv1(); }
+        if (version == SnmpConstants.version3) {
+            pdu = DefaultPDUFactory.createPDU(SnmpConstants.version3);
+
+        }else {
+            pdu = new PDU();
+        }
         pdu.setType(pduRequest);
-        for (String oid : oidList) { pdu.add(new VariableBinding(new OID(oid))); }
+//        System.out.println(pduRequest);
+        for (String oid : oidList) {
+            pdu.add(new VariableBinding(new OID(oid)));
+        }
 
         List<String> resultList = new ArrayList<>();
         try {

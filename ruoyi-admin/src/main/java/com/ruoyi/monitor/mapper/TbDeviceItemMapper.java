@@ -58,4 +58,6 @@ public interface TbDeviceItemMapper
      * @return 结果
      */
     public int deleteTbDeviceItemByIds(Long[] ids);
+
+    TbDeviceItem selectItemExist(TbDeviceItem deviceItem);
 }

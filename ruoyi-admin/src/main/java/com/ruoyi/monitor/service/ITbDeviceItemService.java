@@ -58,4 +58,6 @@ public interface ITbDeviceItemService
      * @return 结果
      */
     public int deleteTbDeviceItemById(Long id);
+
+    public  TbDeviceItem selectItemExist(Long deviceId, String itemName);
 }

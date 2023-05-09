@@ -24,7 +24,7 @@ public class TbDeviceItem
     private Long id;
 
     /** 主机IP */
-    @Excel(name = "主机IP")
+    @Excel(name = "主机id")
     private Long deviceId;
 
     /** 监控指标名称 */
@@ -43,6 +43,13 @@ public class TbDeviceItem
     @Excel(name = "收集时间")
     private Long clock;
 
+    /** 是否是端口 */
+    private Long isPort;
+    /** 表达式 */
+    private String express;
+
+    private String counter;
+    private String alarmValue;
     /** 状态（0正常 1异常） */
     @Excel(name = "状态", readConverterExp = "0=正常,1=异常")
     private String status;

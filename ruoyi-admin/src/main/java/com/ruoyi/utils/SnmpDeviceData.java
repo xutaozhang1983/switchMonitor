@@ -1,25 +1,23 @@
 package com.ruoyi.utils;
 
-
-import com.ruoyi.monitor.constants.DeviceOidConstants;
+import com.ruoyi.framework.web.domain.server.Sys;
+import com.ruoyi.monitor.constants.OidConstants;
+import com.ruoyi.monitor.constants.OidEnum;
 import com.ruoyi.monitor.domain.DeviceInfoDTO;
 import com.ruoyi.monitor.domain.TbDevice;
-import com.ruoyi.monitor.domain.TbDeviceItem;
-import com.ruoyi.monitor.enums.ManufacturerEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.snmp4j.PDU;
 import org.snmp4j.Target;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class SnmpDeviceData extends SnmpConfig {
     private static final int PDU_GET = PDU.GET;
     private static final int PDU_WALK = PDU.GETBULK;
+
+    private static final  int PDU_GETNEXT = PDU.GETNEXT;
     private static final int PORT_OPEN = 1;
     private static final String PORT_ERROR_NAME = "NULL0";
 
@@ -48,56 +46,63 @@ public class SnmpDeviceData extends SnmpConfig {
     }
 
     /*采集设备基础信息*/
-    public DeviceInfoDTO acquireDeviceInfo(){
+    public TbDevice acquireDeviceInfo(){
         init();
-        DeviceInfoDTO deviceInfoDTO = new DeviceInfoDTO();
+
 
         // 查询使用的oid
         ArrayList<String> oidList = new ArrayList<>();
-        oidList.add(DeviceOidConstants.sysDescr);
-        oidList.add(DeviceOidConstants.sysObjectID);
-        oidList.add(DeviceOidConstants.sysTime);
+        oidList.add(OidConstants.sysDescr);
+        oidList.add(OidConstants.oidSysDescr);
+        oidList.add(OidConstants.sysTime);
 
         List<String> configList = createPDUs(oidList, PDU_GET, target);
-        // String portNumber = createPDU(DevicePortOidConstants.IF_DESCR, PDU_WALK, target);
-        String portNumber = createTable(DeviceOidConstants.IF_NUMBER, PDU_WALK, target).get(0);
         String deviceName = configList.get(0);
-        String deviceObjectId = configList.get(1);
+        String sysDescr = configList.get(1);
         String uptime = configList.get(2);
-
-        deviceInfoDTO.setDeviceName(deviceName);
+        String[] arr = sysDescr.split("\\n");
+        if (arr.length > 0){
+            String model = arr[0];
+            tbDevice.setDeviceModel(model);
+        }
+        tbDevice.setDeviceName(deviceName);
         //调用判断厂商id的方法，返回对应id的厂商名
-        deviceInfoDTO.setManufacturer(manufacturerEstimate(deviceObjectId));
-        deviceInfoDTO.setPortNumber(Integer.parseInt(portNumber));
-        deviceInfoDTO.setUptime(Long.parseLong(uptime));
+        tbDevice.setManufacturer(manufacturerEstimate(sysDescr));
+        tbDevice.setPortNum(getIfNumber());
+        tbDevice.setUptime(uptime);
 
         snmpClose();
-        return deviceInfoDTO;
+        return tbDevice;
     }
 
     /*采集CPU使用率*/
-    public Double acquireCpu(){
+    public Map<String,String> acquireCpuMem(String deviceMenu){
         init();
-        List<String> cpuList = createTable(DeviceOidConstants.CPU_HR_PROCESSOR_LOAD, PDU_GET, target);
+        String cpuOid = deviceMenu+"_cpu";
+        String memOid = deviceMenu+"_mem";
+        Map<String,String> map = new HashMap<>();
 
-        double sum = 0;
-        for (String s : cpuList) {
-            System.out.println(s);
-            sum += Double.parseDouble(s);
+        String cpuUsage = createPDU(OidEnum.getOidByName(cpuOid), PDU_GETNEXT, target);
+        map.put("cpuUsage",cpuUsage);
+        List<String> memList = createTable(OidEnum.getOidByName(memOid), PDU_GETNEXT,target);
+        for (String usage:memList) {
+            if (Long.parseLong(usage) >0){
+                map.put("memUsage",usage);
+                break;
+            }
         }
-
         snmpClose();
-        return sum / cpuList.size();
+        return map;
     }
 
     /*采集内存使用信息*/
     public DeviceInfoDTO acquireMemoryUsage(){
         init();
         ArrayList<String> oidList = new ArrayList<>();
-        oidList.add(DeviceOidConstants.MEMORY_TOTAL);   //物理内存总容量
-        oidList.add(DeviceOidConstants.MEMORY_AVAIL);   //物理内存空闲容量
-        oidList.add(DeviceOidConstants.MEMORY_BUFFER);  //物理内存缓冲容量
-        oidList.add(DeviceOidConstants.MEMORY_CACHE);   //物理内存缓存容量
+        oidList.add(OidConstants.MEMORY_TOTAL);   //物理内存总容量
+        oidList.add(OidConstants.MEMORY_AVAIL);   //物理内存空闲容量
+        oidList.add(OidConstants.MEMORY_BUFFER);  //物理内存缓冲容量
+        oidList.add(OidConstants.MEMORY_CACHE);   //物理内存缓存容量
 
         List<String> memoryInfoList = createPDUs(oidList, PDU_GET, target);
         long memoryTotal = Long.parseLong(memoryInfoList.get(0));
@@ -121,30 +126,23 @@ public class SnmpDeviceData extends SnmpConfig {
 
 
     /*采集设备所有端口信息*/
-    public List<TbDeviceItem> deviceItemInfo(){
+    public Map<String,String> deviceItemInfo(){
         init();
-        List<TbDeviceItem> tbDeviceItems = new ArrayList<>();
-
         List<String> oidList = new ArrayList<>();
-        oidList.add(DeviceOidConstants.IF_DESCR); // 端口名
-        oidList.add(DeviceOidConstants.IF_SPEED); // 端口最大带宽
-        oidList.add(DeviceOidConstants.IF_OPER_STATUS); //端口状态
+        oidList.add(OidConstants.IF_DESCR); // 端口名
+        oidList.add(OidConstants.IF_OPER_STATUS); //端口状态
 
         Map<Integer, List<String>> map = createTables(oidList, PDU_GET, target);
+        Map<String,String> portMap = new HashMap<>();
         for (Integer key : map.keySet()) {
-            TbDeviceItem deviceItem = new TbDeviceItem();
-
             List<String> resultList = map.get(key);
-            deviceItem.setItemName(resultList.get(0));
-//            portInfoDTO.setMaxBw(Long.parseLong(resultList.get(2)));
-            deviceItem.setStatus(resultList.get(3));
-            deviceItem.setDeviceId(tbDevice.getId());
-            tbDeviceItems.add(deviceItem);
-
+            if (resultList.get(0).toLowerCase().contains("ethernet")){
+                portMap.put(resultList.get(0),resultList.get(1));
+            }
         }
 
         snmpClose();
-        return tbDeviceItems;
+        return portMap;
     }
 
     /*采集所有端口入流量*/
@@ -153,15 +151,18 @@ public class SnmpDeviceData extends SnmpConfig {
         LinkedHashMap<String, Long> flowRateMap = new LinkedHashMap<>();
 
         ArrayList<String> oidList = new ArrayList<>();
-        oidList.add(DeviceOidConstants.IF_DESCR); // 端口名
-        oidList.add(DeviceOidConstants.IF_HC_IN_OCTETS); // 端口入流量
+        oidList.add(OidConstants.IF_DESCR); // 端口名
+        oidList.add(OidConstants.IF_HC_IN_OCTETS); // 端口入流量
 
 
         Map<Integer, List<String>> InFlowMap = createTables(oidList, PDU_GET, target);
 
         for (Integer key: InFlowMap.keySet()) {
+
             List<String> valueList = InFlowMap.get(key);
-            flowRateMap.put(valueList.get(0),Long.parseLong(valueList.get(1)));
+
+                flowRateMap.put(valueList.get(0),Long.parseLong(valueList.get(1)));
+
         }
         snmpClose();
         return flowFiltration(flowRateMap);
@@ -173,8 +174,8 @@ public class SnmpDeviceData extends SnmpConfig {
         LinkedHashMap<String, Long> flowRateMap = new LinkedHashMap<>();
 
         ArrayList<String> oidList = new ArrayList<>();
-        oidList.add(DeviceOidConstants.IF_DESCR); // 端口名
-        oidList.add(DeviceOidConstants.IF_HC_OUT_OCTETS); // 端口出流量
+        oidList.add(OidConstants.IF_DESCR); // 端口名
+        oidList.add(OidConstants.IF_HC_OUT_OCTETS); // 端口出流量
 
         Map<Integer, List<String>> OutFlowMap = createTables(oidList, PDU_GET, target);
 
@@ -200,7 +201,7 @@ public class SnmpDeviceData extends SnmpConfig {
         Map<String, Long> resultMap = new LinkedHashMap<>();
 
         // 采集设备所有端口状态信息
-        List<String> statusList = createTable(DeviceOidConstants.IF_OPER_STATUS, PDU_GET, target);
+        List<String> statusList = createTable(OidConstants.IF_OPER_STATUS, PDU_GET, target);
 
         if (statusList.size() != map.size()){
             log.info("<端口异常数据过滤> || 端口数量有误!!!");
@@ -213,8 +214,8 @@ public class SnmpDeviceData extends SnmpConfig {
             String portName = keyList.get(i);
             int portStatus = Integer.parseInt(statusList.get(i));
 
-            if (!portName.equals(PORT_ERROR_NAME)) {
-                if (portStatus == PORT_OPEN) {
+            if (!portName.equals(PORT_ERROR_NAME) && portStatus == PORT_OPEN) {
+                if (portName.toLowerCase().contains("ethernet")){
                     resultMap.put(portName,map.get(portName));
                 }
             }
@@ -224,15 +225,41 @@ public class SnmpDeviceData extends SnmpConfig {
         return resultMap;
     }
 
+
+    public Integer getIfNumber(){
+        init();
+         List<String> ifPorts = createTable(OidConstants.IF_NUM, PDU_GET, target);
+         Integer portNum = 0;
+         for (String pType:ifPorts){
+             if (pType.equals("6")){
+                 portNum++;
+             }
+         }
+
+         return portNum;
+
+    }
     /**
      * 查询设备厂商
-     * @param objectOid  厂商分类oid （我也不知道这个oid是干啥的，凑合看看就得了）
+     * @param   厂商分类oid （我也不知道这个oid是干啥的，凑合看看就得了）
      * @return 厂商名
      */
-    private String manufacturerEstimate(String objectOid){
-        String[] idArray = objectOid.split("\\.");
-        String objectId = idArray[6];
-        return ManufacturerEnum.getManufactureName(objectId);
+    private String manufacturerEstimate(String sysDescr){
+        String vendor ;
+        if (sysDescr.toLowerCase().contains("cisco")) {
+            vendor = "Cisco";
+        } else if (sysDescr.toLowerCase().contains("huawei")) {
+            vendor = "Huawei";
+        } else if (sysDescr.toLowerCase().contains("h3c")) {
+            vendor = "H3C";
+        } else if (sysDescr.toLowerCase().contains("juniper")) {
+            vendor = "Juniper";
+        } else {
+            vendor = "Unknown";
+        }
+        return vendor;
     }
+
+
 
 }

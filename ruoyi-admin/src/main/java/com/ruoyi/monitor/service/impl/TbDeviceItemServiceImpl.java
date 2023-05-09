@@ -92,4 +92,12 @@ public class TbDeviceItemServiceImpl implements ITbDeviceItemService
     {
         return tbDeviceItemMapper.deleteTbDeviceItemById(id);
     }
+
+    @Override
+    public TbDeviceItem selectItemExist(Long deviceId, String itemName) {
+        TbDeviceItem deviceItem = new TbDeviceItem();
+        deviceItem.setDeviceId(deviceId);
+        deviceItem.setItemName(itemName);
+    return tbDeviceItemMapper.selectItemExist(deviceItem);
+    }
 }

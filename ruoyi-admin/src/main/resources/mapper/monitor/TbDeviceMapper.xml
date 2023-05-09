@@ -39,7 +39,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceVo">
-        select d.*,g.group_name group_name from tb_device d,tb_device_group g
+        select d.*,dg.group_name group_name from tb_device d
+        left join tb_device_group dg on d.group_id = dg.id
     </sql>
 
     <select id="selectTbDeviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
@@ -67,7 +68,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     <select id="deviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
-      select d.* ,d_g.group_name from tb_device d, tb_device_group d_g
+      select d.* ,dg.group_name as group_name from tb_device d
+      left join tb_device_group dg on d.group_id = dg.id
         <where>
             <if test="groupId != null "> and d.group_id = #{groupId}</if>
             <if test="deviceType != null "> and d.device_type = #{deviceType}</if>
