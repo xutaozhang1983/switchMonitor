@@ -98,6 +98,6 @@ public class TbDeviceItemServiceImpl implements ITbDeviceItemService
         TbDeviceItem deviceItem = new TbDeviceItem();
         deviceItem.setDeviceId(deviceId);
         deviceItem.setItemName(itemName);
-    return tbDeviceItemMapper.selectItemExist(deviceItem);
+        return tbDeviceItemMapper.selectItemExist(deviceItem);
     }
 }

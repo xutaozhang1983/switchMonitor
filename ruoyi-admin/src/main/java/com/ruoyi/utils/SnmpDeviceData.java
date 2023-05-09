@@ -5,6 +5,7 @@ import com.ruoyi.monitor.constants.OidConstants;
 import com.ruoyi.monitor.constants.OidEnum;
 import com.ruoyi.monitor.domain.DeviceInfoDTO;
 import com.ruoyi.monitor.domain.TbDevice;
+import com.ruoyi.monitor.enums.DeviceItem;
 import lombok.extern.slf4j.Slf4j;
 import org.snmp4j.PDU;
 import org.snmp4j.Target;
@@ -48,8 +49,6 @@ public class SnmpDeviceData extends SnmpConfig {
     /*采集设备基础信息*/
     public TbDevice acquireDeviceInfo(){
         init();
-
-
         // 查询使用的oid
         ArrayList<String> oidList = new ArrayList<>();
         oidList.add(OidConstants.sysDescr);
@@ -81,13 +80,12 @@ public class SnmpDeviceData extends SnmpConfig {
         String cpuOid = deviceMenu+"_cpu";
         String memOid = deviceMenu+"_mem";
         Map<String,String> map = new HashMap<>();
-
         String cpuUsage = createPDU(OidEnum.getOidByName(cpuOid), PDU_GETNEXT, target);
-        map.put("cpuUsage",cpuUsage);
+        map.put(DeviceItem.CPU.getItem(),cpuUsage);
         List<String> memList = createTable(OidEnum.getOidByName(memOid), PDU_GETNEXT,target);
         for (String usage:memList) {
             if (Long.parseLong(usage) >0){
-                map.put("memUsage",usage);
+                map.put(DeviceItem.MEM.getItem(),usage);
                 break;
             }
         }
@@ -140,7 +138,6 @@ public class SnmpDeviceData extends SnmpConfig {
                 portMap.put(resultList.get(0),resultList.get(1));
             }
         }
-
         snmpClose();
         return portMap;
     }

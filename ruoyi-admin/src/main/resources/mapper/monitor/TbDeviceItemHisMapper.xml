@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbDeviceItemHisVo">
-        select * from tb_item_graph
+        select * from tb_item_his
     </sql>
 
     <select id="selectTbDeviceItemHisList" parameterType="TbDeviceItemHis" resultMap="TbDeviceItemHisResult">
@@ -37,7 +37,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
         
     <insert id="insertTbDeviceItemHis" parameterType="TbDeviceItemHis" useGeneratedKeys="true" keyProperty="id">
-        insert into tb_item_graph
+        insert into tb_item_his
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deviceId != null">device_id,</if>
             <if test="itemId != null">item_id,</if>
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </insert>
 
     <update id="updateTbDeviceItemHis" parameterType="TbDeviceItemHis">
-        update tb_item_graph
+        update tb_item_his
         <trim prefix="SET" suffixOverrides=",">
             <if test="deviceId != null">device_id = #{deviceId},</if>
             <if test="itemId != null">item_id = #{itemId},</if>
@@ -73,11 +73,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </update>
 
     <delete id="deleteTbDeviceItemHisById" parameterType="Long">
-        delete from tb_item_graph where id = #{id}
+        delete from tb_item_his where id = #{id}
     </delete>
 
     <delete id="deleteTbDeviceItemHisByIds" parameterType="String">
-        delete from tb_device_item_his where id in 
+        delete from tb_item_his where id in
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

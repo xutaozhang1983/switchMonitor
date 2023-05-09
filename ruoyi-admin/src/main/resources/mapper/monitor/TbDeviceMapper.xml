@@ -133,7 +133,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="snmpPrivPassphrase != null">#{snmpPrivPassphrase},</if>
             <if test="snmpPrivProtocol != null">#{snmpPrivProtocol},</if>
             <if test="snmpContext != null">#{snmpContext},</if>
-            <if test="portNum != null">#{port_num},</if>
+            <if test="portNum != null">#{portNum},</if>
             <if test="manufacturer != null">#{manufacturer},</if>
             <if test="username != null">#{username},</if>
             <if test="passwd != null">#{passwd},</if>

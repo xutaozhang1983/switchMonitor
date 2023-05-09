@@ -29,11 +29,13 @@ public enum OidEnum {
         this.counter = counter;
     }
     public static String getOidByName(String name) {
+
         for (OidEnum oid : OidEnum.values()) {
-            if (oid.getName().equals(name)) {
+
+            if (oid.getName().equals(name.toLowerCase())) {
                 return oid.getOid();
             }
         }
-        return null;
+        return ".1.3.6.1.4.1.2011.6.3.4.1.4";
     }
 }

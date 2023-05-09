@@ -36,6 +36,8 @@ public class TbDeviceItemHis
     @Excel(name = "监控指标名称")
     private String itemName;
 
+    @Excel(name = "counter")
+    private String counter;
     /** 监控值 */
     @Excel(name = "监控值")
     private String value;

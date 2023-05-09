@@ -20,7 +20,7 @@ public class test {
         device.setSnmpVersion(1);
         device.setSnmpCommunity("Public");
         SnmpDeviceData snmpConfig = new SnmpDeviceData(device);
-        System.out.println(snmpConfig.acquireDeviceInfo());
+        System.out.println(snmpConfig.acquireCpuMem("Huawei"));
 
 
 
