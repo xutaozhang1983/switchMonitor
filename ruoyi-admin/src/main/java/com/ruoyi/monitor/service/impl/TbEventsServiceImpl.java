@@ -2,6 +2,7 @@ package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.monitor.mapper.TbEventsMapper;
@@ -91,5 +92,14 @@ public class TbEventsServiceImpl implements ITbEventsService
     public int deleteTbEventsById(Long id)
     {
         return tbEventsMapper.deleteTbEventsById(id);
+    }
+
+    @Override
+    public int saveEvent(TbEvents tbEvent) {
+       if (StringUtils.isNotNull(tbEvent.getId())){
+            return tbEventsMapper.updateTbEvents(tbEvent);
+       }else{
+           return tbEventsMapper.insertTbEvents(tbEvent);
+       }
     }
 }

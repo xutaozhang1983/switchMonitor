@@ -119,4 +119,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         select * from tb_device_item
         where device_id = #{deviceId,jdbcType=BIGINT} and  item_name = #{itemName}
     </select>
+
+    <delete id="deleteByDeviceId" parameterType="List">
+        delete from tb_device_item where device_id in
+        <foreach collection="List" item="id" index="index" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+
+    </delete>
 </mapper>

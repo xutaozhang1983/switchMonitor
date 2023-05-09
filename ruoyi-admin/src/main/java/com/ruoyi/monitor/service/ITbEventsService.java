@@ -58,4 +58,6 @@ public interface ITbEventsService
      * @return 结果
      */
     public int deleteTbEventsById(Long id);
+
+    int saveEvent(TbEvents tbEvent);
 }

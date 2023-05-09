@@ -1,13 +1,18 @@
 package com.ruoyi.monitor.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.TbDevice;
+import com.ruoyi.monitor.domain.TbDeviceItem;
 import com.ruoyi.monitor.domain.vo.DeviceVO;
+import com.ruoyi.monitor.mapper.TbDeviceItemMapper;
 import com.ruoyi.monitor.mapper.TbDeviceMapper;
 import com.ruoyi.monitor.service.ITbDeviceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 设备列Service业务层处理
@@ -20,6 +25,9 @@ public class TbDeviceServiceImpl implements ITbDeviceService
 {
     @Autowired
     private TbDeviceMapper tbDeviceMapper;
+
+    @Autowired
+    TbDeviceItemMapper tbDeviceItemMapper;
 
     /**
      * 查询设备列
@@ -83,9 +91,13 @@ public class TbDeviceServiceImpl implements ITbDeviceService
      * @return 结果
      */
     @Override
+    @Transactional
     public int deleteTbDeviceByIds(Long[] ids)
     {
+        List<Long> deviceIds = Arrays.asList(ids);
+        tbDeviceItemMapper.deleteItemByDeviceIds(deviceIds);
         return tbDeviceMapper.deleteTbDeviceByIds(ids);
+
     }
 
     /**
@@ -95,9 +107,13 @@ public class TbDeviceServiceImpl implements ITbDeviceService
      * @return 结果
      */
     @Override
+    @Transactional
     public int deleteTbDeviceById(Long id)
     {
-        return tbDeviceMapper.deleteTbDeviceById(id);
+        List<Long> deviceIds  = new ArrayList<>();
+        deviceIds.add(id);
+        tbDeviceItemMapper.deleteItemByDeviceIds(deviceIds);
+        return tbDeviceMapper.deleteTbDeviceByIds(id);
     }
 
 
