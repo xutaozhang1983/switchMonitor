@@ -38,10 +38,10 @@ public class MonitorTask {
         for (TbDevice device:deviceDTOList) {
             String lastStatus = device.getStatus();
             String nowStatus;
-            if(!PingUtil.ping(device.getDeviceIp())) {
-                nowStatus = StatusEnum.ERROR.getCode();
-            }else{
+            if(PingUtil.ping(device.getDeviceIp())) {
                 nowStatus = StatusEnum.OK.getCode();
+            }else{
+                nowStatus = StatusEnum.ERROR.getCode();
             }
             System.out.println(nowStatus+"------");
             if (!lastStatus.equals(nowStatus)){
@@ -50,7 +50,8 @@ public class MonitorTask {
                 String content;
                 if (nowStatus.equals(StatusEnum.ERROR.getCode())){
                     content = String.format(StatusEnum.ERROR.getContent(),"设备",device.getDeviceName()+device.getDeviceIp());
-//
+                    System.out.println(content);
+                    System.out.println("ERRor");
                 }else{
                     content = String.format(StatusEnum.OK.getContent(),"设备",device.getDeviceName()+device.getDeviceIp());
                 }
@@ -63,6 +64,7 @@ public class MonitorTask {
     public void deviceUpdate(){
         TbDevice tbDevice = new TbDevice();
         tbDevice.setEnable(0);
+        tbDevice.setStatus("0");
         List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
         for (TbDevice device:deviceDTOList) {
             SnmpDeviceData snmpDevice = new SnmpDeviceData(device);
@@ -82,6 +84,7 @@ public class MonitorTask {
     public void monitorItem(){
         TbDevice tbDevice = new TbDevice();
         tbDevice.setEnable(0);
+        tbDevice.setStatus("0");
         List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
         for (TbDevice device:deviceDTOList) {
             SnmpDeviceData snmpDevice = new SnmpDeviceData(device);

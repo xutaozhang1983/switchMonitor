@@ -46,25 +46,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectTbDeviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
         <include refid="selectTbDeviceVo"/>
         <where>  
-            <if test="groupId != null "> and group_id = #{groupId}</if>
-            <if test="deviceName != null  and deviceName != ''"> and device_name like concat('%', #{deviceName}, '%')</if>
-            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
-            <if test="deviceIp != null  and deviceIp != ''"> and device_ip = #{deviceIp}</if>
-            <if test="protocol != null  and protocol != ''"> and protocol = #{protocol}</if>
-            <if test="snmpCommunity != null  and snmpCommunity != ''"> and snmp_community = #{snmpCommunity}</if>
-            <if test="snmpVersion != null "> and snmp_version = #{snmpVersion}</if>
-            <if test="snmpPort != null "> and snmp_port = #{snmpPort}</if>
-            <if test="snmpUsername != null  and snmpUsername != ''"> and snmp_username like concat('%', #{snmpUsername}, '%')</if>
-            <if test="snmpPassword != null  and snmpPassword != ''"> and snmp_password = #{snmpPassword}</if>
-            <if test="snmpAuthProtocol != null  and snmpAuthProtocol != ''"> and snmp_auth_protocol = #{snmpAuthProtocol}</if>
-            <if test="snmpPrivPassphrase != null  and snmpPrivPassphrase != ''"> and snmp_priv_passphrase = #{snmpPrivPassphrase}</if>
-            <if test="snmpPrivProtocol != null  and snmpPrivProtocol != ''"> and snmp_priv_protocol = #{snmpPrivProtocol}</if>
-            <if test="snmpContext != null  and snmpContext != ''"> and snmp_context = #{snmpContext}</if>
-            <if test="portNum != null  and portNum != ''"> and port_num = #{portNum}</if>
-            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
-            <if test="enable != null "> and enable = #{enable}</if>
-            <if test="uptime != null "> and uptime = #{uptime}</if>
+            <if test="groupId != null "> and d.group_id = #{groupId}</if>
+            <if test="deviceName != null  and deviceName != ''"> and d.device_name like concat('%', #{deviceName}, '%')</if>
+            <if test="deviceType != null  and deviceType != ''"> and d.device_type = #{deviceType}</if>
+            <if test="deviceIp != null  and deviceIp != ''"> and d.device_ip = #{deviceIp}</if>
+            <if test="portNum != null  and portNum != ''"> and d.port_num = #{portNum}</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and d.manufacturer = #{manufacturer}</if>
+            <if test="status != null  and status != ''"> and d.status = #{status}</if>
+            <if test="enable != null "> and d.enable = #{enable}</if>
         </where>
     </select>
     <select id="deviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
