@@ -4,7 +4,7 @@
         <el-input v-model="deviceGroupStore.queryParams.groupName" placeholder="请输入" clearable @keyup.enter="handleQuery"/>
       </el-form-item>
       <el-form-item label="状态" prop="status">
-        <el-select v-model="deviceGroupStore.queryParams.status" placeholder="状态" clearable style="width: 240px">
+        <el-select v-model="deviceGroupStore.queryParams.status" placeholder="请选择" clearable style="width: 240px">
           <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
@@ -16,10 +16,13 @@
 </template>
 
 <script setup lang="ts">
+  import { ElForm } from 'element-plus'
   import useDeviceGroupStore from '../store'
 
   const { proxy } = getCurrentInstance() as any
   const deviceGroupStore = useDeviceGroupStore()
+
+  const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
 
   const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
     "sys_normal_disable"
@@ -34,7 +37,7 @@
   // 重置按钮操作
   function resetQuery() {
     deviceGroupStore.queryParams.groupName = undefined
-    proxy.resetForm("queryRef")
+    proxy.$refs.queryRef.resetFields()
     handleQuery()
   }
 </script>

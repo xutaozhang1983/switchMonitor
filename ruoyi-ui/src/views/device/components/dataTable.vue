@@ -2,12 +2,9 @@
   <el-table v-loading="deviceStore.loading" :data="deviceStore.deviceData" @selection-change="handleSelectionChange" @row-click="handleClickRow">
     <el-table-column type="selection" width="55" align="center" />
     <el-table-column label="编号" prop="id" width="100"/>
-    <el-table-column label="名称" prop="deviceName"/>
-    <el-table-column label="所在组">
-      <template #default="scope">
-        <div>{{ findDeviceGroupName(scope.row.groupId) }}</div>
-      </template>
-    </el-table-column>
+    <el-table-column label="设备名称" prop="deviceName"/>
+    <el-table-column label="设备类型" prop="deviceType" />
+    <el-table-column label="所在组" prop="groupName"></el-table-column>
     <el-table-column label="设备状态" align="center">
       <template #default="scope">
         <div class="deviceStatus" v-if="scope.row.deviceStatus === '0'">
@@ -20,9 +17,9 @@
         </div>
       </template>
     </el-table-column>
-    <el-table-column label="型号" prop="deviceModel"/>
+    <el-table-column label="设备型号" prop="deviceModel"/>
     <el-table-column label="IP地址" prop="deviceIp" />
-    <el-table-column label="接口数量" prop="snmpPort" />
+    <el-table-column label="接口数量" prop="portNum" />
     <el-table-column label="团体名" prop="snmpCommunity"/>
     <el-table-column label="厂商" prop="manufacturer"/>
     <el-table-column label="监控状态" align="center">
@@ -30,8 +27,8 @@
         <div @click.stop="() => {}">
           <el-switch
             v-model="scope.row.enable"
-            :active-value="0"
-            :inactive-value="1"
+            active-value="0"
+            inactive-value="1"
             @change="handleEnableChange(scope.row)"
           ></el-switch>
         </div>
@@ -66,33 +63,27 @@
   const deviceStore = useDeviceStore()
   const router = useRouter()
 
-  // 通过设备组id查名字
-  function findDeviceGroupName(groupId: number) {
-    if (groupId) {
-      return deviceStore.deviceGroupData.filter((item: any) => item.id === groupId)[0].groupName
-    }
-  }
-
   // 跳转到监控
   function handleClickRow(row: any) {
+    console.log(router)
     router.push({
-      path: '/monitor',
+      path: '/deviceMonitor',
       params: {
-        deviceId: row.deviceId
+        id: row.id
       }
     })
   }
 
   // 选择条数
   function handleSelectionChange(selection: any) {
-    deviceStore.ids = selection.map((item: any) => item.roleId)
+    deviceStore.ids = selection.map((item: any) => item.id)
     deviceStore.single = selection.length != 1
     deviceStore.multiple = !selection.length
   }
 
   // 设备监控状态修改
   function handleEnableChange(row: any) {
-    let text = row.status === "0" ? "启用" : "停用";
+    let text = row.enable === "0" ? "启用" : "停用";
     ElMessageBox.confirm(`确认要${text}"${row.deviceName}"设备吗?`, '系统提示', { type: 'warning' }).then(async () => {
       let sendData = {
         id: row.id,
@@ -102,13 +93,13 @@
     }).then(() => {
       ElMessage.success(text + "成功")
     }).catch(function () {
-      row.status = row.status === "0" ? "1" : "0"
+      row.enable = row.enable === "0" ? "1" : "0"
     })
   }
 
   // 删除按钮操作
   function handleDelete(row: any) {
-    deviceStore.ids = [ row.roleId ]
+    deviceStore.ids = [ row.id ]
     ElMessageBox.confirm('是否确认删除设备编号为"' + deviceStore.ids + '"的数据项？', '系统提示', { type: 'warning' }).then(async () => {
       await deviceStore.delDevice()
       deviceStore.getDeviceData()
@@ -119,7 +110,7 @@
   // 修改按钮操作
   async function handleUpdate(row: any) {
     deviceStore.resetFormData()
-    await deviceStore.getDeviceInfo(row.roleId)
+    await deviceStore.getDeviceInfo(row.id)
     deviceStore.formTitle = "修改设备"
     deviceStore.showFormDialog = true
   }

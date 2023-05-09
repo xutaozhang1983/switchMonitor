@@ -53,11 +53,11 @@
   // 导出按钮操作
   function handleExport() {
     proxy.download(
-      "system/role/export",
+      "monitor/device/export",
       {
         ...deviceStore.queryParams,
       },
-      `role_${new Date().getTime()}.xlsx`
+      `device_${new Date().getTime()}.xlsx`
     );
   }
 

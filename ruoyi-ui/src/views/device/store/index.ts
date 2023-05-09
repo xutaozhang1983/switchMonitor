@@ -25,10 +25,10 @@ const useDeviceStore = defineStore('useDeviceStore',
         for (key in this.formData) {
           this.formData[key] = undefined
         }
-        this.formData.status = '0'
-        this.formData.enable = 0
+        this.formData.enable = '0'
         this.formData.snmpCommunity = 'public'
-        this.formData.snmpPort = 16
+        this.formData.portNum = 16
+        this.formData.snmpPort = 161
       },
       // 查询设备组数据
       async getDeviceGroupData() {
@@ -42,6 +42,7 @@ const useDeviceStore = defineStore('useDeviceStore',
         this.loading = true
         try {
           let { rows, total }: any = await listDevice(this.queryParams)
+          rows.map((item: any) => { item.enable = item.enable.toString() })
           this.deviceData = rows
           this.total = total
         } catch (error: any) {
@@ -52,7 +53,9 @@ const useDeviceStore = defineStore('useDeviceStore',
       // 查询设备详情
       async getDeviceInfo(deviceId: number) {
         try {
-          await getDevice(deviceId)
+          let {data} = await getDevice(deviceId)
+          data.enable = data.enable.toString()
+          this.formData = data
         } catch {}
       },
       // 新增设备

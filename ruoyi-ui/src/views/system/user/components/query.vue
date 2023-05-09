@@ -3,7 +3,7 @@
     <el-form-item label="用户名称" prop="userName">
       <el-input v-model="userStore.queryParams.userName" placeholder="请输入用户名称" clearable style="width: 240px" @keyup.enter="handleQuery"/>
     </el-form-item>
-    <el-form-item label="手机号码" prop="mobile">
+    <el-form-item label="手机号码" prop="phonenumber">
       <el-input v-model="userStore.queryParams.phonenumber" placeholder="请输入手机号码" clearable style="width: 240px" @keyup.enter="handleQuery"/>
     </el-form-item>
     <el-form-item label="状态" prop="status">
@@ -29,11 +29,14 @@
 </template>
 
 <script setup lang="ts">
+  import { ElForm } from 'element-plus'
   import useUserStore from '../store'
   import { dayjs } from 'element-plus'
 
   const { proxy } = getCurrentInstance() as any;
   const userStore = useUserStore()
+
+  const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
 
   const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
     "sys_normal_disable"
@@ -56,7 +59,7 @@
     dateRange.value = []
     userStore.queryParams.beginTime = undefined
     userStore.queryParams.endTime = undefined
-    proxy.resetForm("queryRef")
+    proxy.$refs.queryRef.resetFields()
     userStore.queryParams.deptId = undefined
     userStore.resetDeptTreeKey = true
     handleQuery();

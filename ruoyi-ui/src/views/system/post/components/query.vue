@@ -19,10 +19,13 @@
 </template>
 
 <script setup lang="ts">
+  import { ElForm } from 'element-plus'
   import usePosttStore from '../store'
   
   const { proxy } = getCurrentInstance() as any
   const postStore = usePosttStore()
+
+  const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
 
   const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
     "sys_normal_disable"
@@ -36,7 +39,7 @@
 
   // 重置按钮操作
   function resetQuery() {
-    proxy.resetForm("queryRef")
+    proxy.$refs.queryRef.resetFields()
     handleQuery()
   }
 </script>

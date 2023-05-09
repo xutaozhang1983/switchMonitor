@@ -22,11 +22,14 @@
 </template>
 
 <script setup lang="ts">
+  import { ElForm } from 'element-plus'
   import useRoleStore from '../store'
   import { dayjs } from 'element-plus'
 
   const { proxy } = getCurrentInstance() as any;
   const roleStore = useRoleStore()
+
+  const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
 
   const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
     "sys_normal_disable"
@@ -49,7 +52,7 @@
     dateRange.value = []
     roleStore.queryParams.beginTime = undefined
     roleStore.queryParams.endTime = undefined
-    proxy.resetForm("queryRef")
+    proxy.$refs.queryRef.resetFields()
     handleQuery()
   }
 </script>
