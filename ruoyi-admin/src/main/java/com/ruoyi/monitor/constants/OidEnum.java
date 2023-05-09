@@ -2,8 +2,8 @@ package com.ruoyi.monitor.constants;
 
 public enum OidEnum {
 
-    HW_CPU(".1.3.6.1.4.1.2011.6.3.4.1.4","huawei_cpu","CPU"),
-    HW_MEM("1.3.6.1.4.1.2011.5.25.31.1.1.1.1.7","huawei_mem","MEM");
+    HW_CPU(".1.3.6.1.4.1.2011.6.3.4.1.4","HUAWEI_CPU","CPU"),
+    HW_MEM("1.3.6.1.4.1.2011.5.25.31.1.1.1.1.7","HUAWEI_MEM","MEM");
 
 
     private String oid;
@@ -32,10 +32,10 @@ public enum OidEnum {
 
         for (OidEnum oid : OidEnum.values()) {
 
-            if (oid.getName().equals(name.toLowerCase())) {
+            if (oid.getName().equals(name.toUpperCase())) {
                 return oid.getOid();
             }
         }
-        return ".1.3.6.1.4.1.2011.6.3.4.1.4";
+        return null;
     }
 }

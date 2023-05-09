@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.TbAlarmEventMapper">
+    
+    <resultMap type="TbAlarmEvent" id="TbAlarmEventResult">
+        <result property="id"    column="id"    />
+        <result property="eventId"    column="event_id"    />
+        <result property="step"    column="step"    />
+        <result property="cond"    column="cond"    />
+        <result property="userName"    column="user_name"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTbAlarmEventVo">
+        select id, event_id, step, cond, user_name, status, create_time, remark from tb_alarm_event
+    </sql>
+
+    <select id="selectTbAlarmEventList" parameterType="TbAlarmEvent" resultMap="TbAlarmEventResult">
+        <include refid="selectTbAlarmEventVo"/>
+        <where>  
+            <if test="eventId != null "> and event_id = #{eventId}</if>
+            <if test="step != null "> and step = #{step}</if>
+            <if test="cond != null  and cond != ''"> and cond = #{cond}</if>
+            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbAlarmEventById" parameterType="Long" resultMap="TbAlarmEventResult">
+        <include refid="selectTbAlarmEventVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbAlarmEvent" parameterType="TbAlarmEvent" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_alarm_event
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="eventId != null">event_id,</if>
+            <if test="step != null">step,</if>
+            <if test="cond != null and cond != ''">cond,</if>
+            <if test="userName != null">user_name,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="eventId != null">#{eventId},</if>
+            <if test="step != null">#{step},</if>
+            <if test="cond != null and cond != ''">#{cond},</if>
+            <if test="userName != null">#{userName},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbAlarmEvent" parameterType="TbAlarmEvent">
+        update tb_alarm_event
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="eventId != null">event_id = #{eventId},</if>
+            <if test="step != null">step = #{step},</if>
+            <if test="cond != null and cond != ''">cond = #{cond},</if>
+            <if test="userName != null">user_name = #{userName},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbAlarmEventById" parameterType="Long">
+        delete from tb_alarm_event where id = #{id}
+    </delete>
+
+    <delete id="deleteTbAlarmEventByIds" parameterType="String">
+        delete from tb_alarm_event where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
