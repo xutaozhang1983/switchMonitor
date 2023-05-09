@@ -1,5 +1,6 @@
 package com.ruoyi.utils;
 
+import com.ruoyi.common.utils.StringUtils;
 import org.snmp4j.*;
 import org.snmp4j.event.ResponseEvent;
 import org.snmp4j.mp.MPv1;
@@ -147,8 +148,11 @@ public class SnmpConfig {
 
         try {
             ResponseEvent send = snmp.send(pdu, target);
+            if (StringUtils.isNull(send.getResponse())) {
+                return null;
+            }
             Vector<? extends VariableBinding> variableBindings = send.getResponse().getVariableBindings();
-            System.out.println(variableBindings);
+//            System.out.println(variableBindings);
             return variableBindings.get(0).getVariable().toString();
         } catch (IOException e) {
             e.printStackTrace();
@@ -225,8 +229,6 @@ public class SnmpConfig {
      */
     public Map<Integer, List<String>> createTables(List<String> oidList, int pduRequest, Target target){
         Map<Integer, List<String>> resultMap = new LinkedHashMap<>();
-
-
         // 转换接收的oid数据类型
         OID[] oidArray = new OID[oidList.size()];
         for (int i = 0; i < oidList.size(); i++) { oidArray[i] = new OID(oidList.get(i)); }
@@ -238,12 +240,10 @@ public class SnmpConfig {
         for (TableEvent tableEvent : eventList) {
             VariableBinding[] columns = tableEvent.getColumns();
             List<String> resultList = new ArrayList<>();
-
             for (VariableBinding column : columns) {
                 String result = column.getVariable().toString();
                 resultList.add(result);
             }
-
             resultMap.put(d++, resultList);
         }
         return resultMap;

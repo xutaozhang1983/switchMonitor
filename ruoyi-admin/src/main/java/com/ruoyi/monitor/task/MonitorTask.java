@@ -2,10 +2,7 @@ package com.ruoyi.monitor.task;
 
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.monitor.domain.DeviceInfoDTO;
-import com.ruoyi.monitor.domain.TbDevice;
-import com.ruoyi.monitor.domain.TbDeviceItem;
-import com.ruoyi.monitor.domain.TbDeviceItemHis;
+import com.ruoyi.monitor.domain.*;
 import com.ruoyi.monitor.domain.vo.DeviceVO;
 import com.ruoyi.monitor.enums.AlarmEnum;
 import com.ruoyi.monitor.enums.DeviceItem;
@@ -13,6 +10,7 @@ import com.ruoyi.monitor.enums.StatusEnum;
 import com.ruoyi.monitor.service.ITbDeviceItemHisService;
 import com.ruoyi.monitor.service.ITbDeviceItemService;
 import com.ruoyi.monitor.service.ITbDeviceService;
+import com.ruoyi.monitor.service.ITbEventsService;
 import com.ruoyi.utils.PingUtil;
 import com.ruoyi.utils.SnmpDeviceData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,10 @@ public class MonitorTask {
 
     @Autowired
     ITbDeviceItemHisService itemHisService;
+
+    @Autowired
+    ITbEventsService eventsService;
+
     public void deviceMonitor(){
         TbDevice tbDevice = new TbDevice();
         tbDevice.setEnable(0);
@@ -44,22 +46,20 @@ public class MonitorTask {
             }else{
                 nowStatus = StatusEnum.ERROR.getCode();
             }
-            System.out.println(nowStatus+"----nowStatus");
+            String content= "";
             if (!lastStatus.equals(nowStatus)){
                 device.setStatus(nowStatus);
                 tbDeviceService.updateTbDevice(device);
-                String content;
+
                 if (!nowStatus.equals(StatusEnum.OK.getCode())){
-                    content = String.format(StatusEnum.ERROR.getContent(),device.getGroupName(),device.getDeviceName()+device.getDeviceIp());
-                    System.out.println(content);
-                    System.out.println("ERRor");
+                    content = String.format(StatusEnum.ERROR.getContent(),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
                 }else{
-                    content = String.format(StatusEnum.OK.getContent(),device.getGroupName(),device.getDeviceName()+device.getDeviceIp());
+                    content = String.format(StatusEnum.OK.getContent(),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
                     System.out.println(content);
-                    System.out.println("ok");
                 }
-//                saveAlarmEvent(nowStatus,content,device.getId());
+                saveEvent(nowStatus,content,device.getId());
             }
+
 
         }
 
@@ -76,14 +76,14 @@ public class MonitorTask {
             tbDeviceService.updateTbDevice(device);
         }
     }
-//    private void saveAlarmEvent(String status,String content,Long deviceId){
-//        TbEvent alarmEvent = new TbAlarmEvent();
-//        alarmEvent.setStatus(status);
-//        alarmEvent.setAlarmContent(content);
-//        alarmEvent.setAlarmLevel(AlarmEnum.getAlarmLevel(status));
-//        alarmEvent.setDeviceId(deviceId);
-//        alarmEventService.insertTbAlarmEvent(alarmEvent);
-//    }
+    private void saveEvent(String status,String content,Long deviceId){
+        TbEvents event = new TbEvents();
+        event.setStatus(status);
+        event.setAlarmContent(content);
+        event.setAlarmLevel(AlarmEnum.getAlarmLevel(status));
+        event.setDeviceId(deviceId);
+        eventsService.insertTbEvents(event);
+    }
 
     public void monitorItem(){
         TbDevice tbDevice = new TbDevice();
@@ -92,13 +92,17 @@ public class MonitorTask {
         tbDevice.setId(2L);
         List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
         for (TbDevice device:deviceDTOList) {
+            System.out.println(device.getDeviceName()+"获取CPU 内存信息");
             SnmpDeviceData snmpDevice = new SnmpDeviceData(device);
             if( StringUtils.isEmpty(device.getManufacturer())){
                 deviceUpdate();
             }
             Map<String ,String> cpuMemMap = snmpDevice.acquireCpuMem(device.getManufacturer());
-            for (String key:cpuMemMap.keySet()
-                 ) {
+            if(StringUtils.isEmpty(cpuMemMap)){
+                System.out.println(device.getDeviceName()+"获取CPU 内存信息失败。。。。。");
+                continue;
+            }
+            for (String key:cpuMemMap.keySet()) {
                 TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
                 if (StringUtils.isNotNull(item)) {
                     item.setLastValue(item.getValue());
@@ -110,17 +114,35 @@ public class MonitorTask {
                     saveItem(1L, device.getId(), key, key, cpuMemMap.get(key));
                 }
             }
+            // 端口信息
             Map<String,String> ifStatusMap = snmpDevice.deviceItemInfo();
             for (String key:ifStatusMap.keySet()) {
                 TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
                 if (StringUtils.isNotNull(item)) {
                     item.setStatus(ifStatusMap.get(key));
+                    item.setClock(DateUtils.timestamp());
                     itemService.updateTbDeviceItem(item);
                 }else {
                     saveItem(0L, device.getId(),key , "ifIn,ifOut", cpuMemMap.get(key));
                 }
             }
 
+            // 端口流量
+            Map<String ,Long> ifInFlowMap = snmpDevice.ifInFlow();
+            Map<String ,Long> ifOutFlowMap = snmpDevice.ifOutFlow();
+            for (String key: ifInFlowMap.keySet()) {
+                TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
+                if(StringUtils.isNotNull(item)){
+                    String[] lastFlow = item.getValue().split(",");
+                    item.setLastValue(item.getValue());
+                    Long ifIn = ifInFlowMap.get(key) - Long.parseLong(lastFlow[0]);
+                    Long ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
+                    item.setValue(String.valueOf(ifIn)+","+String.valueOf(ifOut));
+                    itemService.updateTbDeviceItem(item);
+                    saveItemHis(item.getId(),device.getId(),String.valueOf(ifInFlowMap.get(key)),"ifIn");
+                    saveItemHis(item.getId(),device.getId(),String.valueOf(ifOutFlowMap.get(key)),"ifOut");
+                }
+            }
         }
     }
 

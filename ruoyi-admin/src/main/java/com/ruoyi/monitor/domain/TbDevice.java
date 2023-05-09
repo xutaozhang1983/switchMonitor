@@ -57,11 +57,10 @@ public class TbDevice extends BaseEntity
     private Integer snmpPort;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "Snmp用户")
     private String snmpUsername;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "Snmp密码")
     private String snmpPassword;
 
     /** $column.columnComment */
@@ -97,7 +96,7 @@ public class TbDevice extends BaseEntity
     private Integer enable;
 
     /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "启动时间")
     private String uptime;
 
     private String username;

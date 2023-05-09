@@ -106,7 +106,12 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     }
 
     public static long timestamp() {
-        return  System.currentTimeMillis() / 1000;
+        String format = "yyyy-MM-dd HH:mm:00";
+        String timeStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern(format));
+        System.out.println(timeStr);
+        long timestamp = LocalDateTime.parse(timeStr, DateTimeFormatter.ofPattern(format))
+                .toInstant(ZoneOffset.of("+8")).toEpochMilli();
+        return timestamp/1000L;
     }
 
     public static String timestamp2Date(long timestamp) {
@@ -199,7 +204,8 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     }
 
     public static void main(String[] args) {
+
+//        System.out.println(timestamp/1000L);
         System.out.println(timestamp());
-        System.out.println(timestamp2Date(timestamp()));
     }
 }
