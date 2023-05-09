@@ -56,7 +56,7 @@ public class PingUtil {
                 log.error("50");
                 break;
             }
-            System.out.println(ping("192.168.10.1"));
+            System.out.println(ping("192.168.0.240"));
             i++;
 
         }

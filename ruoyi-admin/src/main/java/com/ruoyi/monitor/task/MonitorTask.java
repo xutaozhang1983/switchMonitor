@@ -6,6 +6,7 @@ import com.ruoyi.monitor.domain.DeviceInfoDTO;
 import com.ruoyi.monitor.domain.TbDevice;
 import com.ruoyi.monitor.domain.TbDeviceItem;
 import com.ruoyi.monitor.domain.TbDeviceItemHis;
+import com.ruoyi.monitor.domain.vo.DeviceVO;
 import com.ruoyi.monitor.enums.AlarmEnum;
 import com.ruoyi.monitor.enums.DeviceItem;
 import com.ruoyi.monitor.enums.StatusEnum;
@@ -34,25 +35,28 @@ public class MonitorTask {
     public void deviceMonitor(){
         TbDevice tbDevice = new TbDevice();
         tbDevice.setEnable(0);
-        List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
-        for (TbDevice device:deviceDTOList) {
+        List<DeviceVO> deviceDTOList= tbDeviceService.selectTbDeviceList(tbDevice);
+        for (DeviceVO device:deviceDTOList) {
             String lastStatus = device.getStatus();
             String nowStatus;
-            if(!PingUtil.ping(device.getDeviceIp())) {
-                nowStatus = StatusEnum.ERROR.getCode();
-            }else{
+            if(PingUtil.ping(device.getDeviceIp())) {
                 nowStatus = StatusEnum.OK.getCode();
+            }else{
+                nowStatus = StatusEnum.ERROR.getCode();
             }
-            System.out.println(nowStatus+"------");
+            System.out.println(nowStatus+"----nowStatus");
             if (!lastStatus.equals(nowStatus)){
                 device.setStatus(nowStatus);
                 tbDeviceService.updateTbDevice(device);
                 String content;
-                if (nowStatus.equals(StatusEnum.ERROR.getCode())){
-                    content = String.format(StatusEnum.ERROR.getContent(),"设备",device.getDeviceName()+device.getDeviceIp());
-//
+                if (!nowStatus.equals(StatusEnum.OK.getCode())){
+                    content = String.format(StatusEnum.ERROR.getContent(),device.getGroupName(),device.getDeviceName()+device.getDeviceIp());
+                    System.out.println(content);
+                    System.out.println("ERRor");
                 }else{
-                    content = String.format(StatusEnum.OK.getContent(),"设备",device.getDeviceName()+device.getDeviceIp());
+                    content = String.format(StatusEnum.OK.getContent(),device.getGroupName(),device.getDeviceName()+device.getDeviceIp());
+                    System.out.println(content);
+                    System.out.println("ok");
                 }
 //                saveAlarmEvent(nowStatus,content,device.getId());
 
@@ -62,7 +66,9 @@ public class MonitorTask {
     }
     public void deviceUpdate(){
         TbDevice tbDevice = new TbDevice();
-        tbDevice.setEnable(0);
+//        tbDevice.setEnable(0);
+//        tbDevice.setStatus("0");
+        tbDevice.setId(2L);
         List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
         for (TbDevice device:deviceDTOList) {
             SnmpDeviceData snmpDevice = new SnmpDeviceData(device);
@@ -81,7 +87,9 @@ public class MonitorTask {
 
     public void monitorItem(){
         TbDevice tbDevice = new TbDevice();
-        tbDevice.setEnable(0);
+//        tbDevice.setEnable(0);
+//        tbDevice.setStatus("0");
+        tbDevice.setId(2L);
         List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
         for (TbDevice device:deviceDTOList) {
             SnmpDeviceData snmpDevice = new SnmpDeviceData(device);
@@ -95,6 +103,7 @@ public class MonitorTask {
                 if (StringUtils.isNotNull(item)) {
                     item.setLastValue(item.getValue());
                     item.setValue(cpuMemMap.get(key));
+                    item.setClock(DateUtils.timestamp());
                     itemService.updateTbDeviceItem(item);
                     saveItemHis(item.getId(),device.getId(),cpuMemMap.get(key),key);
                 } else {

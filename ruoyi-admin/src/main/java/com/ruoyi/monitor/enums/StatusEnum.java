@@ -1,10 +1,10 @@
 package com.ruoyi.monitor.enums;
 
 public enum StatusEnum {
-    OK("0","%s:%s OK"),
+    OK("0","%s - %s - %s OK"),
 
-    WARING("1", "%s:%s 报警,请尽快检查！"),
-    ERROR("2", "%s:%s 无法链接,请尽快检查！");
+    WARING("1", "%s- %s - %s 无法链接,请尽快检查！"),
+    ERROR("2", "%s- %s - %s 无法链接,请尽快检查！");
 
     private final String code;
     private final String content;

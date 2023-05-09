@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.TbEventsMapper">
+    
+    <resultMap type="TbEvents" id="TbEventsResult">
+        <result property="id"    column="id"    />
+        <result property="deviceId"    column="device_id"    />
+        <result property="itemId"    column="item_id"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="alarmContent"    column="alarm_content"    />
+        <result property="alarmLevel"    column="alarm_level"    />
+        <result property="alarmSendTimes"    column="alarm_send_times"    />
+        <result property="closedAt"    column="closed_at"    />
+        <result property="closedNote"    column="closed_note"    />
+        <result property="closedUser"    column="closed_user"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+    </resultMap>
+
+    <sql id="selectTbEventsVo">
+        select id, device_id, item_id, item_name, alarm_content, alarm_level, alarm_send_times, closed_at, closed_note, closed_user, status, create_by, create_time from tb_events
+    </sql>
+
+    <select id="selectTbEventsList" parameterType="TbEvents" resultMap="TbEventsResult">
+        <include refid="selectTbEventsVo"/>
+        <where>  
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="itemId != null "> and item_id = #{itemId}</if>
+            <if test="itemName != null  and itemName != ''"> and item_name like concat('%', #{itemName}, '%')</if>
+            <if test="alarmContent != null  and alarmContent != ''"> and alarm_content = #{alarmContent}</if>
+            <if test="alarmLevel != null  and alarmLevel != ''"> and alarm_level = #{alarmLevel}</if>
+            <if test="alarmSendTimes != null "> and alarm_send_times = #{alarmSendTimes}</if>
+            <if test="closedAt != null "> and closed_at = #{closedAt}</if>
+            <if test="closedNote != null  and closedNote != ''"> and closed_note = #{closedNote}</if>
+            <if test="closedUser != null  and closedUser != ''"> and closed_user = #{closedUser}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbEventsById" parameterType="Long" resultMap="TbEventsResult">
+        <include refid="selectTbEventsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbEvents" parameterType="TbEvents" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_events
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">device_id,</if>
+            <if test="itemId != null">item_id,</if>
+            <if test="itemName != null">item_name,</if>
+            <if test="alarmContent != null">alarm_content,</if>
+            <if test="alarmLevel != null">alarm_level,</if>
+            <if test="alarmSendTimes != null">alarm_send_times,</if>
+            <if test="closedAt != null">closed_at,</if>
+            <if test="closedNote != null">closed_note,</if>
+            <if test="closedUser != null">closed_user,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="deviceId != null">#{deviceId},</if>
+            <if test="itemId != null">#{itemId},</if>
+            <if test="itemName != null">#{itemName},</if>
+            <if test="alarmContent != null">#{alarmContent},</if>
+            <if test="alarmLevel != null">#{alarmLevel},</if>
+            <if test="alarmSendTimes != null">#{alarmSendTimes},</if>
+            <if test="closedAt != null">#{closedAt},</if>
+            <if test="closedNote != null">#{closedNote},</if>
+            <if test="closedUser != null">#{closedUser},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbEvents" parameterType="TbEvents">
+        update tb_events
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="deviceId != null">device_id = #{deviceId},</if>
+            <if test="itemId != null">item_id = #{itemId},</if>
+            <if test="itemName != null">item_name = #{itemName},</if>
+            <if test="alarmContent != null">alarm_content = #{alarmContent},</if>
+            <if test="alarmLevel != null">alarm_level = #{alarmLevel},</if>
+            <if test="alarmSendTimes != null">alarm_send_times = #{alarmSendTimes},</if>
+            <if test="closedAt != null">closed_at = #{closedAt},</if>
+            <if test="closedNote != null">closed_note = #{closedNote},</if>
+            <if test="closedUser != null">closed_user = #{closedUser},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbEventsById" parameterType="Long">
+        delete from tb_events where id = #{id}
+    </delete>
+
+    <delete id="deleteTbEventsByIds" parameterType="String">
+        delete from tb_events where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

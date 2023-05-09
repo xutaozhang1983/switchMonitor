@@ -1,5 +1,6 @@
 package com.ruoyi.utils;
 
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.web.domain.server.Sys;
 import com.ruoyi.monitor.constants.OidConstants;
 import com.ruoyi.monitor.constants.OidEnum;
@@ -77,16 +78,20 @@ public class SnmpDeviceData extends SnmpConfig {
     /*采集CPU使用率*/
     public Map<String,String> acquireCpuMem(String deviceMenu){
         init();
-        String cpuOid = deviceMenu+"_cpu";
-        String memOid = deviceMenu+"_mem";
         Map<String,String> map = new HashMap<>();
-        String cpuUsage = createPDU(OidEnum.getOidByName(cpuOid), PDU_GETNEXT, target);
-        map.put(DeviceItem.CPU.getItem(),cpuUsage);
-        List<String> memList = createTable(OidEnum.getOidByName(memOid), PDU_GETNEXT,target);
-        for (String usage:memList) {
-            if (Long.parseLong(usage) >0){
-                map.put(DeviceItem.MEM.getItem(),usage);
-                break;
+        String cpuOid = OidEnum.getOidByName(deviceMenu+"_CPU");
+        String memOid = OidEnum.getOidByName(deviceMenu+"_MEM");
+        if (StringUtils.isNotNull(cpuOid)){
+            String cpuUsage = createPDU(cpuOid, PDU_GETNEXT, target);
+            map.put(DeviceItem.CPU.getItem(),cpuUsage);
+        }
+        if (StringUtils.isNotNull(memOid)){
+            List<String> memList = createTable(memOid, PDU_GETNEXT,target);
+            for (String usage:memList) {
+                if (Long.parseLong(usage) >0){
+                    map.put(DeviceItem.MEM.getItem(),usage);
+                    break;
+                }
             }
         }
         snmpClose();
@@ -244,9 +249,9 @@ public class SnmpDeviceData extends SnmpConfig {
     private String manufacturerEstimate(String sysDescr){
         String vendor ;
         if (sysDescr.toLowerCase().contains("cisco")) {
-            vendor = "Cisco";
+            vendor = "CISCO";
         } else if (sysDescr.toLowerCase().contains("huawei")) {
-            vendor = "Huawei";
+            vendor = "HUAWEI";
         } else if (sysDescr.toLowerCase().contains("h3c")) {
             vendor = "H3C";
         } else if (sysDescr.toLowerCase().contains("juniper")) {
@@ -254,7 +259,7 @@ public class SnmpDeviceData extends SnmpConfig {
         } else {
             vendor = "Unknown";
         }
-        return vendor;
+        return vendor.toUpperCase();
     }
 
 
