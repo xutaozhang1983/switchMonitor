@@ -7,7 +7,7 @@
     <el-table-column label="所在组" prop="groupName"></el-table-column>
     <el-table-column label="设备状态" align="center">
       <template #default="scope">
-        <div class="deviceStatus" v-if="scope.row.deviceStatus === '0'">
+        <div class="deviceStatus" v-if="scope.row.status === '0'">
           <el-icon class="mr5" color="#79c155" size="20px"><CircleCheckFilled /></el-icon>
           <span>正常</span>
         </div>

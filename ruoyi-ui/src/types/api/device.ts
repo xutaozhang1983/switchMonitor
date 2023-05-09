@@ -4,8 +4,9 @@ import { PageQueryParam } from "./base"
  * 设备查询参数类型声明
  */
 export interface DeviceQueryParam extends PageQueryParam {
-  groupId: number | undefined, // 设备组
   deviceName: string | undefined, // 设备名称
+  groupId: number | undefined, // 设备组
+  deviceType: string | undefined, // 设备类型
   deviceIp: string | undefined, // 设备IP
   status: string | undefined // 状态,
   enable: number | undefined // 是否启用监控
