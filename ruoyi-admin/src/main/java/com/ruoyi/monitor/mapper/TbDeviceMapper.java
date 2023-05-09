@@ -54,7 +54,7 @@ public interface TbDeviceMapper
      * @param id 设备列主键
      * @return 结果
      */
-    public int deleteTbDeviceById(Long id);
+    public int deleteTbDeviceByIds(Long id);
 
     /**
      * 批量删除设备列

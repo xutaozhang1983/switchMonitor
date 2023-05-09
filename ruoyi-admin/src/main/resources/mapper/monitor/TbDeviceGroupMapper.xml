@@ -42,6 +42,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>
             <if test="groupName != null  and groupName != ''"> and g.group_name like concat('%', #{groupName}, '%')</if>
             <if test="id != null  and alarmUserGrpId != ''"> and g.id = #{id}</if>
+            <if test="status != null  and status != ''"> and g.status = #{status}</if>
         </where>
         ${params.dataScope}
         GROUP BY g.id

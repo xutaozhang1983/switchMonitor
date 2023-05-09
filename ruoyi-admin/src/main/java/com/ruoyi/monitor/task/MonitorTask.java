@@ -59,8 +59,8 @@ public class MonitorTask {
                     System.out.println("ok");
                 }
 //                saveAlarmEvent(nowStatus,content,device.getId());
-
             }
+
         }
 
     }
@@ -110,6 +110,17 @@ public class MonitorTask {
                     saveItem(1L, device.getId(), key, key, cpuMemMap.get(key));
                 }
             }
+            Map<String,String> ifStatusMap = snmpDevice.deviceItemInfo();
+            for (String key:ifStatusMap.keySet()) {
+                TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
+                if (StringUtils.isNotNull(item)) {
+                    item.setStatus(ifStatusMap.get(key));
+                    itemService.updateTbDeviceItem(item);
+                }else {
+                    saveItem(0L, device.getId(),key , "ifIn,ifOut", cpuMemMap.get(key));
+                }
+            }
+
         }
     }
 
@@ -120,6 +131,9 @@ public class MonitorTask {
         deviceItem.setItemName(itemName);
         deviceItem.setCounter(counter);
         deviceItem.setValue(value);
+        if (isPort == 0){
+            deviceItem.setStatus(value);
+        }
         itemService.insertTbDeviceItem(deviceItem);
 
     }

@@ -118,7 +118,7 @@ public class TbDeviceGroupController extends BaseController
     public AjaxResult changeStatus(@RequestBody TbDeviceGroup deviceGroup)
     {
         TbDeviceGroup deviceGrp = tbDeviceGroupService.selectTbDeviceGroupById(deviceGroup.getId());
-        deviceGrp.setStatus(deviceGrp.getStatus());
+        deviceGrp.setStatus(deviceGroup.getStatus());
         deviceGrp.setUpdateBy(getUsername());
         return toAjax(tbDeviceGroupService.updateTbDeviceGroup(deviceGrp));
     }

@@ -64,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deviceType != null "> and d.device_type = #{deviceType}</if>
             <if test="deviceName != null  and deviceName != ''"> and d.device_name like concat('%', #{deviceName}, '%')</if>
             <if test="status != null  and status != ''"> and d.status = #{status}</if>
+            <if test="deviceIp != null  and deviceIp != ''"> and d.device_ip = #{deviceIp}</if>
             <if test="enable != null "> and d.enable = #{enable}</if>
         </where>
         ${params.dataScope}

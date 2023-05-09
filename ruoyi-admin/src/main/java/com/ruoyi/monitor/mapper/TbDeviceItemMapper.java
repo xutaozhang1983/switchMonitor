@@ -9,7 +9,7 @@ import com.ruoyi.monitor.domain.TbDeviceItem;
  * @author ruoyi
  * @date 2023-05-07
  */
-public interface TbDeviceItemMapper 
+public interface TbDeviceItemMapper
 {
     /**
      * 查询设备监控指标
@@ -60,4 +60,6 @@ public interface TbDeviceItemMapper
     public int deleteTbDeviceItemByIds(Long[] ids);
 
     TbDeviceItem selectItemExist(TbDeviceItem deviceItem);
+
+    void deleteItemByDeviceIds(List<Long> deviceIds);
 }
