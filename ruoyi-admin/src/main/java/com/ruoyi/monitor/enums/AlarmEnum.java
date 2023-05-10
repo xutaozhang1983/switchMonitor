@@ -1,21 +1,21 @@
 package com.ruoyi.monitor.enums;
 
 public enum AlarmEnum {
-    INFO(0,"INFO"),
-    WARING(1,"WARING"),
-    ERROR(2, "ERROR");
+    INFO("0","INFO"),
+    WARING("1","WARING"),
+    ERROR("2", "ERROR");
 
 
-    private final Integer alarmId;
+    private final String alarmId;
     private final String alarmLevel;
 
 
-    private AlarmEnum(Integer alarmId, String alarmLevel) {
+    private AlarmEnum(String alarmId, String alarmLevel) {
         this.alarmId = alarmId;
         this.alarmLevel = alarmLevel;
     }
 
-    public Integer getAlarmId() {
+    public String getAlarmId() {
         return alarmId;
     }
 

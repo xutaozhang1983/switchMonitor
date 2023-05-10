@@ -50,17 +50,9 @@ public class MonitorTask {
             if (!lastStatus.equals(nowStatus)){
                 device.setStatus(nowStatus);
                 tbDeviceService.updateTbDevice(device);
-
-                if (!nowStatus.equals(StatusEnum.OK.getCode())){
-                    content = String.format(StatusEnum.ERROR.getContent(),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
-                }else{
-                    content = String.format(StatusEnum.OK.getContent(),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
-                    System.out.println(content);
-                }
+                content = String.format(StatusEnum.getContentByCode(nowStatus),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
                 saveEvent(nowStatus,content,device.getId());
             }
-
-
         }
 
     }
@@ -111,51 +103,56 @@ public class MonitorTask {
                     itemService.updateTbDeviceItem(item);
                     saveItemHis(item.getId(),device.getId(),cpuMemMap.get(key),key);
                 } else {
-                    saveItem(1L, device.getId(), key, key, cpuMemMap.get(key));
+                    saveItem(1L, device.getId(), key, key, cpuMemMap.get(key),"0");
                 }
             }
             // 端口信息
             Map<String,String> ifStatusMap = snmpDevice.deviceItemInfo();
-            for (String key:ifStatusMap.keySet()) {
-                TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
-                if (StringUtils.isNotNull(item)) {
-                    item.setStatus(ifStatusMap.get(key));
-                    item.setClock(DateUtils.timestamp());
-                    itemService.updateTbDeviceItem(item);
-                }else {
-                    saveItem(0L, device.getId(),key , "ifIn,ifOut", cpuMemMap.get(key));
-                }
-            }
-
             // 端口流量
             Map<String ,Long> ifInFlowMap = snmpDevice.ifInFlow();
             Map<String ,Long> ifOutFlowMap = snmpDevice.ifOutFlow();
-            for (String key: ifInFlowMap.keySet()) {
+
+            for (String key: ifStatusMap.keySet()) {
                 TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
+                String value = "0,0";
                 if(StringUtils.isNotNull(item)){
-                    String[] lastFlow = item.getValue().split(",");
-                    item.setLastValue(item.getValue());
-                    Long ifIn = ifInFlowMap.get(key) - Long.parseLong(lastFlow[0]);
-                    Long ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
-                    item.setValue(String.valueOf(ifIn)+","+String.valueOf(ifOut));
+                    if (StringUtils.isNotNull(item.getValue())){
+                        value = item.getValue();
+                    }
+                    String[] lastFlow = value.split(",");
+                    Long ifIn = 0L;
+                    Long ifOut = 0L;
+                    if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)){
+                        ifIn = ifInFlowMap.get(key) - Long.parseLong(lastFlow[0]);
+                        ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
+                        saveItemHis(item.getId(),device.getId(),String.valueOf(ifInFlowMap.get(key)),"ifIn");
+                        saveItemHis(item.getId(), device.getId(), String.valueOf(ifOutFlowMap.get(key)), "ifOut");
+                    }
+                    item.setLastValue(value);
+                    item.setValue(ifIn + "," + ifOut);
+                    item.setStatus(ifStatusMap.get(key));
                     itemService.updateTbDeviceItem(item);
-                    saveItemHis(item.getId(),device.getId(),String.valueOf(ifInFlowMap.get(key)),"ifIn");
-                    saveItemHis(item.getId(),device.getId(),String.valueOf(ifOutFlowMap.get(key)),"ifOut");
+
+                }else {
+
+                    if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)){
+                        value = ifInFlowMap.get(key)+","+ifOutFlowMap.get(key);
+                    }
+                    saveItem(0L, device.getId(),key , "ifIn,ifOut", value,ifStatusMap.get(key));
                 }
             }
         }
     }
 
-    private void saveItem(Long isPort,Long deviceId,String itemName,String counter,String value){
+    private void saveItem(Long isPort,Long deviceId,String itemName,String counter,String value,String status){
         TbDeviceItem deviceItem = new TbDeviceItem();
+        deviceItem.setClock(DateUtils.timestamp());
         deviceItem.setIsPort(isPort);
         deviceItem.setDeviceId(deviceId);
         deviceItem.setItemName(itemName);
         deviceItem.setCounter(counter);
         deviceItem.setValue(value);
-        if (isPort == 0){
-            deviceItem.setStatus(value);
-        }
+        deviceItem.setStatus(status);
         itemService.insertTbDeviceItem(deviceItem);
 
     }
