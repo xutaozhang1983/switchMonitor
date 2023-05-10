@@ -2,11 +2,11 @@ import { DeviceQueryParam, DeviceFormData } from '@/types/api/device'
 import { listDevice, getDevice, addDevice, updateDevice, delDevice, changeDeviceEnable } from "@/api/device"
 import { listDeviceGroup } from '@/api/deviceGroup'
 
-const useDeviceStore = defineStore('useDeviceStore',
+const useNetworkDeviceStore = defineStore('useNetworkDeviceStore',
   {
     state: () => ({
       loading: false, // 设备数据loading状态
-      queryParams: { pageNum: 1, pageSize: 10 } as DeviceQueryParam, // 查询参数
+      queryParams: { pageNum: 1, pageSize: 10, deviceType: '1' } as DeviceQueryParam, // 查询参数
       formData: {} as DeviceFormData, // 设备新增、修改提交参数
       showSearch: true, // 是否显示搜索区域
       total: 0, // 设备数据总条目数
@@ -25,9 +25,9 @@ const useDeviceStore = defineStore('useDeviceStore',
         for (key in this.formData) {
           this.formData[key] = undefined
         }
+        this.formData.deviceType = '1'
         this.formData.enable = '0'
         this.formData.snmpCommunity = 'public'
-        this.formData.portNum = 16
         this.formData.snmpPort = 161
       },
       // 查询设备组数据
@@ -42,7 +42,10 @@ const useDeviceStore = defineStore('useDeviceStore',
         this.loading = true
         try {
           let { rows, total }: any = await listDevice(this.queryParams)
-          rows.map((item: any) => { item.enable = item.enable.toString() })
+          rows.map((item: any) => { 
+            item.enable = item.enable.toString()
+            item.snmpVersion = item.snmpVersion.toString()
+          })
           this.deviceData = rows
           this.total = total
         } catch (error: any) {
@@ -55,6 +58,7 @@ const useDeviceStore = defineStore('useDeviceStore',
         try {
           let {data} = await getDevice(deviceId)
           data.enable = data.enable.toString()
+          data.snmpVersion = data.snmpVersion.toString()
           this.formData = data
         } catch {}
       },
@@ -86,4 +90,4 @@ const useDeviceStore = defineStore('useDeviceStore',
   }
 )
 
-export default useDeviceStore 
+export default useNetworkDeviceStore 

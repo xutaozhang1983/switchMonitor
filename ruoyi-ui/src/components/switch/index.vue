@@ -1,9 +1,10 @@
 <template>
   <div class="container">
-    <div class="body" :style="{'--height': props.height + 'px', 'margin-top': b > 2 ? '30px' : '0'}" v-for="(b, index1) in bodyNum" :key="b">
-      <div class="portBox" v-for="(p, index2) in 16" :key="p">
-        <div class="port" v-if="props.data.ports[index2+(index1*16)]">
-          <img :src="SwitchOn" v-if="props.data.ports[index2+(index1*16)].status === 0"/>
+    <div class="body" v-for="(item1, index1) in props.data" :key="index1">
+      <div class="box" v-for="(item2, index2) in item1" :key="index2">
+        <div class="name">{{ transName(item2.itemName) }}</div>
+        <div class="port">
+          <img :src="SwitchOn" v-if="item2.status === '1'"/>
           <img :src="SwitchOff" v-else/>
         </div>
       </div>
@@ -15,23 +16,18 @@
   import SwitchOn from '@/assets/images/switch-on.png'
   import SwitchOff from '@/assets/images/switch-off.png'
 
-  interface Port {
-    total: number,
-    ports: { name: string, status: number }[]
-  }
-
   interface Props {
-    height?: number,
-    data: Port
+    data: any
   }
 
-  const props = withDefaults(defineProps<Props>(), {
-    height: 90
-  })
+  const props = defineProps<Props>()
 
-  const bodyNum = computed(() => {
-    return Math.ceil(props.data.total/16)
-  })
+  // 过滤名字
+  function transName(name: string) {
+    let result = name.match(/^(.).+(\d\/\d\/\d)$/)
+    return result![1]+result![2]
+  }
+
 </script>
 
 <style lang="scss">
@@ -39,30 +35,41 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    padding: 20px;
     .body {
-      margin-right: 30px;
-      width: 330px;
-      padding: 10px;
-      height: var(--height);
+      margin-right: 10px;
+      padding: 5px;
       background-color: #ebebec;
       border: 1px solid #d5d5d7;
-      display: grid;
-      grid-template-columns: repeat(8, 40px);
-      grid-template-rows: repeat(2, 40px);
-      .portBox {
-        width: 30px;
-        height: 30px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 40px;
+      .box {
+        position: relative;
+        margin-right: 10px;
+        width: 40px;
+        height: 40px;
         background-color: #dcddde;
         display: flex;
         justify-content: center;
         align-items: center;
+        .name {
+          font-size: 12px;
+          position: absolute;
+          left: 0px;
+          top: -25px;
+          color: #A8ABB2;
+        }
         .port {
-          width: 25px;
-          height: 25px;
+          width: 30px;
+          height: 30px;
           img {
             width: 100%;
             height: 100%;
           }
+        }
+        &:last-child {
+          margin-right: 0px;
         }
       }
     }

@@ -4,25 +4,27 @@
     <Query></Query>
     <!--操作区域-->
     <Operate></Operate>
-    <!--型号数据-->
+    <!--设备数据-->
     <DataTable></DataTable>
-    <!-- 添加、修改型号配置对话框 -->
+    <!-- 添加、修改设备配置对话框 -->
     <FormDialog ref="formDialog"></FormDialog>
   </div>
 </template>
 
-<script setup name="DeviceModel" lang="ts">
+<script setup name="NetworkDevice" lang="ts">
   import Query from './components/query.vue'
   import Operate from './components/operate.vue'
   import DataTable from './components/dataTable.vue'
   import FormDialog from './components/formDialog.vue'
-  import useDeviceModelStore from './store'
+  import useNetworkDeviceStore from './store'
 
-  const deviceModelStore = useDeviceModelStore()
+  const deviceStore = useNetworkDeviceStore()
 
   onBeforeMount(async () => {
-    // 获取型号数据
-    await deviceModelStore.getDeviceModelData()
+    // 获取设备组数据
+    await deviceStore.getDeviceGroupData()
+    // 获取设备数据
+    await deviceStore.getDeviceData()
   })
 
 </script>

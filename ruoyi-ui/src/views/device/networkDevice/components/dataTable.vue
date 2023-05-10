@@ -3,7 +3,6 @@
     <el-table-column type="selection" width="55" align="center" />
     <el-table-column label="编号" prop="id" width="100"/>
     <el-table-column label="设备名称" prop="deviceName"/>
-    <el-table-column label="设备类型" prop="deviceType" />
     <el-table-column label="所在组" prop="groupName"></el-table-column>
     <el-table-column label="设备状态" align="center">
       <template #default="scope">
@@ -58,17 +57,17 @@
 
 <script setup lang="ts">
   import { ElMessageBox, ElMessage, ElTooltip } from 'element-plus'
-  import useDeviceStore from '../store'
+  import useNetworkDeviceStore from '../store'
 
-  const deviceStore = useDeviceStore()
+  const deviceStore = useNetworkDeviceStore()
   const router = useRouter()
 
   // 跳转到监控
   function handleClickRow(row: any) {
     console.log(router)
     router.push({
-      path: '/deviceMonitor',
-      params: {
+      path: '/monitor/networkMonitor',
+      query: {
         id: row.id
       }
     })

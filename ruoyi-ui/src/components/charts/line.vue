@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart" :style="{'--height': props.height + 'px'}" :option="option" autoresize></v-chart>
+  <v-chart class="chart" :option="option" autoresize></v-chart>
 </template>
 
 <script setup lang="ts">
@@ -11,12 +11,11 @@
   import merge from 'deepmerge'
 
   interface Props {
-    height: number,
+    height: string,
     option?: any
   }
 
   const props = withDefaults(defineProps<Props>(), {
-    height: 300,
     option: () => {}
   })
 
@@ -29,7 +28,7 @@
     xAxis: [],
     yAxis: [
       {
-        name: 'Mbit/s',
+        name: 'Kbps',
         type: 'value'
       }
     ],
@@ -52,6 +51,6 @@
 
 <style lang="scss" scoped>
   .chart {
-    height: var(--height)
+    height: v-bind('props.height')
   }
 </style>

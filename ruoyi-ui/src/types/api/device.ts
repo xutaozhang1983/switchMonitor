@@ -22,7 +22,6 @@ export interface DeviceFormData {
   deviceType: string | undefined, // 设备类型
   deviceModel: string | undefined, // 设备型号
   deviceIp: string | undefined, // 设备IP
-  portNum: number | undefined, // 端口数
   snmpCommunity: string | undefined, // snmp团体名
   snmpVersion: number | undefined, // snmp版本号
   snmpPort: number | undefined, // snmp端口

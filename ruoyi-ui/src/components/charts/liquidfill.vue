@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart" :style="{'--height': props.height + 'px'}" :option="option" autoresize></v-chart>
+  <v-chart class="chart" :option="option" autoresize></v-chart>
 </template>
 
 <script setup lang="ts">
@@ -56,12 +56,11 @@
   const option = ref({})
 
   interface Props {
-    height: number,
+    height: string,
     option?: any
   }
 
   const props = withDefaults(defineProps<Props>(), {
-    height: 300,
     option: () => {}
   })
 
@@ -79,6 +78,6 @@
 
 <style lang="scss" scoped>
   .chart {
-    height: var(--height)
+    height: v-bind('props.height')
   }
 </style>

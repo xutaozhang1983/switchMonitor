@@ -8,11 +8,6 @@
           <el-option v-for="(item, index) in deviceStore.deviceGroupData" :key="index" :label="item.groupName" :value="item.id"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="设备类型" prop="deviceType">
-        <el-select v-model="deviceStore.queryParams.deviceType" placeholder="请选择" clearable style="width: 240px">
-          <el-option v-for="dict in sys_device_type" :key="dict.value" :label="dict.label" :value="dict.label"/>
-        </el-select>
-      </el-form-item>
       <el-form-item label="IP地址" prop="deviceIp">
         <el-input v-model="deviceStore.queryParams.deviceIp" placeholder="请输入" clearable style="width: 240px" @keyup.enter="handleQuery"/>
       </el-form-item>
@@ -35,23 +30,20 @@
 
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
-  import useDeviceStore from '../store'
+  import useNetworkDeviceStore from '../store'
 
   const { proxy } = getCurrentInstance() as any
-  const deviceStore = useDeviceStore()
+  const deviceStore = useNetworkDeviceStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
 
   const {
     sys_device_status,
-    sys_device_enable,
-    sys_device_type }: {
+    sys_device_enable }: {
     sys_device_status: DictType[],
-    sys_device_enable: DictType[],
-    sys_device_type: DictType[] } = proxy.useDict(
+    sys_device_enable: DictType[] } = proxy.useDict(
     "sys_device_status",
-    "sys_device_enable",
-    "sys_device_type"
+    "sys_device_enable"
   )
 
   /** 搜索按钮操作 */

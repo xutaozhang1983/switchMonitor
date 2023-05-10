@@ -4,13 +4,6 @@
       <el-card header="基础信息" shadow="Never">
         <el-row :gutter="16">
           <el-col :span="12">
-            <el-form-item label="设备类型" prop="deviceType">
-              <el-select v-model="deviceStore.formData.deviceType" placeholder="请选择" style="width:100%">
-                <el-option v-for="(item, index) in sys_device_type" :key="index" :label="item.label" :value="item.label"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
             <el-form-item label="设备名称" prop="deviceName">
               <el-input v-model="deviceStore.formData.deviceName" placeholder="请输入" />
             </el-form-item>
@@ -30,11 +23,6 @@
           <el-col :span="12">
             <el-form-item label="IP地址" prop="deviceIp">
               <el-input v-model="deviceStore.formData.deviceIp" placeholder="请输入" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="12" v-if="deviceStore.formData.deviceType === '网络设备'">
-            <el-form-item label="接口数量" prop="portNum">
-              <el-input-number v-model="deviceStore.formData.portNum" placeholder="请输入" :min="0" style="width:100%"/>
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -101,21 +89,18 @@
 
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
-  import useDeviceStore from '../store'
+  import useNetworkDeviceStore from '../store'
 
   const { proxy } = getCurrentInstance() as any
-  const deviceStore = useDeviceStore()
+  const deviceStore = useNetworkDeviceStore()
 
   const {
-    sys_device_type,
     sys_manufacturer,
     sys_device_enable,
     sys_snmp_version }: {
-    sys_device_type: DictType[],
     sys_manufacturer: DictType[],
     sys_device_enable: DictType[],
     sys_snmp_version: DictType[] } = proxy.useDict(
-    "sys_device_type",
     "sys_manufacturer",
     "sys_device_enable",
     "sys_snmp_version"
