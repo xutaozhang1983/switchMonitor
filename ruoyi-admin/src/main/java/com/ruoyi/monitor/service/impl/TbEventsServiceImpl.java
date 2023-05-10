@@ -102,4 +102,13 @@ public class TbEventsServiceImpl implements ITbEventsService
            return tbEventsMapper.insertTbEvents(tbEvent);
        }
     }
+
+    @Override
+    public TbEvents selectEvent(Long deviceId,Long itemId,String status) {
+        TbEvents event = new TbEvents();
+        event.setStatus(status);
+        event.setDeviceId(deviceId);
+        event.setItemId(itemId);
+        return tbEventsMapper.selectEvent(event);
+    }
 }

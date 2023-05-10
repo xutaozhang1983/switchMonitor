@@ -51,7 +51,15 @@ public class MonitorTask {
                 device.setStatus(nowStatus);
                 tbDeviceService.updateTbDevice(device);
                 content = String.format(StatusEnum.getContentByCode(nowStatus),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
-                saveEvent(nowStatus,content,device.getId());
+                saveEvent(nowStatus,content,device.getId(),null);
+                if (nowStatus.equals(StatusEnum.OK.getCode())){ // 如果本次检查是OK，查询上次报警事件是否关闭，如果没关闭 自动关闭
+                    TbEvents events = eventsService.selectEvent(device.getId(),null,StatusEnum.ERROR.getCode());
+                    if (StringUtils.isNotNull(events)){
+                        events.setClosedUser("system");
+                        events.setClosedAt(DateUtils.getNowDate());
+                        eventsService.saveEvent(events);
+                    }
+                }
             }
         }
 
@@ -68,11 +76,12 @@ public class MonitorTask {
             tbDeviceService.updateTbDevice(device);
         }
     }
-    private void saveEvent(String status,String content,Long deviceId){
+    private void saveEvent(String status,String content,Long deviceId,Long itemId){
         TbEvents event = new TbEvents();
         event.setStatus(status);
         event.setAlarmContent(content);
         event.setAlarmLevel(AlarmEnum.getAlarmLevel(status));
+        event.setItemId(itemId);
         event.setDeviceId(deviceId);
         eventsService.insertTbEvents(event);
     }
@@ -116,9 +125,7 @@ public class MonitorTask {
                 TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
                 String value = "0,0";
                 if(StringUtils.isNotNull(item)){
-                    if (StringUtils.isNotNull(item.getValue())){
-                        value = item.getValue();
-                    }
+                    value = StringUtils.isNotNull(item.getValue()) ? item.getValue() : value;
                     String[] lastFlow = value.split(",");
                     Long ifIn = 0L;
                     Long ifOut = 0L;
@@ -132,9 +139,16 @@ public class MonitorTask {
                     item.setValue(ifIn + "," + ifOut);
                     item.setStatus(ifStatusMap.get(key));
                     itemService.updateTbDeviceItem(item);
-
+                    // 是否端口状态发生改变
+                    if (!item.getStatus().equals(ifStatusMap.get(key))){
+                        String status = ifStatusMap.get(key);
+                        if (!ifStatusMap.get(key).equals(StatusEnum.ERROR.getCode())){
+                            status = "0";
+                        }
+                        String text = String.format(StatusEnum.getContentByCode(status),device.getDeviceName()+device.getDeviceIp(),item.getItemName());
+                        saveEvent(status,text,device.getId(),item.getId());
+                    }
                 }else {
-
                     if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)){
                         value = ifInFlowMap.get(key)+","+ifOutFlowMap.get(key);
                     }

@@ -106,4 +106,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
+
+    <select id="selectEvent" parameterType="TbEvents" resultMap="TbEventsResult">
+        select * from tb_events
+        <where>
+            <if test="deviceId != null "> and device_id = #{deviceId}</if>
+            <if test="itemId != null "> and item_id = #{itemId}</if>
+            <if test="alarmLevel != null  and alarmLevel != ''"> and alarm_level = #{alarmLevel}</if>
+            <if test="alarmSendTimes != null "> and alarm_send_times = #{alarmSendTimes}</if>
+            <if test="closedAt == null "> </if>
+            <if test="closedNote != null  and closedNote != ''"> and closed_note = #{closedNote}</if>
+            <if test="closedUser != null  and closedUser != ''"> and closed_user = #{closedUser}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+        and closed_at is null
+        order by id desc limit 1
+    </select>
 </mapper>

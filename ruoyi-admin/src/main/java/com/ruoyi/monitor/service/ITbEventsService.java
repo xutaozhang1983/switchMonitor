@@ -60,4 +60,7 @@ public interface ITbEventsService
     public int deleteTbEventsById(Long id);
 
     int saveEvent(TbEvents tbEvent);
+
+
+    TbEvents selectEvent(Long deviceId,Long itemId,String status);
 }
