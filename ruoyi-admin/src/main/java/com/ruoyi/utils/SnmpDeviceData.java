@@ -88,7 +88,9 @@ public class SnmpDeviceData extends SnmpConfig {
         String memOid = OidEnum.getOidByName(deviceMenu+"_MEM");
         if (StringUtils.isNotNull(cpuOid)){
             String cpuUsage = createPDU(cpuOid, PDU_GETNEXT, target);
-            map.put(DeviceItem.CPU.getItem(),cpuUsage);
+            if(StringUtils.isNotNull(cpuUsage)){
+                map.put(DeviceItem.CPU.getItem(),cpuUsage);
+            }
         }
         if (StringUtils.isNotNull(memOid)){
             List<String> memList = createTable(memOid, PDU_GETNEXT,target);

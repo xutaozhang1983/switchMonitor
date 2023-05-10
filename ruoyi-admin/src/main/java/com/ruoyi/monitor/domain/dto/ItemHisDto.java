@@ -8,6 +8,7 @@ import java.util.Date;
 
 @Data
 public class ItemHisDto {
+    private Long deviceId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startClock;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

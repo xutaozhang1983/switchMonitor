@@ -61,6 +61,5 @@ public interface ITbEventsService
 
     int saveEvent(TbEvents tbEvent);
 
-
     TbEvents selectEvent(Long deviceId,Long itemId,String status);
 }

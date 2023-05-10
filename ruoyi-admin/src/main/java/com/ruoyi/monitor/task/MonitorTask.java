@@ -95,20 +95,17 @@ public class MonitorTask {
         for (TbDevice device:deviceDTOList) {
             System.out.println(device.getDeviceName()+"获取CPU 内存信息");
             SnmpDeviceData snmpDevice = new SnmpDeviceData(device);
-            if( StringUtils.isEmpty(device.getManufacturer())){
-                deviceUpdate();
-            }
+//            if( StringUtils.isNull(device.getManufacturer())){
+//                System.out.println(device.getDeviceName()+"更新设备信息");
+//                deviceUpdate();
+//            }
             Map<String ,String> cpuMemMap = snmpDevice.acquireCpuMem(device.getManufacturer());
-            if(StringUtils.isEmpty(cpuMemMap)){
-                System.out.println(device.getDeviceName()+"获取CPU 内存信息失败。。。。。");
-                continue;
-            }
             for (String key:cpuMemMap.keySet()) {
                 TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
                 if (StringUtils.isNotNull(item)) {
                     item.setLastValue(item.getValue());
                     item.setValue(cpuMemMap.get(key));
-                    item.setClock(DateUtils.timestamp());
+                    System.out.println("cpumem:"+key+":"+cpuMemMap.get(key)+key);
                     itemService.updateTbDeviceItem(item);
                     saveItemHis(item.getId(),device.getId(),cpuMemMap.get(key),key);
                 } else {
@@ -120,7 +117,6 @@ public class MonitorTask {
             // 端口流量
             Map<String ,Long> ifInFlowMap = snmpDevice.ifInFlow();
             Map<String ,Long> ifOutFlowMap = snmpDevice.ifOutFlow();
-
             for (String key: ifStatusMap.keySet()) {
                 TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
                 String value = "0,0";
@@ -163,7 +159,6 @@ public class MonitorTask {
 
     private void saveItem(Long isPort,Long deviceId,String itemName,String counter,String value,String status){
         TbDeviceItem deviceItem = new TbDeviceItem();
-        deviceItem.setClock(DateUtils.timestamp());
         deviceItem.setIsPort(isPort);
         deviceItem.setDeviceId(deviceId);
         deviceItem.setItemName(itemName);
@@ -176,7 +171,6 @@ public class MonitorTask {
 
     private void saveItemHis(Long itemId,Long deviceId,String value,String counter){
         TbDeviceItemHis itemHis = new TbDeviceItemHis();
-        itemHis.setClock(DateUtils.timestamp());
         itemHis.setItemId(itemId);
         itemHis.setDeviceId(deviceId);
         itemHis.setValue(value);
