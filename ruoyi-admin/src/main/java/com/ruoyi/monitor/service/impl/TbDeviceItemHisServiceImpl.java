@@ -1,6 +1,10 @@
 package com.ruoyi.monitor.service.impl;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.Map;
+
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.TbDeviceItemHis;
 import com.ruoyi.monitor.domain.dto.ItemHisDto;
@@ -55,7 +59,7 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     @Override
     public int insertTbDeviceItemHis(TbDeviceItemHis tbDeviceItemHis)
     {
-
+        tbDeviceItemHis.setClock(DateUtils.timestamp());
         return tbDeviceItemHisMapper.insertTbDeviceItemHis(tbDeviceItemHis);
     }
 
@@ -68,6 +72,7 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     @Override
     public int updateTbDeviceItemHis(TbDeviceItemHis tbDeviceItemHis)
     {
+        tbDeviceItemHis.setClock(DateUtils.timestamp());
         return tbDeviceItemHisMapper.updateTbDeviceItemHis(tbDeviceItemHis);
     }
 
@@ -77,11 +82,6 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
      * @param ids 需要删除的设备监控指标主键
      * @return 结果
      */
-    @Override
-    public int deleteTbDeviceItemHisByIds(Long[] ids)
-    {
-        return tbDeviceItemHisMapper.deleteTbDeviceItemHisByIds(ids);
-    }
 
     /**
      * 删除设备监控指标信息
@@ -98,5 +98,16 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     @Override
     public List<ItemGraphVo> selectGraph(ItemHisDto itemHisDto) {
         return tbDeviceItemHisMapper.selectGraph(itemHisDto);
+    }
+
+    @Override
+    public List<ItemGraphVo> deviceGraph(ItemHisDto itemHisDto) {
+        LocalDateTime now = LocalDateTime.now();
+
+        // 获取两个小时前的时间
+        LocalDateTime start = now.minus(2, ChronoUnit.HOURS);
+        itemHisDto.setStartClock(DateUtils.toDate(start));
+        itemHisDto.setEndClock(DateUtils.getNowDate());
+        return tbDeviceItemHisMapper.selectDeviceGraph(itemHisDto);
     }
 }

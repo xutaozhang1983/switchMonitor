@@ -99,15 +99,22 @@ public class TbDeviceItemHisController extends BaseController
         return toAjax(tbDeviceItemHisService.updateTbDeviceItemHis(tbDeviceItemHis));
     }
 
-    /**
-     * 删除设备监控指标
-     */
-    @PreAuthorize("@ss.hasPermi('monitor:his:remove')")
     @Log(title = "设备监控指标", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@PostMapping("/device/graph")
+    public AjaxResult deviceGraph(@RequestBody ItemHisDto itemHisDto)
     {
-        return toAjax(tbDeviceItemHisService.deleteTbDeviceItemHisByIds(ids));
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (String counter: itemHisDto.getCounters()) {
+            Map<String ,Object> map = new HashMap<>();
+            String[] c = new String[1];
+            c[0] = counter;
+            itemHisDto.setCounters(c);
+            List<ItemGraphVo>  itemHisVoList = tbDeviceItemHisService.deviceGraph(itemHisDto);
+            map.put("values",itemHisVoList);
+            map.put("counter",counter);
+            mapList.add(map);
+        }
+        return AjaxResult.success(mapList);
     }
 
     @ApiOperation("通过itemId,counter获取图标数据")

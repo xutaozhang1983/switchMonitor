@@ -54,6 +54,7 @@ public class TbDeviceItemServiceImpl implements ITbDeviceItemService
     public int insertTbDeviceItem(TbDeviceItem tbDeviceItem)
     {
         tbDeviceItem.setCreateTime(DateUtils.getNowDate());
+        tbDeviceItem.setClock(DateUtils.timestamp());
         return tbDeviceItemMapper.insertTbDeviceItem(tbDeviceItem);
     }
 

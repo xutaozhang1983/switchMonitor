@@ -99,16 +99,11 @@ public class MonitorTask {
                 deviceUpdate();
             }
             Map<String ,String> cpuMemMap = snmpDevice.acquireCpuMem(device.getManufacturer());
-            if(StringUtils.isEmpty(cpuMemMap)){
-                System.out.println(device.getDeviceName()+"获取CPU 内存信息失败。。。。。");
-                continue;
-            }
             for (String key:cpuMemMap.keySet()) {
                 TbDeviceItem item = itemService.selectItemExist(device.getId(), key);
                 if (StringUtils.isNotNull(item)) {
                     item.setLastValue(item.getValue());
                     item.setValue(cpuMemMap.get(key));
-                    item.setClock(DateUtils.timestamp());
                     itemService.updateTbDeviceItem(item);
                     saveItemHis(item.getId(),device.getId(),cpuMemMap.get(key),key);
                 } else {
@@ -163,7 +158,6 @@ public class MonitorTask {
 
     private void saveItem(Long isPort,Long deviceId,String itemName,String counter,String value,String status){
         TbDeviceItem deviceItem = new TbDeviceItem();
-        deviceItem.setClock(DateUtils.timestamp());
         deviceItem.setIsPort(isPort);
         deviceItem.setDeviceId(deviceId);
         deviceItem.setItemName(itemName);
@@ -176,7 +170,6 @@ public class MonitorTask {
 
     private void saveItemHis(Long itemId,Long deviceId,String value,String counter){
         TbDeviceItemHis itemHis = new TbDeviceItemHis();
-        itemHis.setClock(DateUtils.timestamp());
         itemHis.setItemId(itemId);
         itemHis.setDeviceId(deviceId);
         itemHis.setValue(value);

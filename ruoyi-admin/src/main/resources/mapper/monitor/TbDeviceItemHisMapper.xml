@@ -87,7 +87,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
-
+    <select id="selectDeviceGraph" parameterType="ItemHisDto" resultMap="ItemHisRes">
+        select sum(value) `value` ,FROM_UNIXTIME(clock) clock ,counter from tb_item_his
+        where device_id = #{deviceId}
+        <if test="startClock != null"> and clock &gt;= UNIX_TIMESTAMP(#{startClock})</if>
+        <if test="endClock != null">and clock &lt;= UNIX_TIMESTAMP(#{endClock})</if>
+        <if test="counters != null">
+            and counter in
+            <foreach item="counter" collection="counters" open="(" separator="," close=")">
+                #{counter}
+            </foreach>
+        </if>
+        GROUP BY clock
+        order by clock
+    </select>
     <select id="selectGraph" parameterType="ItemHisDto" resultMap="ItemHisRes">
         select avg(value) value,counter,FROM_UNIXTIME(clock -MOD(clock,#{step})) clockA,item_id from tb_item_his
         <where>

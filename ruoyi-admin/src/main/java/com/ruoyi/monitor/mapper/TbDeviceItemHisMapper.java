@@ -59,7 +59,7 @@ public interface TbDeviceItemHisMapper
      * @param ids 需要删除的数据主键集合
      * @return 结果
      */
-    public int deleteTbDeviceItemHisByIds(Long[] ids);
+    List<ItemGraphVo> selectDeviceGraph(ItemHisDto itemHisDto);
 
     List<ItemGraphVo> selectGraph(ItemHisDto itemHisDto);
 }
