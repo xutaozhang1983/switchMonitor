@@ -54,6 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="manufacturer != null  and manufacturer != ''"> and d.manufacturer = #{manufacturer}</if>
             <if test="status != null  and status != ''"> and d.status = #{status}</if>
             <if test="enable != null "> and d.enable = #{enable}</if>
+            <if test="id != null "> and d.id = #{id}</if>
         </where>
     </select>
     <select id="deviceList" parameterType="TbDevice" resultMap="TbDeviceResult">

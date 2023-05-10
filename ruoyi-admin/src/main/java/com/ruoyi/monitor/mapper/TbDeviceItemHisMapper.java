@@ -2,6 +2,8 @@ package com.ruoyi.monitor.mapper;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbDeviceItemHis;
+import com.ruoyi.monitor.domain.dto.ItemHisDto;
+import com.ruoyi.monitor.domain.vo.ItemHisVo;
 
 /**
  * 设备监控指标Mapper接口
@@ -58,4 +60,6 @@ public interface TbDeviceItemHisMapper
      * @return 结果
      */
     public int deleteTbDeviceItemHisByIds(Long[] ids);
+
+    List<ItemHisVo> selectGraph(ItemHisDto itemHisDto);
 }

@@ -1,7 +1,15 @@
 package com.ruoyi.monitor.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.monitor.domain.dto.ItemHisDto;
+import com.ruoyi.monitor.domain.vo.ItemHisVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +36,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2023-05-07
  */
 @RestController
-@RequestMapping("/monitor/his")
+@RequestMapping("/monitor/item/his")
 public class TbDeviceItemHisController extends BaseController
 {
     @Autowired
@@ -100,5 +108,28 @@ public class TbDeviceItemHisController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tbDeviceItemHisService.deleteTbDeviceItemHisByIds(ids));
+    }
+
+    @ApiOperation("通过itemId,counter获取图标数据")
+    @PostMapping("/selectGraph")
+    public AjaxResult selectGraph(@RequestBody ItemHisDto itemHisDto){
+
+        if(itemHisDto.getStep() == 0L){
+            itemHisDto.setStep(300L);
+        }
+
+        List<Map<String,Object>> mapList = new ArrayList<>();
+        for (String counter: itemHisDto.getCounters()) {
+            Map<String ,Object> map = new HashMap<>();
+            String[] c = new String[1];
+            c[0] = counter;
+            itemHisDto.setCounters(c);
+            List<ItemHisVo>  itemHisVoList = tbDeviceItemHisService.selectGraph(itemHisDto);
+            map.put("values",itemHisVoList);
+            map.put("itemId",itemHisDto.getItemId());
+            map.put("counter",counter);
+            mapList.add(map);
+        }
+        return AjaxResult.success(mapList);
     }
 }

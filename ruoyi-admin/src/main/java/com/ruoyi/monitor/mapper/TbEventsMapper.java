@@ -58,4 +58,6 @@ public interface TbEventsMapper
      * @return 结果
      */
     public int deleteTbEventsByIds(Long[] ids);
+
+    TbEvents selectEvent(TbEvents tbEvents);
 }

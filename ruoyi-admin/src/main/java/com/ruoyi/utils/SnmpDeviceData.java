@@ -62,7 +62,7 @@ public class SnmpDeviceData extends SnmpConfig {
         String uptime = configList.get(2);
         String[] arr = sysDescr.split("\\n");
         if (arr.length > 0){
-            String model = arr[0];
+            String model = arr[0].replace(" \\r","");
             tbDevice.setDeviceModel(model);
         }
         tbDevice.setDeviceName(deviceName);
@@ -148,7 +148,7 @@ public class SnmpDeviceData extends SnmpConfig {
     }
 
     /*采集所有端口入流量*/
-    public Map<String, Long> acquirePortInFlow(){
+    public Map<String, Long> ifInFlow(){
         init();
         LinkedHashMap<String, Long> flowRateMap = new LinkedHashMap<>();
 
@@ -160,18 +160,15 @@ public class SnmpDeviceData extends SnmpConfig {
         Map<Integer, List<String>> InFlowMap = createTables(oidList, PDU_GET, target);
 
         for (Integer key: InFlowMap.keySet()) {
-
             List<String> valueList = InFlowMap.get(key);
-
-                flowRateMap.put(valueList.get(0),Long.parseLong(valueList.get(1)));
-
+            flowRateMap.put(valueList.get(0),Long.parseLong(valueList.get(1)));
         }
         snmpClose();
         return flowFiltration(flowRateMap);
     }
 
     /*采集所有端口出流量*/
-    public Map<String, Long> acquirePortOutFlow(){
+    public Map<String, Long> ifOutFlow(){
         init();
         LinkedHashMap<String, Long> flowRateMap = new LinkedHashMap<>();
 

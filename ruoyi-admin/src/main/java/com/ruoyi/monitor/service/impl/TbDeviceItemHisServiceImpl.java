@@ -3,6 +3,8 @@ package com.ruoyi.monitor.service.impl;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.TbDeviceItemHis;
+import com.ruoyi.monitor.domain.dto.ItemHisDto;
+import com.ruoyi.monitor.domain.vo.ItemHisVo;
 import com.ruoyi.monitor.mapper.TbDeviceItemHisMapper;
 import com.ruoyi.monitor.service.ITbDeviceItemHisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +93,10 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     public int deleteTbDeviceItemHisById(Long id)
     {
         return tbDeviceItemHisMapper.deleteTbDeviceItemHisById(id);
+    }
+
+    @Override
+    public List<ItemHisVo> selectGraph(ItemHisDto itemHisDto) {
+        return tbDeviceItemHisMapper.selectGraph(itemHisDto);
     }
 }
