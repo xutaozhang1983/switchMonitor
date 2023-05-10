@@ -12,10 +12,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="value"    column="value"    />
         <result property="counter"    column="counter"    />
         <result property="clock"    column="clock"    />
-        <result property="createTime"    column="create_time"    />
     </resultMap>
 
-    <resultMap type="ItemHisVo" id="ItemHisRes">
+    <resultMap type="ItemGraphVo" id="ItemHisRes">
         <result property="itemId"    column="item_id"    />
         <result property="value"    column="value"    />
         <result property="counter"    column="counter"    />
@@ -52,7 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="itemName != null">item_name,</if>
             <if test="value != null">value,</if>
             <if test="clock != null">clock,</if>
-            <if test="createTime != null">create_time,</if>
+
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="deviceId != null">#{deviceId},</if>
@@ -61,7 +60,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="itemName != null">#{itemName},</if>
             <if test="value != null">#{value},</if>
             <if test="clock != null">#{clock},</if>
-            <if test="createTime != null">#{createTime},</if>
          </trim>
     </insert>
 
@@ -74,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="itemName != null">item_name = #{itemName},</if>
             <if test="value != null">value = #{value},</if>
             <if test="clock != null">clock = #{clock},</if>
-            <if test="createTime != null">create_time = #{createTime},</if>
+
         </trim>
         where id = #{id}
     </update>

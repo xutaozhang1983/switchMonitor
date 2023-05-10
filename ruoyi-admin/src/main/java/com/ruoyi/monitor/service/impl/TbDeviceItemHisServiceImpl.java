@@ -4,7 +4,7 @@ import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.monitor.domain.TbDeviceItemHis;
 import com.ruoyi.monitor.domain.dto.ItemHisDto;
-import com.ruoyi.monitor.domain.vo.ItemHisVo;
+import com.ruoyi.monitor.domain.vo.ItemGraphVo;
 import com.ruoyi.monitor.mapper.TbDeviceItemHisMapper;
 import com.ruoyi.monitor.service.ITbDeviceItemHisService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +55,7 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     @Override
     public int insertTbDeviceItemHis(TbDeviceItemHis tbDeviceItemHis)
     {
-        tbDeviceItemHis.setCreateTime(DateUtils.getNowDate());
+
         return tbDeviceItemHisMapper.insertTbDeviceItemHis(tbDeviceItemHis);
     }
 
@@ -96,7 +96,7 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     }
 
     @Override
-    public List<ItemHisVo> selectGraph(ItemHisDto itemHisDto) {
+    public List<ItemGraphVo> selectGraph(ItemHisDto itemHisDto) {
         return tbDeviceItemHisMapper.selectGraph(itemHisDto);
     }
 }

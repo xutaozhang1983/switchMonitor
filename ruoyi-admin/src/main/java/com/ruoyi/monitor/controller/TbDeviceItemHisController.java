@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.monitor.domain.dto.ItemHisDto;
-import com.ruoyi.monitor.domain.vo.ItemHisVo;
+import com.ruoyi.monitor.domain.vo.ItemGraphVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +50,7 @@ public class TbDeviceItemHisController extends BaseController
     {
         startPage();
         List<TbDeviceItemHis> list = tbDeviceItemHisService.selectTbDeviceItemHisList(tbDeviceItemHis);
+
         return getDataTable(list);
     }
 
@@ -124,7 +124,7 @@ public class TbDeviceItemHisController extends BaseController
             String[] c = new String[1];
             c[0] = counter;
             itemHisDto.setCounters(c);
-            List<ItemHisVo>  itemHisVoList = tbDeviceItemHisService.selectGraph(itemHisDto);
+            List<ItemGraphVo>  itemHisVoList = tbDeviceItemHisService.selectGraph(itemHisDto);
             map.put("values",itemHisVoList);
             map.put("itemId",itemHisDto.getItemId());
             map.put("counter",counter);

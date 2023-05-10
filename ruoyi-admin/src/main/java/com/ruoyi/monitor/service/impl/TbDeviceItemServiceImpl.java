@@ -66,6 +66,7 @@ public class TbDeviceItemServiceImpl implements ITbDeviceItemService
     @Override
     public int updateTbDeviceItem(TbDeviceItem tbDeviceItem)
     {
+        tbDeviceItem.setClock(DateUtils.timestamp());
         return tbDeviceItemMapper.updateTbDeviceItem(tbDeviceItem);
     }
 

@@ -40,7 +40,7 @@ public class MonitorTask {
         List<DeviceVO> deviceDTOList= tbDeviceService.selectTbDeviceList(tbDevice);
         for (DeviceVO device:deviceDTOList) {
             String lastStatus = device.getStatus();
-            String nowStatus;
+            String nowStatus ="0";
             if(PingUtil.ping(device.getDeviceIp())) {
                 nowStatus = StatusEnum.OK.getCode();
             }else{
@@ -129,21 +129,24 @@ public class MonitorTask {
                     String[] lastFlow = value.split(",");
                     Long ifIn = 0L;
                     Long ifOut = 0L;
-                    if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)){
+                    if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)){  // 获取不到端口的状态不更新
                         ifIn = ifInFlowMap.get(key) - Long.parseLong(lastFlow[0]);
                         ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
                         saveItemHis(item.getId(),device.getId(),String.valueOf(ifInFlowMap.get(key)),"ifIn");
                         saveItemHis(item.getId(), device.getId(), String.valueOf(ifOutFlowMap.get(key)), "ifOut");
+                        item.setLastValue(value);
+                        item.setValue(ifIn + "," + ifOut);
+                        item.setStatus(ifStatusMap.get(key));
+                        itemService.updateTbDeviceItem(item);
                     }
-                    item.setLastValue(value);
-                    item.setValue(ifIn + "," + ifOut);
-                    item.setStatus(ifStatusMap.get(key));
-                    itemService.updateTbDeviceItem(item);
+
                     // 是否端口状态发生改变
                     if (!item.getStatus().equals(ifStatusMap.get(key))){
-                        String status = ifStatusMap.get(key);
-                        if (!status.equals(StatusEnum.ERROR.getCode())){
-                            status = "0";
+                        String status ;
+                        if (ifStatusMap.get(key).equals(StatusEnum.ERROR.getCode())){
+                            status = StatusEnum.ERROR.getCode();
+                        }else{
+                            status = StatusEnum.OK.getCode();
                         }
                         String text = String.format(StatusEnum.getContentByCode(status),device.getDeviceName()+device.getDeviceIp(),item.getItemName());
                         saveEvent(status,text,device.getId(),item.getId());

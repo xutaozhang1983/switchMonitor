@@ -2,6 +2,10 @@ package com.ruoyi.monitor.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.bean.BeanUtils;
+import com.ruoyi.monitor.domain.vo.ItemVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,6 +47,16 @@ public class TbDeviceItemController extends BaseController
     {
         startPage();
         List<TbDeviceItem> list = tbDeviceItemService.selectTbDeviceItemList(tbDeviceItem);
+//        List<ItemVo> itemHisVos = BeanUtils.copyProperties(list,ItemVo.class);
+//        for (ItemVo itemHis:itemHisVos){
+//            if (itemHis.getIsPort() == 0){
+//                if(StringUtils.isNotNull(itemHis.getValue())){
+//                  String[] ifFlow = itemHis.getValue().split(",");
+//                  itemHis.setIfIn(Long.parseLong(ifFlow[0])/1000);
+//                  itemHis.setIfOut(Long.parseLong(ifFlow[1])/1000);
+//                }
+//            }
+//        }
         return getDataTable(list);
     }
 
