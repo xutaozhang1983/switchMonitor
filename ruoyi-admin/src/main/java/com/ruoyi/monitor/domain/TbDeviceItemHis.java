@@ -21,15 +21,14 @@ public class TbDeviceItemHis
 {
     private static final long serialVersionUID = 1L;
 
-    /** $column.columnComment */
+
     private Long id;
 
     /** 主机IP */
     @Excel(name = "主机IP")
     private Long deviceId;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+    @Excel(name = "itemId")
     private Long itemId;
 
     /** 监控指标名称 */
@@ -45,10 +44,4 @@ public class TbDeviceItemHis
     /** 收集时间 */
     @Excel(name = "收集时间")
     private Long clock;
-
-    /** 收集时间 */
-    @Excel(name = "创建时间")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createTime;
-
 }

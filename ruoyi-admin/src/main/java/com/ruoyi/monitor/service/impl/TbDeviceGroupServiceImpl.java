@@ -63,6 +63,8 @@ public class TbDeviceGroupServiceImpl implements ITbDeviceGroupService
     @Override
     public int insertTbDeviceGroup(TbDeviceGroup tbDeviceGroup)
     {
+
+
         tbDeviceGroup.setCreateTime(DateUtils.getNowDate());
         return tbDeviceGroupMapper.insertTbDeviceGroup(tbDeviceGroup);
     }

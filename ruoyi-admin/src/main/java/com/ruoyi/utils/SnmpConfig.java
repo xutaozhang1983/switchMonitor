@@ -27,16 +27,36 @@ public class SnmpConfig {
     public int timeout = 3000;
     public int retry = 2;
 
+    // for v3
+
+
     /**
      * 开启多线程以及snmp监听
      * 支持SNMP v3 版本
      * @param uName v3协议用户名
-     * @param authPasswd auth密码
-     * @param privPasswd priv密码
+     * @param authPass auth密码
+     * @param privPass priv密码
+     * @param authProtocol auth密码
+     * @param privProtocol priv密码
      * */
-    public void initSnmpV3(String uName, String authPasswd, String privPasswd){
+    public void initSnmpV3(String authPass,String uName,String privPass,String authProtocol,String privProtocol){
         this.username = uName;
-
+        OID authProtocolOID;
+        OID privProtocolOID;
+        if (authProtocol.equalsIgnoreCase("MD5")) {
+            authProtocolOID = AuthMD5.ID;
+        } else if (authProtocol.equalsIgnoreCase("SHA")) {
+            authProtocolOID = AuthSHA.ID;
+        } else {
+            throw new IllegalArgumentException("Unsupported authentication protocol: " + authProtocol);
+        }
+        if (privProtocol.equalsIgnoreCase("DES")) {
+            privProtocolOID = Priv3DES.ID;
+        } else if (privProtocol.equalsIgnoreCase("AES")) {
+            privProtocolOID = PrivAES128.ID;
+        } else {
+            throw new IllegalArgumentException("Unsupported privacy protocol: " + privProtocol);
+        }
         //初始化多线程消息转发类
         MessageDispatcherImpl messageDispatcher = new MessageDispatcherImpl();
         //其中要增加三种处理模型，如果snmp初始初始化使用的是Snmp(TransportMapping<? extends Address> transportMapping) ,就不需要增加
@@ -45,22 +65,16 @@ public class SnmpConfig {
         //当要支持SNMPv3版本时，需要配置user
 
         USM usm = new USM(SecurityProtocols.getInstance(), new OctetString(MPv3.createLocalEngineID()), 0);
-
-        UsmUser user = new UsmUser(new OctetString(username),
-                AuthMD5.ID,
-                new OctetString(authPasswd),
-                PrivDES.ID,
-                new OctetString(privPasswd));
-
-        usm.addUser(user.getSecurityName(),user);
-
+        SecurityModels.getInstance().addSecurityModel(usm);
         messageDispatcher.addMessageProcessingModel(new MPv3(usm));
-
         try {
             transportMapping = new DefaultUdpTransportMapping();
             transportMapping.listen();
             snmp = new Snmp(messageDispatcher, transportMapping);
-            snmp.getUSM().addUser(new OctetString(username),user);
+//            snmp.getUSM().addUser(new OctetString(username),user);
+            snmp.getUSM().addUser(new OctetString(uName),
+                    new UsmUser(new OctetString(uName), authProtocolOID,
+                            new OctetString(authPass), privProtocolOID, new OctetString(privPass)));
             snmp.getMessageDispatcher().addMessageProcessingModel(new MPv3(usm));
 
             //开启snmp监听
@@ -110,7 +124,7 @@ public class SnmpConfig {
         if(version==SnmpConstants.version3){
             target = new UserTarget();
             target.setSecurityLevel(SecurityLevel.AUTH_PRIV);   //设置v3安全级别
-            target.setSecurityName(new OctetString(username));  //设置v3用 户名
+//            target.setSecurityName(new OctetString(username));  //设置v3用 户名
 //            System.out.println("version is SNMPv3!!!");
         }
         //如果version为SNMPv1

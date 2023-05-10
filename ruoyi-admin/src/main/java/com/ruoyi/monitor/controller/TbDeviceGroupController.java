@@ -88,6 +88,7 @@ public class TbDeviceGroupController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody TbDeviceGroup tbDeviceGroup)
     {
+        tbDeviceGroup.setCreateBy(getUsername());
         return toAjax(tbDeviceGroupService.insertTbDeviceGroup(tbDeviceGroup));
     }
 

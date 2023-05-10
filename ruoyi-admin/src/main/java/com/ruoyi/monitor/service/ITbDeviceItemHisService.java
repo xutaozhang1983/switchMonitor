@@ -3,7 +3,7 @@ package com.ruoyi.monitor.service;
 import java.util.List;
 import com.ruoyi.monitor.domain.TbDeviceItemHis;
 import com.ruoyi.monitor.domain.dto.ItemHisDto;
-import com.ruoyi.monitor.domain.vo.ItemHisVo;
+import com.ruoyi.monitor.domain.vo.ItemGraphVo;
 
 /**
  * 设备监控指标Service接口
@@ -61,5 +61,5 @@ public interface ITbDeviceItemHisService
      */
     public int deleteTbDeviceItemHisById(Long id);
 
-    List<ItemHisVo> selectGraph(ItemHisDto itemHisDto);
+    List<ItemGraphVo> selectGraph(ItemHisDto itemHisDto);
 }

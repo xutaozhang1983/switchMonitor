@@ -34,6 +34,11 @@ public class SnmpDeviceData extends SnmpConfig {
     public void init(){
         String deviceIp = "udp:" + tbDevice.getDeviceIp() + "/161";
         this.target = createTarget(tbDevice.getSnmpVersion(), tbDevice.getSnmpCommunity(), deviceIp);
+        if(tbDevice.getSnmpVersion() == 3){
+            initSnmpV3(tbDevice.getSnmpPassword(),tbDevice.getSnmpUsername(),
+                    tbDevice.getSnmpPrivPassphrase(),
+                    tbDevice.getSnmpAuthProtocol(),tbDevice.getSnmpPrivProtocol());
+        }
         initSnmpV2();
     }
 
