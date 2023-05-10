@@ -10,7 +10,9 @@ import java.util.Date;
 public class ItemHisVo {
     private Long itemId;
     private String counter;
-    private String value;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:00")
+
+
+    private Long value;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date clock;
 }

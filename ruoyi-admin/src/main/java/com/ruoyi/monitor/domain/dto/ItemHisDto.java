@@ -14,4 +14,5 @@ public class ItemHisDto {
     private Date endClock;
     private Long itemId;
     private String[] counters;
+    private Long step;
 }

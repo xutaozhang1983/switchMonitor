@@ -142,7 +142,7 @@ public class MonitorTask {
                     // 是否端口状态发生改变
                     if (!item.getStatus().equals(ifStatusMap.get(key))){
                         String status = ifStatusMap.get(key);
-                        if (!ifStatusMap.get(key).equals(StatusEnum.ERROR.getCode())){
+                        if (!status.equals(StatusEnum.ERROR.getCode())){
                             status = "0";
                         }
                         String text = String.format(StatusEnum.getContentByCode(status),device.getDeviceName()+device.getDeviceIp(),item.getItemName());

@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="itemId"    column="item_id"    />
         <result property="value"    column="value"    />
         <result property="counter"    column="counter"    />
-        <result property="clock"    column="clock"    />
+        <result property="clock"    column="clockA"    />
     </resultMap>
 
     <sql id="selectTbDeviceItemHisVo">
@@ -91,7 +91,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <select id="selectGraph" parameterType="ItemHisDto" resultMap="ItemHisRes">
-        select `value`,counter,FROM_UNIXTIME(clock) as clock,item_id from tb_item_his
+        select avg(value) value,counter,FROM_UNIXTIME(clock -MOD(clock,#{step})) clockA,item_id from tb_item_his
         <where>
             <if test="startClock != null"> and clock &gt;= UNIX_TIMESTAMP(#{startClock})</if>
             <if test="endClock != null">and clock &lt;= UNIX_TIMESTAMP(#{endClock})</if>
@@ -103,6 +103,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 </foreach>
             </if>
         </where>
+        group by clockA
         order by clock
     </select>
 </mapper>

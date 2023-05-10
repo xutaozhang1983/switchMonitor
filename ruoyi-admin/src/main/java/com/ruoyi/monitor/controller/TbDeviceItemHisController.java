@@ -36,7 +36,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2023-05-07
  */
 @RestController
-@RequestMapping("/monitor/his")
+@RequestMapping("/monitor/item/his")
 public class TbDeviceItemHisController extends BaseController
 {
     @Autowired
@@ -113,6 +113,10 @@ public class TbDeviceItemHisController extends BaseController
     @ApiOperation("通过itemId,counter获取图标数据")
     @PostMapping("/selectGraph")
     public AjaxResult selectGraph(@RequestBody ItemHisDto itemHisDto){
+
+        if(itemHisDto.getStep() == 0L){
+            itemHisDto.setStep(300L);
+        }
 
         List<Map<String,Object>> mapList = new ArrayList<>();
         for (String counter: itemHisDto.getCounters()) {
