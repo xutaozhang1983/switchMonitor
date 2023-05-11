@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <!--可视化-->
     <el-row>
       <el-col :span="24">
         <el-card class="card" header="端口视图">
@@ -26,6 +27,7 @@
         </el-card>
       </el-col>
     </el-row>
+    <!--表格数据-->
     <el-card style="margin-top: 10px" header="端口">
       <el-table v-loading="loading" :data="portData">
         <el-table-column label="名称" prop="itemName"/>
@@ -56,15 +58,24 @@
             <div>{{ dayjs.unix(scope.row.clock).format('YYYY-MM-DD HH:mm:ss') }}</div>
           </template>
         </el-table-column>
+        <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
+          <template #default="scope">
+            <el-tooltip content="流量图" placement="top">
+              <el-button type="text" icon="Histogram" @click.stop="handleFlowView(scope.row)"></el-button>
+            </el-tooltip>
+          </template>
+        </el-table-column>
       </el-table>
     </el-card>
+    <!--端口流量图-->
+    <PortFlowView v-if="showPortFlowView" v-model:showDialog="showPortFlowView" :deviceId="deviceId" :portId="currentPort"></PortFlowView>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { ElMessageBox, ElMessage } from 'element-plus'
+  import PortFlowView from './components/portFlowView.vue'
   import { listDeviceItem } from '@/api/deviceItem'
-  import { listDeviceItemHis } from '@/api/deviceItemHis'
+  import { getItemHisByDeviceId } from '@/api/deviceItemHis'
   import Liquidfill from '@/components/charts/liquidfill.vue'
   import ChartLine from '@/components/charts/line.vue'
   import Switch from '@/components/switch/index.vue'
@@ -76,10 +87,12 @@
   const loading = ref(false)
   const portData = ref<any[]>([]) // 端口数据
   const loadData = ref<any>({ cpu: 0, memory: 0 }) // 负载数据
-  const flowData = ref<any>({
+  const flowData = ref<any>({ // 流量数据
     in: [] as any,
     out: [] as any
   })
+  const showPortFlowView = ref(false) // 显示端口流量图
+  const currentPort = ref(0) // 当前选中的端口
 
   // 端口视图数据
   const portViewData = computed(() => {
@@ -166,7 +179,7 @@
       deviceId: deviceId.value,
       counters: [ 'ifIn', 'ifOut' ]
     }
-    listDeviceItemHis(sendData).then((response: any) => {
+    getItemHisByDeviceId(sendData).then((response: any) => {
       flowData.value.in = (response.data.filter((item: any) => item.counter === 'ifIn')[0] as any)?.values || []
       flowData.value.out = (response.data.filter((item: any) => item.counter === 'ifOut')[0] as any)?.values || []
       setFlowOptionData()
@@ -179,7 +192,7 @@
     let inSeriesData: any = []
     let outSeriesData: any = []
     for (let item of flowData.value.in) {
-      xAxisData.push(item.clock)
+      xAxisData.push(dayjs(item.clock).format("HH:mm"))
       inSeriesData.push((item.value/8/1024).toFixed(2))
     }
     for (let item of flowData.value.out) {
@@ -188,6 +201,12 @@
     flowOption.value.xAxis.data = xAxisData
     flowOption.value.series[0].data = inSeriesData
     flowOption.value.series[1].data = outSeriesData
+  }
+
+  // 查看流量图
+  function handleFlowView(row: any) {
+    currentPort.value = row.id
+    showPortFlowView.value = true
   }
 
   getMonitorData()

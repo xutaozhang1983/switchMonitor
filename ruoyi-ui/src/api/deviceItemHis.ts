@@ -1,10 +1,19 @@
 import request from '@/utils/request'
 import { DeviceItemHisQueryParam } from '@/types/api/deviceItemHis'
 
-// 查询设备项监控明细
-export function listDeviceItemHis(data: DeviceItemHisQueryParam) {
+// 通过设备id查询监控数据
+export function getItemHisByDeviceId(data: DeviceItemHisQueryParam) {
   return request({
     url: '/monitor/item/his/device/graph',
+    method: 'post',
+    data: data
+  })
+}
+
+// 通过设备子项id查询监控数据
+export function getItemHisByItemId(data: DeviceItemHisQueryParam) {
+  return request({
+    url: '/monitor/item/his/selectGraph',
     method: 'post',
     data: data
   })
