@@ -7,8 +7,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <resultMap type="TbAlarmEvent" id="TbAlarmEventResult">
         <result property="id"    column="id"    />
         <result property="eventId"    column="event_id"    />
-        <result property="step"    column="step"    />
-        <result property="cond"    column="cond"    />
+        <result property="sendType"    column="send_type"    />
+        <result property="receiveAddr"    column="receive_addrr"    />
         <result property="userName"    column="user_name"    />
         <result property="status"    column="status"    />
         <result property="createTime"    column="create_time"    />
@@ -16,15 +16,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectTbAlarmEventVo">
-        select id, event_id, step, cond, user_name, status, create_time, remark from tb_alarm_event
+        select id, event_id, send_type, receive_addr, user_name, status, create_time, remark from tb_alarm_event
     </sql>
 
     <select id="selectTbAlarmEventList" parameterType="TbAlarmEvent" resultMap="TbAlarmEventResult">
         <include refid="selectTbAlarmEventVo"/>
         <where>  
             <if test="eventId != null "> and event_id = #{eventId}</if>
-            <if test="step != null "> and step = #{step}</if>
-            <if test="cond != null  and cond != ''"> and cond = #{cond}</if>
+            <if test="sendType != null "> and send_type = #{sendType}</if>
+            <if test="receiveAddr != null  and receiveAddr != ''"> and receive_addr = #{receiveAddr}</if>
             <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
         </where>
@@ -39,8 +39,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into tb_alarm_event
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="eventId != null">event_id,</if>
-            <if test="step != null">step,</if>
-            <if test="cond != null and cond != ''">cond,</if>
+            <if test="sendType != null">send_type,</if>
+            <if test="receiveAddr != null and receiveAddr != ''">receive_addr,</if>
             <if test="userName != null">user_name,</if>
             <if test="status != null">status,</if>
             <if test="createTime != null">create_time,</if>
@@ -48,8 +48,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="eventId != null">#{eventId},</if>
-            <if test="step != null">#{step},</if>
-            <if test="cond != null and cond != ''">#{cond},</if>
+            <if test="sendType != null">#{sendType},</if>
+            <if test="receiveAddr != null and receiveAddr != ''">#{receiveAddr},</if>
             <if test="userName != null">#{userName},</if>
             <if test="status != null">#{status},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -61,8 +61,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         update tb_alarm_event
         <trim prefix="SET" suffixOverrides=",">
             <if test="eventId != null">event_id = #{eventId},</if>
-            <if test="step != null">step = #{step},</if>
-            <if test="cond != null and cond != ''">cond = #{cond},</if>
+            <if test="sendType != null">send_type = #{sendType},</if>
+            <if test="receiveAddr != null and receiveAddr != ''">receive_addr = #{receiveAddr},</if>
             <if test="userName != null">user_name = #{userName},</if>
             <if test="status != null">status = #{status},</if>
             <if test="createTime != null">create_time = #{createTime},</if>

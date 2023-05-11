@@ -110,7 +110,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <select id="selectLastEvent" parameterType="TbEvents" resultMap="TbEventsResult">
-        select * tb_events e
+        SELECT * FROM tb_events e
         <where>
             <if test="deviceId != null "> and e.device_id = #{deviceId}</if>
             <if test="itemId != null "> and e.item_id = #{itemId}</if>

@@ -28,7 +28,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2023-05-09
  */
 @RestController
-@RequestMapping("/monitor/event")
+@RequestMapping("/monitor/events/alarm")
 public class TbAlarmEventController extends BaseController
 {
     @Autowired
