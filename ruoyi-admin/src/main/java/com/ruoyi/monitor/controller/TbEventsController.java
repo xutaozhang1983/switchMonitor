@@ -2,6 +2,12 @@ package com.ruoyi.monitor.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
+
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.monitor.domain.dto.TbEventsDto;
+import com.ruoyi.monitor.domain.vo.EventsVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +45,10 @@ public class TbEventsController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('monitor:events:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TbEvents tbEvents)
+    public TableDataInfo list(TbEventsDto tbEvents)
     {
         startPage();
-        List<TbEvents> list = tbEventsService.selectTbEventsList(tbEvents);
+        List<EventsVo> list = tbEventsService.selectEventList(tbEvents);
         return getDataTable(list);
     }
 
@@ -100,5 +106,15 @@ public class TbEventsController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tbEventsService.deleteTbEventsByIds(ids));
+    }
+
+    @ApiOperation("事件关闭")
+    @PostMapping("/close")
+    public AjaxResult close(@RequestBody TbEvents tbEvents)
+    {
+        tbEvents.setClosedAt(DateUtils.getNowDate());
+        tbEvents.setClosedUser(getUsername());
+        tbEvents.setStatus("1");
+        return toAjax(tbEventsService.updateTbEvents(tbEvents));
     }
 }

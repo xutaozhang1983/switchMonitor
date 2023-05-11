@@ -57,10 +57,11 @@ public class MonitorTask {
                 content = String.format(StatusEnum.getContentByCode(nowStatus),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
                 saveEvent(nowStatus,content,device.getId(),null);
                 if (nowStatus.equals(StatusEnum.OK.getCode())){ // 如果本次检查是OK，查询上次报警事件是否关闭，如果没关闭 自动关闭
-                    TbEvents events = eventsService.selectEvent(device.getId(),null,StatusEnum.ERROR.getCode());
+                    TbEvents events = eventsService.selectLastEvent(device.getId(),null,"0");
                     if (StringUtils.isNotNull(events)){
                         events.setClosedUser("system");
                         events.setClosedAt(DateUtils.getNowDate());
+                        events.setStatus("1");
                         eventsService.saveEvent(events);
                     }
                 }
@@ -90,7 +91,7 @@ public class MonitorTask {
         List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
         List<TbDeviceItemHis> itemHisList = new ArrayList<>();
         for (TbDevice device:deviceDTOList) {
-            System.out.println(device.getDeviceName()+"获取CPU 内存信息");
+            log.info(device.getDeviceName()+"获取CPU 内存信息");
             SnmpDeviceData snmpDevice = new SnmpDeviceData(device);
             List<TbDeviceItem> itemList = itemService.selectItemList(device.getId());
             Map<String ,String> cpuMemMap = snmpDevice.acquireCpuMem(device.getManufacturer());
@@ -110,6 +111,7 @@ public class MonitorTask {
                 }
             }
             // 端口信息
+            log.info(device.getDeviceName()+"端口出入流量");
             Map<String,String> ifStatusMap = snmpDevice.deviceItemInfo();
             Map<String ,Long> ifInFlowMap = snmpDevice.ifInFlow(); // 端口入流量
             Map<String ,Long> ifOutFlowMap = snmpDevice.ifOutFlow(); // 端口出流量
@@ -121,16 +123,14 @@ public class MonitorTask {
                         itemExists = true;
                         value = StringUtils.isNotNull(deviceItem.getValue()) ? deviceItem.getValue() : value;
                         String[] lastFlow = value.split(",");
-                        Long ifIn = 0L;
-                        Long ifOut = 0L;
                         deviceItem.setStatus(ifStatusMap.get(key));  // 端口状态
                         if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)) {  // 获取不到端口的流量不更新流量 不写his
-                            ifIn = ifInFlowMap.get(key) - Long.parseLong(lastFlow[0]);
-                            ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
+                            Long ifIn = ifInFlowMap.get(key) - Long.parseLong(lastFlow[0]);
+                            Long ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
                             deviceItem.setLastValue(value);
-                            deviceItem.setValue(ifIn + "," + ifOut);
-                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), String.valueOf(ifInFlowMap.get(key)), DeviceItem.IFIN.getItem()));
-                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), String.valueOf(ifOutFlowMap.get(key)), DeviceItem.IFOUT.getItem()));
+                            deviceItem.setValue(ifIn+ "," + ifOut);
+                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), String.valueOf(ifIn), DeviceItem.IFIN.getItem()));
+                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), String.valueOf(ifOut), DeviceItem.IFOUT.getItem()));
                         }
                         itemService.updateTbDeviceItem(deviceItem);
                         // 是否端口状态发生改变
@@ -180,7 +180,6 @@ public class MonitorTask {
     }
     private void saveEvent(String status,String content,Long deviceId,Long itemId){
         TbEvents event = new TbEvents();
-        event.setStatus(status);
         event.setAlarmContent(content);
         event.setAlarmLevel(AlarmEnum.getAlarmLevel(status));
         event.setItemId(itemId);

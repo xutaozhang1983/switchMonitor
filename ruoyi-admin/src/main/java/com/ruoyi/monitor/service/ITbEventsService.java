@@ -2,6 +2,8 @@ package com.ruoyi.monitor.service;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbEvents;
+import com.ruoyi.monitor.domain.dto.TbEventsDto;
+import com.ruoyi.monitor.domain.vo.EventsVo;
 
 /**
  * 报警信息Service接口
@@ -61,5 +63,7 @@ public interface ITbEventsService
 
     int saveEvent(TbEvents tbEvent);
 
-    TbEvents selectEvent(Long deviceId,Long itemId,String status);
+    TbEvents selectLastEvent(Long deviceId,Long itemId,String status);
+
+    List<EventsVo> selectEventList(TbEventsDto tbEventsDto);
 }

@@ -247,7 +247,7 @@ public class SnmpDeviceData extends SnmpConfig {
     }
     /**
      * 查询设备厂商
-     * @param   厂商分类oid （我也不知道这个oid是干啥的，凑合看看就得了）
+     * @param    （我也不知道这个oid是干啥的，凑合看看就得了）
      * @return 厂商名
      */
     private String manufacturerEstimate(String sysDescr){

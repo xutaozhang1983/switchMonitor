@@ -4,7 +4,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.monitor.mapper.TbEventsMapper">
     
-    <resultMap type="TbEvents" id="TbEventsResult">
+    <resultMap type="EventsVo" id="TbEventsResult">
         <result property="id"    column="id"    />
         <result property="deviceId"    column="device_id"    />
         <result property="itemId"    column="item_id"    />
@@ -18,6 +18,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="status"    column="status"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
+        <result property="groupName" column="group_name"/>
+        <result property="deviceName" column="device_name"/>
     </resultMap>
 
     <sql id="selectTbEventsVo">
@@ -107,19 +109,33 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
 
-    <select id="selectEvent" parameterType="TbEvents" resultMap="TbEventsResult">
-        select * from tb_events
+    <select id="selectLastEvent" parameterType="TbEvents" resultMap="TbEventsResult">
+        select * tb_events e
         <where>
-            <if test="deviceId != null "> and device_id = #{deviceId}</if>
-            <if test="itemId != null "> and item_id = #{itemId}</if>
-            <if test="alarmLevel != null  and alarmLevel != ''"> and alarm_level = #{alarmLevel}</if>
-            <if test="alarmSendTimes != null "> and alarm_send_times = #{alarmSendTimes}</if>
-            <if test="closedAt == null "> </if>
-            <if test="closedNote != null  and closedNote != ''"> and closed_note = #{closedNote}</if>
-            <if test="closedUser != null  and closedUser != ''"> and closed_user = #{closedUser}</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="deviceId != null "> and e.device_id = #{deviceId}</if>
+            <if test="itemId != null "> and e.item_id = #{itemId}</if>
+            <if test="alarmLevel != null  and alarmLevel != ''"> and e.alarm_level = #{alarmLevel}</if>
+            <if test="status != null and status != ''"> and e.status = #{status}</if>
         </where>
-        and closed_at is null
         order by id desc limit 1
+    </select>
+
+    <select id="selectEventList" parameterType="TbEvents" resultMap="TbEventsResult">
+        select e.*,d.device_name device_name,g.group_name group_name from tb_events e
+        left join tb_device d on e.device_id = d.id
+        left join tb_device_group g on d.group_id = g.id
+        <where>
+            <if test="deviceId != null "> and e.device_id = #{deviceId}</if>
+            <if test="itemId != null "> and e.item_id = #{itemId}</if>
+            <if test="alarmLevel != null  and alarmLevel != ''"> and e.alarm_level = #{alarmLevel}</if>
+            <if test="status != null ">and e.status = {#status} </if>
+            <if test="closedUser != null and closedUser != ''"> and d.closed_user = #{closedUser}</if>
+            <if test="deviceName != null"> and d.device_name like concat('%', #{deviceName}, '%')}</if>
+            <if test="groupId != null"> and g.id = #{groupId}</if>
+            <if test="startTime != null"> and e.create_time &gt;= #{startTime} </if>
+            <if test="endTime != null"> and e.create_time &lt;=  #{endTime}</if>
+            <if test="deviceIp != null"> and d.device_ip = #{deviceIp}</if>
+        </where>
+        order by id desc
     </select>
 </mapper>

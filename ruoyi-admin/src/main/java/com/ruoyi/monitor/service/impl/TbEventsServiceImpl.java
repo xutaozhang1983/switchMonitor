@@ -3,11 +3,15 @@ package com.ruoyi.monitor.service.impl;
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.monitor.domain.dto.TbEventsDto;
+import com.ruoyi.monitor.domain.vo.EventsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.monitor.mapper.TbEventsMapper;
 import com.ruoyi.monitor.domain.TbEvents;
 import com.ruoyi.monitor.service.ITbEventsService;
+
+import javax.annotation.Resource;
 
 /**
  * 报警信息Service业务层处理
@@ -18,7 +22,7 @@ import com.ruoyi.monitor.service.ITbEventsService;
 @Service
 public class TbEventsServiceImpl implements ITbEventsService 
 {
-    @Autowired
+    @Resource
     private TbEventsMapper tbEventsMapper;
 
     /**
@@ -104,11 +108,16 @@ public class TbEventsServiceImpl implements ITbEventsService
     }
 
     @Override
-    public TbEvents selectEvent(Long deviceId,Long itemId,String status) {
+    public TbEvents selectLastEvent(Long deviceId,Long itemId,String status) {
         TbEvents event = new TbEvents();
         event.setStatus(status);
         event.setDeviceId(deviceId);
         event.setItemId(itemId);
-        return tbEventsMapper.selectEvent(event);
+        return tbEventsMapper.selectLastEvent(event);
+    }
+
+    @Override
+    public List<EventsVo> selectEventList(TbEventsDto tbEventsDto) {
+        return tbEventsMapper.selectEventList(tbEventsDto);
     }
 }

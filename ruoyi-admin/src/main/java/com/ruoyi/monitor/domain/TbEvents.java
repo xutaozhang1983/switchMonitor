@@ -23,8 +23,8 @@ public class TbEvents extends BaseEntity
     /** $column.columnComment */
     private Long id;
 
-    /** $column.columnComment */
-    @Excel(name = "${comment}", readConverterExp = "$column.readConverterExp()")
+
+    @Excel(name = "设备ID")
     private Long deviceId;
 
     /** 监控指标ID */
@@ -61,7 +61,7 @@ public class TbEvents extends BaseEntity
     private String closedUser;
 
     /** 状态（0正常 1异常） */
-    @Excel(name = "状态", readConverterExp = "0=正常,1=异常")
+    @Excel(name = "状态", readConverterExp = "0=未关闭,1=已关闭")
     private String status;
 
     public void setId(Long id) 

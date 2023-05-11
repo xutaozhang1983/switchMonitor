@@ -4,7 +4,7 @@ public enum DeviceItem {
     CPU("CPU",1L),
     MEM("Memory",1L),
     IFIN("ifIn",0L),
-    IFOUT("ifIn",0L);
+    IFOUT("ifOut",0L);
     private String item;
     private Long isPort;
     public String getItem(){

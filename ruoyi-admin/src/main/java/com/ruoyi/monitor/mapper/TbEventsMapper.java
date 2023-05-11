@@ -2,6 +2,8 @@ package com.ruoyi.monitor.mapper;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbEvents;
+import com.ruoyi.monitor.domain.dto.TbEventsDto;
+import com.ruoyi.monitor.domain.vo.EventsVo;
 
 /**
  * 报警信息Mapper接口
@@ -59,5 +61,7 @@ public interface TbEventsMapper
      */
     public int deleteTbEventsByIds(Long[] ids);
 
-    TbEvents selectEvent(TbEvents tbEvents);
+    TbEvents selectLastEvent(TbEvents tbEvents);
+
+    List<EventsVo> selectEventList(TbEventsDto eventsDto);
 }

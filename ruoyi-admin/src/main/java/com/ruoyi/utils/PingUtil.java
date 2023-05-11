@@ -35,7 +35,7 @@ public class PingUtil {
             }
 
         }catch (Exception e){
-           log.error(e);
+           log.error(ipAddress+":"+e);
         }
         return false;
     }
@@ -56,7 +56,7 @@ public class PingUtil {
                 log.error("50");
                 break;
             }
-            System.out.println(ping("192.168.0.240"));
+            System.out.println(ping("192.168.0.241"));
             i++;
 
         }
