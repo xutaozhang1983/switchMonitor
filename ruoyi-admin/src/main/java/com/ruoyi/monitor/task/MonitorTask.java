@@ -4,9 +4,8 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.monitor.domain.*;
 import com.ruoyi.monitor.domain.vo.DeviceVO;
-import com.ruoyi.monitor.enums.AlarmEnum;
 import com.ruoyi.monitor.enums.DeviceItem;
-import com.ruoyi.monitor.enums.StatusEnum;
+import com.ruoyi.monitor.enums.AlarmEnum;
 import com.ruoyi.monitor.service.ITbDeviceItemHisService;
 import com.ruoyi.monitor.service.ITbDeviceItemService;
 import com.ruoyi.monitor.service.ITbDeviceService;
@@ -46,17 +45,17 @@ public class MonitorTask {
             String lastStatus = device.getStatus();
             String nowStatus ="0";
             if(PingUtil.ping(device.getDeviceIp())) {
-                nowStatus = StatusEnum.OK.getCode();
+                nowStatus = AlarmEnum.OK.getCode();
             }else{
-                nowStatus = StatusEnum.ERROR.getCode();
+                nowStatus = AlarmEnum.ERROR.getCode();
             }
             String content= "";
             if (!lastStatus.equals(nowStatus)){
                 device.setStatus(nowStatus);
                 tbDeviceService.updateTbDevice(device);
-                content = String.format(StatusEnum.getContentByCode(nowStatus),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
+                content = String.format(AlarmEnum.getContentByCode(nowStatus),device.getGroupName(),device.getDeviceName(),device.getDeviceIp());
                 saveEvent(nowStatus,content,device.getId(),null);
-                if (nowStatus.equals(StatusEnum.OK.getCode())){ // 如果本次检查是OK，查询上次报警事件是否关闭，如果没关闭 自动关闭
+                if (nowStatus.equals(AlarmEnum.OK.getCode())){ // 如果本次检查是OK，查询上次报警事件是否关闭，如果没关闭 自动关闭
                     TbEvents events = eventsService.selectLastEvent(device.getId(),null,"0");
                     if (StringUtils.isNotNull(events)){
                         events.setClosedUser("system");
@@ -107,7 +106,7 @@ public class MonitorTask {
                     }
                 }
                 if (!isExists){
-                    saveItem(DeviceItem.getIsPortByItem(key), device.getId(), key, key, cpuMemMap.get(key),StatusEnum.OK.getCode());
+                    saveItem(DeviceItem.getIsPortByItem(key), device.getId(), key, key, cpuMemMap.get(key), AlarmEnum.OK.getCode());
                 }
             }
             // 端口信息
@@ -136,12 +135,12 @@ public class MonitorTask {
                         // 是否端口状态发生改变
                         if (!deviceItem.getStatus().equals(ifStatusMap.get(key))) {
                             String status;
-                            if (ifStatusMap.get(key).equals(StatusEnum.ERROR.getCode())) {
-                                status = StatusEnum.WARING.getCode();
+                            if (ifStatusMap.get(key).equals(AlarmEnum.ERROR.getCode())) {
+                                status = AlarmEnum.WARING.getCode();
                             } else {
-                                status = StatusEnum.OK.getCode();
+                                status = AlarmEnum.OK.getCode();
                             }
-                            String text = String.format(StatusEnum.getContentByCode(status), device.getDeviceName() + device.getDeviceIp(), deviceItem.getItemName());
+                            String text = String.format(AlarmEnum.getContentByCode(status), device.getDeviceName() + device.getDeviceIp(), deviceItem.getItemName());
                             saveEvent(status, text, device.getId(), deviceItem.getId());
                         }
                     }
@@ -181,7 +180,7 @@ public class MonitorTask {
     private void saveEvent(String status,String content,Long deviceId,Long itemId){
         TbEvents event = new TbEvents();
         event.setAlarmContent(content);
-        event.setAlarmLevel(AlarmEnum.getAlarmLevel(status));
+        event.setAlarmLevel(AlarmEnum.getLevelByCode(status));
         event.setItemId(itemId);
         event.setDeviceId(deviceId);
         eventsService.insertTbEvents(event);

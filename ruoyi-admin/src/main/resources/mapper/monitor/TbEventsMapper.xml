@@ -116,8 +116,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="itemId != null "> and e.item_id = #{itemId}</if>
             <if test="alarmLevel != null  and alarmLevel != ''"> and e.alarm_level = #{alarmLevel}</if>
             <if test="status != null and status != ''"> and e.status = #{status}</if>
+
         </where>
-        order by id desc limit 1
+        and e.alarm_level != 'INFO'
+        order by e.id desc limit 1
     </select>
 
     <select id="selectEventList" parameterType="TbEvents" resultMap="TbEventsResult">
