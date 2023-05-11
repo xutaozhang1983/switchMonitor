@@ -33,8 +33,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="status != null  and status != ''"> and a.status = #{status}</if>
             <if test="deviceId != null "> and e.device_id = #{deviceId}</if>
             <if test="itemId != null "> and e.item_id = #{itemId}</if>
-            <if test="startTime != null "> and e.create_time &gt;= #{startTime}</if>
-            <if test="endTime != null "> and e.create_time &lt;= #{endTime}</if>
+            <if test="startTime != null "> and a.create_time &gt;= #{startTime}</if>
+            <if test="endTime != null "> and a.create_time &lt;= #{endTime}</if>
         </where>
     </select>
     
