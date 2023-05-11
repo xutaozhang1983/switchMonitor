@@ -4,25 +4,25 @@
     <Query></Query>
     <!--操作区域-->
     <Operate></Operate>
-    <!--告警数据-->
+    <!--事件数据-->
     <DataTable></DataTable>
-    <!-- 添加、修改告警配置对话框 -->
+    <!-- 添加、修改事件配置对话框 -->
     <FormDialog ref="formDialog"></FormDialog>
   </div>
 </template>
 
-<script setup name="Alarm" lang="ts">
+<script setup name="Events" lang="ts">
   import Query from './components/query.vue'
-  import Operate from './components/operate.vue'
   import DataTable from './components/dataTable.vue'
-  import FormDialog from './components/formDialog.vue'
-  import usealarmStore from './store'
+  import useEventsStore from './store'
 
-  const alarmStore = usealarmStore()
+  const eventsStore = useEventsStore()
 
   onBeforeMount(async () => {
-    // 获取告警数据
-    await alarmStore.getalarmData()
+    // 获取设备组数据
+    await eventsStore.getDeviceGroupData()
+    // 获取事件数据
+    await eventsStore.getEventsData()
   })
 
 </script>

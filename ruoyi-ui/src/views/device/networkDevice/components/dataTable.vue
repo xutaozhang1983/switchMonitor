@@ -3,7 +3,7 @@
     <el-table-column type="selection" width="55" align="center" />
     <el-table-column label="编号" prop="id" width="100"/>
     <el-table-column label="设备名称" prop="deviceName"/>
-    <el-table-column label="所在组" prop="groupName"></el-table-column>
+    <el-table-column label="所在组" prop="groupName"/>
     <el-table-column label="设备状态" align="center">
       <template #default="scope">
         <div class="deviceStatus" v-if="scope.row.status === '0'">

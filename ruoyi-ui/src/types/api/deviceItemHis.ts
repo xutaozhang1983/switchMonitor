@@ -1,8 +1,11 @@
 /**
- * 设备项监控明细查询参数类型声明
+ * 设备监控数据查询参数类型声明
  */
 export interface DeviceItemHisQueryParam {
-  deviceId?: number, // 设备ID
+  deviceId: number, // 设备ID
+  itemId?: number, // 指标ID
   counters: string[], // 监控类型
-  step?: number // 步数 
+  startClock?: string, // 起始时间
+  endClock?: string, // 结束时间
+  step?: number // 步数
 }

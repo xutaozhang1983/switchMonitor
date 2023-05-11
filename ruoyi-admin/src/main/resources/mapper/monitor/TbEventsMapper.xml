@@ -130,7 +130,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deviceId != null "> and e.device_id = #{deviceId}</if>
             <if test="itemId != null "> and e.item_id = #{itemId}</if>
             <if test="alarmLevel != null  and alarmLevel != ''"> and e.alarm_level = #{alarmLevel}</if>
-            <if test="status != null ">and e.status = {#status} </if>
+            <if test="status != null ">and e.status = #{status} </if>
             <if test="closedUser != null and closedUser != ''"> and d.closed_user = #{closedUser}</if>
             <if test="deviceName != null"> and d.device_name like concat('%', #{deviceName}, '%')}</if>
             <if test="groupId != null"> and g.id = #{groupId}</if>

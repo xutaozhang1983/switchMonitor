@@ -10,7 +10,7 @@ export function getItemHisByDeviceId(data: DeviceItemHisQueryParam) {
   })
 }
 
-// 通过设备子项id查询监控数据
+// 通过指标id查询监控数据
 export function getItemHisByItemId(data: DeviceItemHisQueryParam) {
   return request({
     url: '/monitor/item/his/selectGraph',
