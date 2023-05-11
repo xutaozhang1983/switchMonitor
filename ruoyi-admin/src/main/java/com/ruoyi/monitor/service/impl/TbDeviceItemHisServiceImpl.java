@@ -110,4 +110,9 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
         itemHisDto.setEndClock(DateUtils.getNowDate());
         return tbDeviceItemHisMapper.selectDeviceGraph(itemHisDto);
     }
+
+    @Override
+    public void insertBatch(List<TbDeviceItemHis> itemHisList) {
+        tbDeviceItemHisMapper.insertBatch(itemHisList);
+    }
 }

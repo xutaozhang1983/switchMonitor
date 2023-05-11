@@ -98,7 +98,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             #{id}
         </foreach>
     </delete>
-
+    <update id="insertUpdate" parameterType="java.util.List" >
+        insert into tb_device_item (device_id,counter,item_name,value,last_value,clock,status) values
+        <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+            ( #{item.deviceId}, #{item.counter}, #{item.itemName}, #{item.value},
+             #{item.lastValue},#{item.clock}, #{item.status})
+        </foreach>
+    </update>
     <update id="batchUpdate" parameterType="java.util.List" >
         <foreach collection="list" item="item" index="index" open="" close="" separator=";">
             update tb_device_item
@@ -125,6 +131,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <foreach collection="List" item="id" index="index" open="(" separator="," close=")">
             #{id}
         </foreach>
-
     </delete>
 </mapper>

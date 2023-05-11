@@ -8,7 +8,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"       column="id"    />
         <result property="deviceId"    column="device_id"    />
         <result property="itemId"    column="item_id"    />
-        <result property="itemName"    column="item_name"    />
         <result property="value"    column="value"    />
         <result property="counter"    column="counter"    />
         <result property="clock"    column="clock"    />
@@ -41,14 +40,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <include refid="selectTbDeviceItemHisVo"/>
         where id = #{id}
     </select>
-        
+
+    <update id="insertBatch" parameterType="java.util.List" >
+        insert into tb_item_his (device_id,item_id,counter,value,clock) values
+        <foreach collection="list" item="item" index="index" open="" close="" separator=",">
+            (#{item.deviceId},#{item.itemId},#{item.counter},#{item.value},#{item.clock})
+        </foreach>
+    </update>
+
     <insert id="insertTbDeviceItemHis" parameterType="TbDeviceItemHis" useGeneratedKeys="true" keyProperty="id">
         insert into tb_item_his
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="deviceId != null">device_id,</if>
             <if test="itemId != null">item_id,</if>
             <if test="counter != null">counter,</if>
-            <if test="itemName != null">item_name,</if>
             <if test="value != null">value,</if>
             <if test="clock != null">clock,</if>
 
@@ -57,7 +62,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deviceId != null">#{deviceId},</if>
             <if test="itemId != null">#{itemId},</if>
             <if test="counter != null">#{counter},</if>
-            <if test="itemName != null">#{itemName},</if>
             <if test="value != null">#{value},</if>
             <if test="clock != null">#{clock},</if>
          </trim>
@@ -69,13 +73,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="deviceId != null">device_id = #{deviceId},</if>
             <if test="itemId != null">item_id = #{itemId},</if>
             <if test="counter != null">counter = #{counter},</if>
-            <if test="itemName != null">item_name = #{itemName},</if>
             <if test="value != null">value = #{value},</if>
             <if test="clock != null">clock = #{clock},</if>
-
         </trim>
         where id = #{id}
     </update>
+
 
     <delete id="deleteTbDeviceItemHisById" parameterType="Long">
         delete from tb_item_his where id = #{id}
@@ -117,4 +120,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         group by clockA
         order by clock
     </select>
+
+
+
+
 </mapper>

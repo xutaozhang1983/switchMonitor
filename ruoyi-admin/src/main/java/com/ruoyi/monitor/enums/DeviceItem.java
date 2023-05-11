@@ -2,8 +2,9 @@ package com.ruoyi.monitor.enums;
 
 public enum DeviceItem {
     CPU("CPU",1L),
-    MEM("Memory",1L);
-
+    MEM("Memory",1L),
+    IFIN("ifIn",0L),
+    IFOUT("ifIn",0L);
     private String item;
     private Long isPort;
     public String getItem(){
@@ -17,5 +18,17 @@ public enum DeviceItem {
     DeviceItem(String item, Long isPort) {
         this.item = item;
         this.isPort = isPort;
+    }
+    public static Long getIsPortByItem(String item) {
+        for (DeviceItem deviceItem : DeviceItem.values()) {
+            if (deviceItem.getItem().equals(item)) {
+                return deviceItem.getIsPort();
+            }
+        }
+        return 0L;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(getIsPortByItem("CPU"));
     }
 }

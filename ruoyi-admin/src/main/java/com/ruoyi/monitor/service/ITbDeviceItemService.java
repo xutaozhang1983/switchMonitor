@@ -60,4 +60,6 @@ public interface ITbDeviceItemService
     public int deleteTbDeviceItemById(Long id);
 
     public  TbDeviceItem selectItemExist(Long deviceId, String itemName);
+
+    List<TbDeviceItem> selectItemList(Long deviceId);
 }

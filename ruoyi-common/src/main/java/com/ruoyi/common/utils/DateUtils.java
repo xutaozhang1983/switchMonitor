@@ -108,7 +108,6 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
     public static long timestamp() {
         String format = "yyyy-MM-dd HH:mm:00";
         String timeStr = LocalDateTime.now().format(DateTimeFormatter.ofPattern(format));
-        System.out.println(timeStr);
         long timestamp = LocalDateTime.parse(timeStr, DateTimeFormatter.ofPattern(format))
                 .toInstant(ZoneOffset.of("+8")).toEpochMilli();
         return timestamp/1000L;

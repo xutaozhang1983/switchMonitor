@@ -60,4 +60,6 @@ public interface ITbDeviceItemHisService
     List<ItemGraphVo> deviceGraph(ItemHisDto itemHisDto);
 
     List<ItemGraphVo> selectGraph(ItemHisDto itemHisDto);
+
+    void insertBatch(List<TbDeviceItemHis> itemHisList);
 }
