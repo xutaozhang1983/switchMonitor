@@ -2,6 +2,8 @@ package com.ruoyi.monitor.mapper;
 
 import java.util.List;
 import com.ruoyi.monitor.domain.TbAlarmEvent;
+import com.ruoyi.monitor.domain.dto.AlarmEventDto;
+import com.ruoyi.monitor.domain.vo.AlarmEventVo;
 
 /**
  * 事件信息Mapper接口
@@ -25,7 +27,7 @@ public interface TbAlarmEventMapper
      * @param tbAlarmEvent 事件信息
      * @return 事件信息集合
      */
-    public List<TbAlarmEvent> selectTbAlarmEventList(TbAlarmEvent tbAlarmEvent);
+    public List<AlarmEventVo> selectTbAlarmEventList(AlarmEventDto tbAlarmEvent);
 
     /**
      * 新增事件信息

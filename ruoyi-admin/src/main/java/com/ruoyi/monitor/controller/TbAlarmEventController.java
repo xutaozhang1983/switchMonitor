@@ -2,6 +2,9 @@ package com.ruoyi.monitor.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.monitor.domain.dto.AlarmEventDto;
+import com.ruoyi.monitor.domain.vo.AlarmEventVo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,10 +42,10 @@ public class TbAlarmEventController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('monitor:event:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TbAlarmEvent tbAlarmEvent)
+    public TableDataInfo list(AlarmEventDto tbAlarmEvent)
     {
         startPage();
-        List<TbAlarmEvent> list = tbAlarmEventService.selectTbAlarmEventList(tbAlarmEvent);
+        List<AlarmEventVo> list = tbAlarmEventService.selectTbAlarmEventList(tbAlarmEvent);
         return getDataTable(list);
     }
 
@@ -52,11 +55,11 @@ public class TbAlarmEventController extends BaseController
     @PreAuthorize("@ss.hasPermi('monitor:event:export')")
     @Log(title = "事件信息", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, TbAlarmEvent tbAlarmEvent)
+    public void export(HttpServletResponse response, AlarmEventDto tbAlarmEvent)
     {
-        List<TbAlarmEvent> list = tbAlarmEventService.selectTbAlarmEventList(tbAlarmEvent);
-        ExcelUtil<TbAlarmEvent> util = new ExcelUtil<TbAlarmEvent>(TbAlarmEvent.class);
-        util.exportExcel(response, list, "事件信息数据");
+        List<AlarmEventVo> list = tbAlarmEventService.selectTbAlarmEventList(tbAlarmEvent);
+        ExcelUtil<AlarmEventVo> util = new ExcelUtil<AlarmEventVo>(AlarmEventVo.class);
+        util.exportExcel(response, list, "报警事件信息数据");
     }
 
     /**

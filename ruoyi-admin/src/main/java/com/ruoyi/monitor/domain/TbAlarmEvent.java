@@ -27,6 +27,7 @@ public class TbAlarmEvent extends BaseEntity{
     private Long eventId;
 
     private String sendType;
+
     private String receiveAddr;
 
     /** 接收人 */

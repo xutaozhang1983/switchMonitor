@@ -4,29 +4,35 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.monitor.mapper.TbAlarmEventMapper">
     
-    <resultMap type="TbAlarmEvent" id="TbAlarmEventResult">
+    <resultMap type="AlarmEventVo" id="TbAlarmEventResult">
         <result property="id"    column="id"    />
         <result property="eventId"    column="event_id"    />
         <result property="sendType"    column="send_type"    />
-        <result property="receiveAddr"    column="receive_addrr"    />
+        <result property="receiveAddr"    column="receive_addr"    />
         <result property="userName"    column="user_name"    />
         <result property="status"    column="status"    />
         <result property="createTime"    column="create_time"    />
+        <result property="deviceName"    column="device_name"    />
+        <result property="itemName"    column="item_name"    />
+        <result property="deviceIp"    column="device_ip"    />
         <result property="remark"    column="remark"    />
     </resultMap>
 
     <sql id="selectTbAlarmEventVo">
-        select id, event_id, send_type, receive_addr, user_name, status, create_time, remark from tb_alarm_event
+        select * from tb_alarm_event
     </sql>
 
-    <select id="selectTbAlarmEventList" parameterType="TbAlarmEvent" resultMap="TbAlarmEventResult">
-        <include refid="selectTbAlarmEventVo"/>
+    <select id="selectTbAlarmEventList" parameterType="AlarmEventDto" resultMap="TbAlarmEventResult">
+        select a.*,d.device_name device_name ,d.device_ip device_ip,e.item_name item_name from tb_alarm_event a
+        left join tb_events e on a.event_id = e.id
+        left join tb_device d on e.device_id = d.id
         <where>  
-            <if test="eventId != null "> and event_id = #{eventId}</if>
-            <if test="sendType != null "> and send_type = #{sendType}</if>
-            <if test="receiveAddr != null  and receiveAddr != ''"> and receive_addr = #{receiveAddr}</if>
-            <if test="userName != null  and userName != ''"> and user_name like concat('%', #{userName}, '%')</if>
-            <if test="status != null  and status != ''"> and status = #{status}</if>
+            <if test="eventId != null "> and a.event_id = #{eventId}</if>
+            <if test="sendType != null "> and a.send_type = #{sendType}</if>
+            <if test="userName != null  and userName != ''"> and a.user_name like concat('%', #{userName}, '%')</if>
+            <if test="status != null  and status != ''"> and a.status = #{status}</if>
+            <if test="deviceId != null "> and e.device_id = #{deviceId}</if>
+            <if test="itemId != null "> and e.item_id = #{itemId}</if>
         </where>
     </select>
     

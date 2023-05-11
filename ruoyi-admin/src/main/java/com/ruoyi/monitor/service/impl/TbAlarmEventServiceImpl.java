@@ -2,6 +2,8 @@ package com.ruoyi.monitor.service.impl;
 
 import java.util.List;
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.monitor.domain.dto.AlarmEventDto;
+import com.ruoyi.monitor.domain.vo.AlarmEventVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.monitor.mapper.TbAlarmEventMapper;
@@ -39,7 +41,7 @@ public class TbAlarmEventServiceImpl implements ITbAlarmEventService
      * @return 事件信息
      */
     @Override
-    public List<TbAlarmEvent> selectTbAlarmEventList(TbAlarmEvent tbAlarmEvent)
+    public List<AlarmEventVo> selectTbAlarmEventList(AlarmEventDto tbAlarmEvent)
     {
         return tbAlarmEventMapper.selectTbAlarmEventList(tbAlarmEvent);
     }
