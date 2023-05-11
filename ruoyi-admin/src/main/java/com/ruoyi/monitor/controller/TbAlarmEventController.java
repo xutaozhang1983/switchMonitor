@@ -3,6 +3,8 @@ package com.ruoyi.monitor.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.monitor.domain.dto.AlarmEventDto;
 import com.ruoyi.monitor.domain.vo.AlarmEventVo;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -45,6 +47,9 @@ public class TbAlarmEventController extends BaseController
     public TableDataInfo list(AlarmEventDto tbAlarmEvent)
     {
         startPage();
+        if(StringUtils.isNull(tbAlarmEvent.getStartTime())){
+            tbAlarmEvent.setStartTime(DateUtils.dateTime(DateUtils.YYYY_MM_DD,DateUtils.getDate()));
+        }
         List<AlarmEventVo> list = tbAlarmEventService.selectTbAlarmEventList(tbAlarmEvent);
         return getDataTable(list);
     }

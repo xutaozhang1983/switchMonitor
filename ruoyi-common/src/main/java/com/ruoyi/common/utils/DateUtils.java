@@ -5,8 +5,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.Temporal;
+import java.time.temporal.TemporalAmount;
+import java.time.temporal.TemporalQuery;
+import java.util.Calendar;
 import java.util.Date;
 import org.apache.commons.lang3.time.DateFormatUtils;
+import org.springframework.util.Assert;
 
 /**
  * 时间工具类
@@ -201,10 +206,61 @@ public class DateUtils extends org.apache.commons.lang3.time.DateUtils
         ZonedDateTime zdt = localDateTime.atZone(ZoneId.systemDefault());
         return Date.from(zdt.toInstant());
     }
+    public static Date minus(Date date, TemporalAmount amount) {
+        Instant instant = date.toInstant();
+        return Date.from(instant.minus(amount));
+    }
+    private static Date set(Date date, int calendarField, int amount) {
+        Assert.notNull(date, "The date must not be null");
+        Calendar c = Calendar.getInstance();
+        c.setLenient(false);
+        c.setTime(date);
+        c.add(calendarField, amount);
+        return c.getTime();
+    }
+    public static Date minusYears(Date date, int years) {
+        return set(date, 1, -years);
+    }
 
+    public static Date minusMonths(Date date, int months) {
+        return set(date, 2, -months);
+    }
+
+    public static Date minusWeeks(Date date, int weeks) {
+        return minus(date, Period.ofWeeks(weeks));
+    }
+
+    public static Date minusDays(Date date, long days) {
+        return minus(date, Duration.ofDays(days));
+    }
+
+    public static Date minusHours(Date date, long hours) {
+        return minus(date, Duration.ofHours(hours));
+    }
+
+    public static Date minusMinutes(Date date, long minutes) {
+        return minus(date, Duration.ofMinutes(minutes));
+    }
+
+    public static Duration between(Temporal startInclusive, Temporal endExclusive) {
+        return Duration.between(startInclusive, endExclusive);
+    }
+
+    public static Period between(LocalDate startDate, LocalDate endDate) {
+        return Period.between(startDate, endDate);
+    }
+
+    public static Duration between(Date startDate, Date endDate) {
+        return Duration.between(startDate.toInstant(), endDate.toInstant());
+    }
+
+
+    public static <T> T parse(String dateStr, String pattern, TemporalQuery<T> query) {
+        return DateTimeFormatter.ofPattern(pattern).parse(dateStr, query);
+    }
     public static void main(String[] args) {
 
 //        System.out.println(timestamp/1000L);
-        System.out.println(timestamp());
+        System.out.println(DateUtils.dateTime(DateUtils.YYYY_MM_DD,DateUtils.getDate()));
     }
 }
