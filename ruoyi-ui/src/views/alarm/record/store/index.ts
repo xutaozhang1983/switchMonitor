@@ -1,7 +1,5 @@
 import { RecordQueryParam } from '@/types/api/alarm/record'
 import { listRecord } from "@/api/alarm/record"
-import { listDeviceGroup } from '@/api/deviceGroup'
-import { listDevice } from '@/api/device'
 import dayjs from 'dayjs'
 
 const useRecordStore = defineStore('useRecordStore',
@@ -12,38 +10,8 @@ const useRecordStore = defineStore('useRecordStore',
       showSearch: true, // 是否显示搜索区域
       total: 0, // 记录数据总条目数
       recordData: [] as any, // 记录数据
-      deviceGroupData: [] as any, // 设备组数据
-      deviceData: [] as any, // 设备数据
-      showCloseDialog: false, // 显示关闭对话框
     }),
     actions: {
-      // 查询设备组数据
-      async getDeviceGroupData() {
-        this.loading = true
-        try {
-          let { rows }: any = await listDeviceGroup(this.queryParams)
-          this.deviceGroupData = rows
-        } catch (error: any) {
-        } finally {
-          this.loading = false
-        }
-      },
-      // 查询设备数据
-      async getDeviceData(groupId: number) {
-        this.loading = true
-        try {
-          let sendData = {
-            pageNum: 1,
-            pageSize: 9999,
-            groupId: groupId
-          }
-          let { rows }: any = await listDevice(sendData)
-          this.deviceData = rows
-        } catch (error: any) {
-        } finally {
-          this.loading = false
-        }
-      },
       // 查询记录数据
       async getRecordData() {
         this.loading = true

@@ -31,7 +31,6 @@
 <script setup lang="ts">
   import useRecordStore from '../store'
 
-  const { proxy } = getCurrentInstance() as any
   const recordStore = useRecordStore()
 
 </script>

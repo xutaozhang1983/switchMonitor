@@ -14,7 +14,6 @@ const useEventsStore = defineStore('useEventsStore',
       eventsData: [] as any, // 事件数据
       deviceGroupData: [] as any, // 设备组数据
       deviceData: [] as any, // 设备数据
-      showCloseDialog: false, // 显示关闭对话框
     }),
     actions: {
       // 查询设备组数据

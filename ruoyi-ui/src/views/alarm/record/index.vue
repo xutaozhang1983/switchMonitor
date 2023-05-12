@@ -19,8 +19,6 @@
   const recordStore = useRecordStore()
 
   onBeforeMount(async () => {
-    // 获取设备组数据
-    await recordStore.getDeviceGroupData()
     // 获取记录数据
     await recordStore.getRecordData()
   })
