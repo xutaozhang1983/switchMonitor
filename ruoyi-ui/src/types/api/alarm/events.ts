@@ -10,3 +10,12 @@ export interface EventsQueryParam extends PageQueryParam {
   alarmLevel?: string | undefined, // 告警级别
   status?: string | undefined, // 关闭状态
 }
+
+/**
+ * 事件关闭类型声明
+ */
+export interface EventsClose {
+  id: number | undefined, // 事件id
+  status: string, // 关闭状态
+  closedNote: string | undefined // 关闭原因
+}

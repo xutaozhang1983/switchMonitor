@@ -20,7 +20,7 @@
           <el-option v-for="dict in sys_alarm_status" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
-      <el-form-item label="时间">
+      <el-form-item label="告警时间">
         <el-date-picker
           v-model="timeRange"
           type="datetimerange"
@@ -56,6 +56,7 @@
 
   // 选择设备组
   async function handleSelectDeviceGroup (groupId: number) {
+    eventsStore.queryParams.deviceId = undefined
     await eventsStore.getDeviceData(groupId)
     showDeviceSelect.value = true
   }

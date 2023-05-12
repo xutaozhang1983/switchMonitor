@@ -4,25 +4,25 @@
     <Query></Query>
     <!--操作区域-->
     <Operate></Operate>
-    <!--事件数据-->
+    <!--记录数据-->
     <DataTable></DataTable>
-    <!-- 添加、修改事件配置对话框 -->
+    <!-- 添加、修改记录配置对话框 -->
     <FormDialog ref="formDialog"></FormDialog>
   </div>
 </template>
 
-<script setup name="AlarmEvents" lang="ts">
+<script setup name="AlarmRecord" lang="ts">
   import Query from './components/query.vue'
   import DataTable from './components/dataTable.vue'
-  import useEventsStore from './store'
+  import useRecordStore from './store'
 
-  const eventsStore = useEventsStore()
+  const recordStore = useRecordStore()
 
   onBeforeMount(async () => {
     // 获取设备组数据
-    await eventsStore.getDeviceGroupData()
-    // 获取事件数据
-    await eventsStore.getEventsData()
+    await recordStore.getDeviceGroupData()
+    // 获取记录数据
+    await recordStore.getRecordData()
   })
 
 </script>
