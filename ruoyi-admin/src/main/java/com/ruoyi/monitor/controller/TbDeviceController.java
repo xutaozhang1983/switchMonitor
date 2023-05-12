@@ -143,7 +143,6 @@ public class TbDeviceController extends BaseController
                 stat.setUnknow(stat.getUnknow()+1);
             }
         }
-
         return AjaxResult.success(stat);
     }
     @GetMapping("/status/groupStat")
@@ -151,14 +150,18 @@ public class TbDeviceController extends BaseController
         Map<String,Object> resultMap = new HashMap();
         List<TbDeviceGroup> groups = groupService.selectTbDeviceGroupList(new TbDeviceGroup());
         for (TbDeviceGroup grp:groups){
-            TbDevice tbDevice = new TbDevice();
-            tbDevice.setGroupId(grp.getId());
-            List<TbDevice> devices = tbDeviceService.selectDeviceList(tbDevice);
+            resultMap.put(grp.getGroupName(),new DeviceStat());
+        }
+        TbDevice tbDevice = new TbDevice();
+        List<DeviceVO> devices = tbDeviceService.selectTbDeviceList(tbDevice);
+        for (String grpName:resultMap.keySet()) {
             DeviceStat stat = new DeviceStat();
-
-            for (TbDevice device:devices){
-                if(device.getEnable() == 0){
-                    if (device.getStatus().equals(AlarmEnum.OK.getCode())){
+            for (DeviceVO deviceVO:devices){
+                if(!grpName.equals(deviceVO.getGroupName())){
+                    continue;
+                }
+                if(deviceVO.getEnable() == 0){
+                    if (deviceVO.getStatus().equals(AlarmEnum.OK.getCode())){
                         stat.setOk(stat.getOk()+1);
                     }else{
                         stat.setErr(stat.getErr()+1);
@@ -166,9 +169,10 @@ public class TbDeviceController extends BaseController
                 }else{
                     stat.setUnknow(stat.getUnknow()+1);
                 }
+                stat.setAll(stat.getAll()+1);
             }
-            stat.setAll(devices.size());
-            resultMap.put(grp.getGroupName(),stat);
+            resultMap.put(grpName,stat);
+
         }
         return AjaxResult.success(resultMap);
     }
