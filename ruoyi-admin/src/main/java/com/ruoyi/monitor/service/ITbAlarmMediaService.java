@@ -59,7 +59,7 @@ public interface ITbAlarmMediaService
      */
     public int deleteTbAlarmMediaById(Long id);
 
-    TbAlarmMedia getAlarmMedia(String mediaType);
+    TbAlarmMedia selectAlarmMedia(String mediaType);
 
 
 }

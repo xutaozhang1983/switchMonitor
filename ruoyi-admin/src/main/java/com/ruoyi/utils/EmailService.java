@@ -26,7 +26,10 @@ public class EmailService {
     private ITbAlarmMediaService alarmMediaService;
 
     private  TbAlarmMedia smtpConf(){
-        TbAlarmMedia alarmMedia = alarmMediaService.getAlarmMedia(mediaType);
+        TbAlarmMedia alarmMedia = alarmMediaService.selectAlarmMedia(mediaType);
+        if(!alarmMedia.getStatus().equals("0")){
+            return null;
+        }
         return alarmMedia;
     }
 
@@ -41,6 +44,9 @@ public class EmailService {
         //发送人邮箱号码
 
         TbAlarmMedia smtpConf = smtpConf();
+        if (StringUtils.isNull(smtpConf)){
+            return AjaxResult.error("没有找到可用smtp配置!");
+        }
         try {
             // 2. 根据参数配置，创建会话对象, 用于和邮件服务器交互
             Session session= Session.getInstance(createProp(smtpConf));

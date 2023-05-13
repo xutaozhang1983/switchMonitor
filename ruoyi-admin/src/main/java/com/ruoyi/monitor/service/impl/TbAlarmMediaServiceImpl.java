@@ -95,7 +95,7 @@ public class TbAlarmMediaServiceImpl implements ITbAlarmMediaService
     }
 
     @Override
-    public TbAlarmMedia getAlarmMedia(String mediaType) {
+    public TbAlarmMedia selectAlarmMedia(String mediaType) {
         return tbAlarmMediaMapper.selectAlarmMediaByType(mediaType);
     }
 }

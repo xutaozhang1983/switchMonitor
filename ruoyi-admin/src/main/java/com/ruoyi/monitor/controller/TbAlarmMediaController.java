@@ -56,7 +56,7 @@ public class TbAlarmMediaController extends BaseController
     @GetMapping(value = "/{mediaType}")
     public AjaxResult getInfo(@PathVariable("mediaType") String mediaType)
     {
-        return success(tbAlarmMediaService.getAlarmMedia(mediaType));
+        return success(tbAlarmMediaService.selectAlarmMedia(mediaType));
     }
 
     /**

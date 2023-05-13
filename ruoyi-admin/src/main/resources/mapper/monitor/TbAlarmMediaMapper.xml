@@ -33,7 +33,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectAlarmMediaByType" parameterType="String" resultMap="TbAlarmMediaResult">
         <include refid="selectTbAlarmMediaVo"/>
         where media_type = #{mediaType}
-        and status = 0
         limit 1
     </select>
 
