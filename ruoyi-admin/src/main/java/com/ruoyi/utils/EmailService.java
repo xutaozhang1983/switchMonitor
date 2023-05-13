@@ -20,19 +20,25 @@ public class EmailService {
 
     private final static String smtpConfKey = "smtpConfKey";
     private final static String mediaType = "EMAIL";
-
+    private final static String timeout = "20000";
     @Autowired
     private RedisCache redisCache;
+
+    static {
+
+    }
     private  TbAlarmMedia smtpConf(){
         String smtpConf = redisCache.getCacheObject(smtpConfKey);
-        TbAlarmMedia alarmMedia =  jsonStringToUser(smtpConf);
+        System.out.println(smtpConf+"--------");
+        TbAlarmMedia alarmMedia =  strToAlarmMedia(smtpConf);
         if(StringUtils.isNull(alarmMedia)){
             alarmMedia = alarmMediaService.getAlarmMedia(mediaType);
             redisCache.setCacheObject(smtpConfKey,alarmMedia.toString(),86400);
         }
+        System.out.println(alarmMedia);
         return alarmMedia;
     }
-    public static TbAlarmMedia jsonStringToUser(String jsonString) {
+    public static TbAlarmMedia strToAlarmMedia(String jsonString) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             return mapper.readValue(jsonString, TbAlarmMedia.class);
@@ -55,6 +61,8 @@ public class EmailService {
             prop.setProperty("mail.smtp.auth", "true");//需要请求认证
             //prop.put("mail.smtp.port","587");
             prop.setProperty("mail.debug", "true");
+            prop.put("mail.smtp.connectiontimeout", timeout);
+            prop.put("mail.smtp.timeout", timeout);
             if(StringUtils.isNotNull(smtpConf.getEnableSsl())){
 
             }
@@ -106,7 +114,13 @@ public class EmailService {
         return message;
     }
 
-
+    public static void main(String[] args) {
+//        String smtpConf = redisCache.getCacheObject(smtpConfKey);
+//        System.out.println(smtpConf);
+//        TbAlarmMedia alarmMedia =  strToAlarmMedia(smtpConf);
+//
+//        System.out.println(alarmMedia);
+    }
 
 }
 

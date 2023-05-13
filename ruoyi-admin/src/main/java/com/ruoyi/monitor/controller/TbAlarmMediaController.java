@@ -48,7 +48,7 @@ public class TbAlarmMediaController extends BaseController
      */
     @PreAuthorize("@ss.hasPermi('monitor:media:query')")
     @GetMapping(value = "/{mediaType}")
-    public AjaxResult getInfo(@PathVariable("id") String mediaType)
+    public AjaxResult getInfo(@PathVariable("mediaType") String mediaType)
     {
         return success(tbAlarmMediaService.getAlarmMedia(mediaType));
     }
