@@ -88,10 +88,10 @@ public class TbAlarmMediaController extends BaseController
 
 
     @GetMapping("/emailTest")
-    public AjaxResult remove(@RequestParam String receive,@RequestParam String sub ,@RequestParam String content)
+    public AjaxResult remove(@RequestParam String receive)
     {
-
-        boolean test = emailService.SendEmail(receive,sub,content);
-        return toAjax(test);
+        String sub = "测试邮件";
+        String content ="测试邮件内容";
+        return emailService.SendEmail(receive,sub,content);
     }
 }
