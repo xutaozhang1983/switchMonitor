@@ -62,5 +62,6 @@ public interface ITbDeviceItemHisService
     List<ItemGraphVo> selectGraph(ItemHisDto itemHisDto);
 
     void insertBatch(List<TbDeviceItemHis> itemHisList);
-    List<ItemGraphVo> selectItemTop(ItemHisDto itemHisDto);
+    List<ItemGraphVo> selectPortFlowTop(ItemHisDto itemHisDto);
+    List<ItemGraphVo> selectDeviceFlowTop(ItemHisDto itemHisDto);
 }

@@ -102,7 +102,7 @@ public class MonitorTask {
                         deviceItem.setLastValue(deviceItem.getValue());
                         deviceItem.setValue(cpuMemMap.get(key));
                         itemService.updateTbDeviceItem(deviceItem);
-                        itemHisList.add(formatItemHis(deviceItem.getId(),device.getId(),cpuMemMap.get(key),key));
+                        itemHisList.add(formatItemHis(deviceItem.getId(),device.getId(),Long.parseLong(cpuMemMap.get(key)),key));
                     }
                 }
                 if (!isExists){
@@ -114,6 +114,8 @@ public class MonitorTask {
             Map<String,String> ifStatusMap = snmpDevice.deviceItemInfo();
             Map<String ,Long> ifInFlowMap = snmpDevice.ifInFlow(); // 端口入流量
             Map<String ,Long> ifOutFlowMap = snmpDevice.ifOutFlow(); // 端口出流量
+            Long allIn = 0L;
+            Long allOut = 0L;
             for (String key: ifStatusMap.keySet()) {
                 boolean itemExists = false;
                 String value = "0,0";
@@ -128,8 +130,11 @@ public class MonitorTask {
                             Long ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
                             deviceItem.setLastValue(value);
                             deviceItem.setValue(ifIn+ "," + ifOut);
-                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), String.valueOf(ifIn), DeviceItem.IFIN.getItem()));
-                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), String.valueOf(ifOut), DeviceItem.IFOUT.getItem()));
+                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), ifIn, DeviceItem.IFIN.getItem()));
+                            itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), ifOut, DeviceItem.IFOUT.getItem()));
+                            allIn = allIn+ ifIn;
+                            allOut = allOut + ifOut;
+
                         }
                         itemService.updateTbDeviceItem(deviceItem);
                         // 是否端口状态发生改变
@@ -152,7 +157,10 @@ public class MonitorTask {
                     String counter = DeviceItem.IFIN.getItem()+"," + DeviceItem.IFOUT.getItem();
                     saveItem(DeviceItem.IFIN.getIsPort(), device.getId(),key , counter, value,ifStatusMap.get(key));
                 }
+
             } // snmp item 信息
+            itemHisList.add(formatItemHis(0L, device.getId(), allOut, DeviceItem.IFOUT.getItem()));
+            itemHisList.add(formatItemHis(0L, device.getId(), allIn, DeviceItem.IFIN.getItem()));
         }
         itemHisService.insertBatch(itemHisList); // 整体历史数据写入
     }
@@ -168,11 +176,11 @@ public class MonitorTask {
         itemService.insertTbDeviceItem(deviceItem);
 
     }
-    private TbDeviceItemHis formatItemHis(Long itemId,Long deviceId,String value,String counter){
+    private TbDeviceItemHis formatItemHis(Long itemId,Long deviceId,Long value,String counter){
         TbDeviceItemHis itemHis = new TbDeviceItemHis();
         itemHis.setItemId(itemId);
         itemHis.setDeviceId(deviceId);
-        itemHis.setValue(Long.valueOf(value));
+        itemHis.setValue(value);
         itemHis.setCounter(counter);
         itemHis.setClock(DateUtils.timestamp());
         return itemHis;

@@ -1,24 +1,20 @@
 package com.ruoyi.monitor.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.monitor.domain.dto.ItemHisDto;
 import com.ruoyi.monitor.domain.vo.ItemGraphVo;
+import com.ruoyi.monitor.enums.DeviceItem;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -140,17 +136,37 @@ public class TbDeviceItemHisController extends BaseController
         return AjaxResult.success(mapList);
     }
     @ApiOperation("获取top5 流量")
-    @GetMapping("/selectItemTop5")
-    public AjaxResult selectGraph(){
+    @GetMapping("/selectTop5")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "hours", value = "几小时内", dataType = "Long", dataTypeClass = Long.class),
+            @ApiImplicitParam(name = "topType", value = "1 端口流量 2 设备流量", dataType = "Integer", dataTypeClass = Integer.class),
+    })
+    public AjaxResult selectGraph( @RequestParam Long hours,
+                                  @RequestParam Integer topType){
+        ItemHisDto itemHisDto = new ItemHisDto();
+        if(StringUtils.isNull(hours)){
+            hours = 4L;
+        }
+        itemHisDto.setStartClock(DateUtils.minusHours(new Date(),hours));
         Map<String , Object>  res = new HashMap<>();
-        for (String counter:"ifIn,ifOut".split(",")){
-            ItemHisDto itemHisDto = new ItemHisDto();
-            String[] c = new String[1];
-            c[0] = counter;
-            itemHisDto.setCounters(c);
-            System.out.println(itemHisDto);
-            res.put(counter,tbDeviceItemHisService.selectItemTop(itemHisDto));
+        List<ItemGraphVo> flowList = new ArrayList<>();
+        if(topType == 1){
+             flowList = tbDeviceItemHisService.selectPortFlowTop(itemHisDto);
+        }else if (topType == 2){
+             flowList = tbDeviceItemHisService.selectDeviceFlowTop(itemHisDto);
+        }
+
+        for (String counter:DeviceItem.flowCounters()){
+            List<ItemGraphVo> itemGraphVos = new ArrayList<>();
+            for (ItemGraphVo graph: flowList) {
+                if(graph.getCounter().equals(counter)){
+                    itemGraphVos.add(graph);
+                }
+            }
+            res.put(counter, itemGraphVos);
         }
         return AjaxResult.success(res);
     }
+
+
 }

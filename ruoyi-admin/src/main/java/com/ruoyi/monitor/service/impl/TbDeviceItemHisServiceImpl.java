@@ -118,9 +118,13 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     }
 
     @Override
-    public List<ItemGraphVo> selectItemTop(ItemHisDto itemHisDto) {
-        Date startClock = DateUtils.minusHours(new Date(),4);
-        itemHisDto.setStartClock(startClock);
-        return tbDeviceItemHisMapper.selectTop(itemHisDto);
+    public List<ItemGraphVo> selectPortFlowTop(ItemHisDto itemHisDto) {
+        return tbDeviceItemHisMapper.selectPortFlowTop(itemHisDto);
     }
+
+    @Override
+    public List<ItemGraphVo> selectDeviceFlowTop(ItemHisDto itemHisDto) {
+        return tbDeviceItemHisMapper.selectDeviceFlowTop(itemHisDto);
+    }
+
 }

@@ -1,5 +1,8 @@
 package com.ruoyi.monitor.enums;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public enum DeviceItem {
     CPU("CPU",1L),
     MEM("Memory",1L),
@@ -28,6 +31,12 @@ public enum DeviceItem {
         return 0L;
     }
 
+    public static List<String> flowCounters(){
+        List<String> counters = new ArrayList<>();
+        counters.add(DeviceItem.IFIN.getItem());
+        counters.add(DeviceItem.IFOUT.getItem());
+        return counters;
+    }
     public static void main(String[] args) {
         System.out.println(getIsPortByItem("CPU"));
     }

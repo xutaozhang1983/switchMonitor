@@ -19,12 +19,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="counter"    column="counter"    />
         <result property="clock"    column="clockA"    />
     </resultMap>
-    <resultMap type="ItemGraphVo" id="ItemTop">
+    <resultMap type="ItemGraphVo" id="ItemTopRes">
         <result property="itemId"    column="item_id"    />
         <result property="value"    column="value"    />
         <result property="itemName"    column="item_name"    />
         <result property="deviceIp"    column="device_ip"    />
+        <result property="deviceName"    column="device_name"    />
     </resultMap>
+
     <sql id="selectTbDeviceItemHisVo">
         select * from tb_item_his
     </sql>
@@ -96,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </foreach>
     </delete>
     <select id="selectDeviceGraph" parameterType="ItemHisDto" resultMap="ItemHisRes">
-        select sum(value) `value` ,FROM_UNIXTIME(clock) clockA ,counter from tb_item_his
+        select `value` ,FROM_UNIXTIME(clock) clockA ,counter from tb_item_his
         where device_id = #{deviceId}
         <if test="startClock != null"> and clock &gt;= UNIX_TIMESTAMP(#{startClock})</if>
         <if test="endClock != null">and clock &lt;= UNIX_TIMESTAMP(#{endClock})</if>
@@ -106,6 +108,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 #{counter}
             </foreach>
         </if>
+        and item_id >0
         GROUP BY clockA
         order by clockA
     </select>
@@ -126,18 +129,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by clock
     </select>
 
-    <select id="selectTop" resultMap="ItemTop" parameterType="ItemHisDto">
-        select DISTINCT(h.item_id) item_id , max(h.value) value,i.item_name item_name,d.device_ip,d.device_name from tb_item_his h
+    <select id="selectPortFlowTop" resultMap="ItemTopRes" parameterType="ItemHisDto">
+        select DISTINCT(h.item_id) item_id , max(h.value) `value`,
+        i.item_name item_name,d.device_ip,d.device_name,h.counter
+        from tb_item_his h
         LEFT JOIN tb_device_item i on h.item_id = i.id
-        left join tb_device d on d.id = i.device_id
+        left join tb_device d on h.device_id = d.id
         where h.clock &gt;= UNIX_TIMESTAMP(#{startClock})
         and i.is_port = 0
-        and h.counter in
-        <foreach item="counter" collection="counters" open="(" separator="," close=")">
-            #{counter}
-        </foreach>
-        GROUP BY h.item_id
-        order by h.`value` desc
+        GROUP BY h.item_id,h.counter
+        order by `value` desc
+        limit 5
+    </select>
+
+    <select id="selectDeviceFlowTop" resultMap="ItemTopRes" parameterType="ItemHisDto">
+        select h.device_id device_id ,max(h.value) `value`,d.device_ip device_ip,
+        d.device_name device_name ,h.counter counter from tb_item_his h
+        LEFT JOIN tb_device_item i on h.item_id = i.id
+        left join tb_device d on  h.device_id = d.id
+        where h.clock &gt;= UNIX_TIMESTAMP(#{startClock})
+        and i.is_port = 0
+        GROUP BY device_id,h.counter
+        order by `value` desc
         limit 5
     </select>
 

@@ -65,5 +65,7 @@ public interface TbDeviceItemHisMapper
 
     void insertBatch(List<TbDeviceItemHis> itemHisList);
 
-    List<ItemGraphVo> selectTop(ItemHisDto itemHisDto);
+    List<ItemGraphVo> selectPortFlowTop(ItemHisDto itemHisDto);
+
+    List<ItemGraphVo> selectDeviceFlowTop(ItemHisDto itemHisDto);
 }
