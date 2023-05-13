@@ -9,4 +9,7 @@ public class ItemVo extends TbDeviceItem {
 
     private Long ifIn;
     private Long ifOut;
+
+    private String deviceIp;
+    private String deviceName;
 }

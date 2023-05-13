@@ -13,4 +13,6 @@ public class ItemGraphVo {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
     private Date clock;
     private String itemName;
+    private String deviceIP;
+    private String deviceName;
 }

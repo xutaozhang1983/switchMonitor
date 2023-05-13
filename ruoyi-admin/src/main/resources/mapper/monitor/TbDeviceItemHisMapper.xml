@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="itemId"    column="item_id"    />
         <result property="value"    column="value"    />
         <result property="itemName"    column="item_name"    />
+        <result property="deviceIp"    column="device_ip"    />
     </resultMap>
     <sql id="selectTbDeviceItemHisVo">
         select * from tb_item_his
@@ -126,8 +127,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectTop" resultMap="ItemTop" parameterType="ItemHisDto">
-        select DISTINCT(h.item_id) item_id , max(h.value) value,d.item_name item_name from tb_item_his h
+        select DISTINCT(h.item_id) item_id , max(h.value) value,i.item_name item_name,d.device_ip,d.device_name from tb_item_his h
         LEFT JOIN tb_device_item i on h.item_id = i.id
+        left join tb_device d on d.id = i.device_id
         where h.clock &gt;= UNIX_TIMESTAMP(#{startClock})
         and i.is_port = 0
         and h.counter in
