@@ -64,4 +64,6 @@ public interface TbDeviceItemHisMapper
     List<ItemGraphVo> selectGraph(ItemHisDto itemHisDto);
 
     void insertBatch(List<TbDeviceItemHis> itemHisList);
+
+    List<ItemGraphVo> selectTop(ItemHisDto itemHisDto);
 }

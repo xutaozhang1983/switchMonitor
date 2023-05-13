@@ -172,7 +172,7 @@ public class MonitorTask {
         TbDeviceItemHis itemHis = new TbDeviceItemHis();
         itemHis.setItemId(itemId);
         itemHis.setDeviceId(deviceId);
-        itemHis.setValue(value);
+        itemHis.setValue(Long.valueOf(value));
         itemHis.setCounter(counter);
         itemHis.setClock(DateUtils.timestamp());
         return itemHis;

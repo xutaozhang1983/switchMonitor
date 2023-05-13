@@ -106,9 +106,9 @@ public class GlobalExceptionHandler
     /**
      * 演示模式异常
      */
-    @ExceptionHandler(DemoModeException.class)
-    public AjaxResult handleDemoModeException(DemoModeException e)
-    {
-        return AjaxResult.error("演示模式，不允许操作");
-    }
+//    @ExceptionHandler(DemoModeException.class)
+//    public AjaxResult handleDemoModeException(DemoModeException e)
+//    {
+//        return AjaxResult.error("演示模式，不允许操作");
+//    }
 }

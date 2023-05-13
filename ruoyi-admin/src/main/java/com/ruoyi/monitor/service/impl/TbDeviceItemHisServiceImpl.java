@@ -2,6 +2,7 @@ package com.ruoyi.monitor.service.impl;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -114,5 +115,12 @@ public class TbDeviceItemHisServiceImpl implements ITbDeviceItemHisService
     @Override
     public void insertBatch(List<TbDeviceItemHis> itemHisList) {
         tbDeviceItemHisMapper.insertBatch(itemHisList);
+    }
+
+    @Override
+    public List<ItemGraphVo> selectItemTop(ItemHisDto itemHisDto) {
+        Date startClock = DateUtils.minusHours(new Date(),4);
+        itemHisDto.setStartClock(startClock);
+        return tbDeviceItemHisMapper.selectTop(itemHisDto);
     }
 }

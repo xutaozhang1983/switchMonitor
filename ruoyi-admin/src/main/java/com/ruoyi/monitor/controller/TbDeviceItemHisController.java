@@ -139,4 +139,18 @@ public class TbDeviceItemHisController extends BaseController
         }
         return AjaxResult.success(mapList);
     }
+    @ApiOperation("获取top5 流量")
+    @GetMapping("/selectItemTop5")
+    public AjaxResult selectGraph(){
+        Map<String , Object>  res = new HashMap<>();
+        for (String counter:"ifIn,ifOut".split(",")){
+            ItemHisDto itemHisDto = new ItemHisDto();
+            String[] c = new String[1];
+            c[0] = counter;
+            itemHisDto.setCounters(c);
+            System.out.println(itemHisDto);
+            res.put(counter,tbDeviceItemHisService.selectItemTop(itemHisDto));
+        }
+        return AjaxResult.success(res);
+    }
 }

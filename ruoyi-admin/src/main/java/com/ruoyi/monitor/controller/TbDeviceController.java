@@ -128,21 +128,9 @@ public class TbDeviceController extends BaseController
 
     @GetMapping("/status/stat")
     public AjaxResult statusStat() {
-        DeviceStat stat = new DeviceStat();
-        List<TbDevice> devices = tbDeviceService.selectDeviceList(new TbDevice());
 
-       stat.setAll(devices.size());
-        for (TbDevice device:devices){
-            if(device.getEnable() == 0){
-                if (device.getStatus().equals(AlarmEnum.OK.getCode())){
-                    stat.setOk(stat.getOk()+1);
-                }else{
-                    stat.setErr(stat.getErr()+1);
-                }
-            }else{
-                stat.setUnknow(stat.getUnknow()+1);
-            }
-        }
+        List<DeviceVO> devices = tbDeviceService.selectTbDeviceList(new TbDevice());
+        DeviceStat stat = deviceStat(devices);
         return AjaxResult.success(stat);
     }
     @GetMapping("/status/groupStat")
@@ -155,25 +143,26 @@ public class TbDeviceController extends BaseController
         TbDevice tbDevice = new TbDevice();
         List<DeviceVO> devices = tbDeviceService.selectTbDeviceList(tbDevice);
         for (String grpName:resultMap.keySet()) {
-            DeviceStat stat = new DeviceStat();
-            for (DeviceVO deviceVO:devices){
-                if(!grpName.equals(deviceVO.getGroupName())){
-                    continue;
-                }
-                if(deviceVO.getEnable() == 0){
-                    if (deviceVO.getStatus().equals(AlarmEnum.OK.getCode())){
-                        stat.setOk(stat.getOk()+1);
-                    }else{
-                        stat.setErr(stat.getErr()+1);
-                    }
-                }else{
-                    stat.setUnknow(stat.getUnknow()+1);
-                }
-                stat.setAll(stat.getAll()+1);
-            }
+            DeviceStat stat = deviceStat(devices);
             resultMap.put(grpName,stat);
-
         }
         return AjaxResult.success(resultMap);
     }
+
+    private DeviceStat deviceStat(List<DeviceVO> deviceList){
+        DeviceStat stat = new DeviceStat();
+        for (TbDevice device:deviceList){
+            if(device.getEnable() == 0){
+                if (device.getStatus().equals(AlarmEnum.OK.getCode())){
+                    stat.setOk(stat.getOk()+1);
+                }else{
+                    stat.setErr(stat.getErr()+1);
+                }
+            }else{
+                stat.setUnknow(stat.getUnknow()+1);
+            }
+        }
+        return stat;
+    }
+
 }

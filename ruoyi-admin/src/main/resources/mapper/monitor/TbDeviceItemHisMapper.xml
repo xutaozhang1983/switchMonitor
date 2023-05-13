@@ -19,7 +19,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="counter"    column="counter"    />
         <result property="clock"    column="clockA"    />
     </resultMap>
-
+    <resultMap type="ItemGraphVo" id="ItemTop">
+        <result property="itemId"    column="item_id"    />
+        <result property="value"    column="value"    />
+        <result property="itemName"    column="item_name"    />
+    </resultMap>
     <sql id="selectTbDeviceItemHisVo">
         select * from tb_item_his
     </sql>
@@ -121,7 +125,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         order by clock
     </select>
 
-
+    <select id="selectTop" resultMap="ItemTop" parameterType="ItemHisDto">
+        select DISTINCT(h.item_id) item_id , max(h.value) value,d.item_name item_name from tb_item_his h
+        LEFT JOIN tb_device_item i on h.item_id = i.id
+        where h.clock &gt;= UNIX_TIMESTAMP(#{startClock})
+        and i.is_port = 0
+        and h.counter in
+        <foreach item="counter" collection="counters" open="(" separator="," close=")">
+            #{counter}
+        </foreach>
+        GROUP BY h.item_id
+        order by h.`value` desc
+        limit 5
+    </select>
 
 
 </mapper>

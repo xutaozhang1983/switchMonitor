@@ -39,7 +39,7 @@ public class TbDeviceItemHis
     private String counter;
     /** 监控值 */
     @Excel(name = "监控值")
-    private String value;
+    private Long value;
 
     /** 收集时间 */
     @Excel(name = "收集时间")
