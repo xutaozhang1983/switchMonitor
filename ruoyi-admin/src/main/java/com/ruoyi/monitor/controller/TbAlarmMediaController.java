@@ -2,16 +2,10 @@ package com.ruoyi.monitor.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+import com.ruoyi.utils.EmailService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -34,6 +28,8 @@ public class TbAlarmMediaController extends BaseController
     @Autowired
     private ITbAlarmMediaService tbAlarmMediaService;
 
+    @Autowired
+    private EmailService emailService;
     /**
      * 查询smtp 服务配置列表
      */
@@ -46,27 +42,15 @@ public class TbAlarmMediaController extends BaseController
         return getDataTable(list);
     }
 
-    /**
-     * 导出smtp 服务配置列表
-     */
-    @PreAuthorize("@ss.hasPermi('monitor:media:export')")
-    @Log(title = "smtp 服务配置", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, TbAlarmMedia tbAlarmMedia)
-    {
-        List<TbAlarmMedia> list = tbAlarmMediaService.selectTbAlarmMediaList(tbAlarmMedia);
-        ExcelUtil<TbAlarmMedia> util = new ExcelUtil<TbAlarmMedia>(TbAlarmMedia.class);
-        util.exportExcel(response, list, "smtp 服务配置数据");
-    }
 
     /**
      * 获取smtp 服务配置详细信息
      */
     @PreAuthorize("@ss.hasPermi('monitor:media:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    @GetMapping(value = "/{mediaType}")
+    public AjaxResult getInfo(@PathVariable("id") String mediaType)
     {
-        return success(tbAlarmMediaService.selectTbAlarmMediaById(id));
+        return success(tbAlarmMediaService.getAlarmMedia(mediaType));
     }
 
     /**
@@ -100,5 +84,14 @@ public class TbAlarmMediaController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tbAlarmMediaService.deleteTbAlarmMediaByIds(ids));
+    }
+
+
+    @GetMapping("/emailTest")
+    public AjaxResult remove(@RequestParam String receive,@RequestParam String sub ,@RequestParam String content)
+    {
+
+        boolean test = emailService.SendEmail(receive,sub,content);
+        return toAjax(test);
     }
 }
