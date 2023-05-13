@@ -47,6 +47,12 @@ public class RedisCache
 //        redisTemplate.opsForValue().set(key, value, timeout, timeUnit);
     }
 
+    public void setCacheObject(String key, String value, int timeout) {
+
+        myCache.put(key,value);
+
+    }
+
     /**
      * 设置有效时间
      *
@@ -276,4 +282,6 @@ public class RedisCache
         return myCache.keys(pattern);
 //        return redisTemplate.keys(pattern);
     }
+
+
 }

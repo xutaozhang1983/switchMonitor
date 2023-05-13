@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.TbAlarmMediaMapper">
+    
+    <resultMap type="TbAlarmMedia" id="TbAlarmMediaResult">
+        <result property="id"    column="id"    />
+        <result property="mediaType"    column="media_type"    />
+        <result property="mediaName"    column="media_name"    />
+        <result property="host"    column="host"    />
+        <result property="sender"    column="sender"    />
+        <result property="port"    column="port"    />
+        <result property="enableSsl"    column="enable_ssl"    />
+        <result property="enableTls" column="enable_tls" />
+        <result property="username"    column="username"    />
+        <result property="passwd"    column="passwd"    />
+        <result property="accessKey"    column="access_key"    />
+        <result property="accessSecret"    column="access_secret"    />
+        <result property="regionId"    column="region_id"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+    </resultMap>
+
+    <sql id="selectTbAlarmMediaVo">
+        select id, media_type, media_name, host, sender, port, enable_ssl,enable_tls, username, passwd, access_key, access_secret, region_id, status, create_by, create_time, update_by, update_time, remark from tb_alarm_media
+    </sql>
+
+    <select id="selectAlarmMediaByType" parameterType="String" resultMap="TbAlarmMediaResult">
+        <include refid="selectTbAlarmMediaVo"/>
+        where media_type = #{mediaType}
+        and status = 0
+        limit 1
+    </select>
+
+    <select id="selectTbAlarmMediaList" parameterType="TbAlarmMedia" resultMap="TbAlarmMediaResult">
+        <include refid="selectTbAlarmMediaVo"/>
+        <where>  
+            <if test="mediaType != null "> and media_type = #{mediaType}</if>
+            <if test="mediaName != null  and mediaName != ''"> and media_name like concat('%', #{mediaName}, '%')</if>
+            <if test="host != null  and host != ''"> and host = #{host}</if>
+            <if test="sender != null  and sender != ''"> and sender = #{sender}</if>
+            <if test="port != null "> and port = #{port}</if>
+            <if test="enableSsl != null "> and enable_ssl = #{enableSsl}</if>
+            <if test="enableTls != null "> and enable_tls = #{enableTls}</if>
+            <if test="username != null  and username != ''"> and username like concat('%', #{username}, '%')</if>
+            <if test="passwd != null  and passwd != ''"> and passwd = #{passwd}</if>
+            <if test="accessKey != null  and accessKey != ''"> and access_key = #{accessKey}</if>
+            <if test="accessSecret != null  and accessSecret != ''"> and access_secret = #{accessSecret}</if>
+            <if test="regionId != null  and regionId != ''"> and region_id = #{regionId}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbAlarmMediaById" parameterType="Long" resultMap="TbAlarmMediaResult">
+        <include refid="selectTbAlarmMediaVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbAlarmMedia" parameterType="TbAlarmMedia" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_alarm_media
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="mediaType != null">media_type,</if>
+            <if test="mediaName != null and mediaName != ''">media_name,</if>
+            <if test="host != null and host != ''">host,</if>
+            <if test="sender != null and sender != ''">sender,</if>
+            <if test="port != null">port,</if>
+            <if test="enableSsl != null">enable_ssl,</if>
+            <if test="enableTsl != null">#{enable_tsl},</if>
+            <if test="username != null and username != ''">username,</if>
+            <if test="passwd != null and passwd != ''">passwd,</if>
+            <if test="accessKey != null">access_key,</if>
+            <if test="accessSecret != null">access_secret,</if>
+            <if test="regionId != null">region_id,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+            <if test="remark != null">remark,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="mediaType != null">#{mediaType},</if>
+            <if test="mediaName != null and mediaName != ''">#{mediaName},</if>
+            <if test="host != null and host != ''">#{host},</if>
+            <if test="sender != null and sender != ''">#{sender},</if>
+            <if test="port != null">#{port},</if>
+            <if test="enableSsl != null">#{enableSsl},</if>
+            <if test="enableTsl != null">#{enableTsl},</if>
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="passwd != null and passwd != ''">#{passwd},</if>
+            <if test="accessKey != null">#{accessKey},</if>
+            <if test="accessSecret != null">#{accessSecret},</if>
+            <if test="regionId != null">#{regionId},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+            <if test="remark != null">#{remark},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbAlarmMedia" parameterType="TbAlarmMedia">
+        update tb_alarm_media
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="mediaType != null">media_type = #{mediaType},</if>
+            <if test="mediaName != null and mediaName != ''">media_name = #{mediaName},</if>
+            <if test="host != null and host != ''">host = #{host},</if>
+            <if test="sender != null and sender != ''">sender = #{sender},</if>
+            <if test="port != null">port = #{port},</if>
+            <if test="enableSsl != null">enable_ssl = #{enableSsl},</if>
+            <if test="enableTls != null ">enable_tls = #{enableTls},</if>
+            <if test="username != null and username != ''">username = #{username},</if>
+            <if test="passwd != null and passwd != ''">passwd = #{passwd},</if>
+            <if test="accessKey != null">access_key = #{accessKey},</if>
+            <if test="accessSecret != null">access_secret = #{accessSecret},</if>
+            <if test="regionId != null">region_id = #{regionId},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+            <if test="remark != null">remark = #{remark},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbAlarmMediaById" parameterType="Long">
+        delete from tb_alarm_media where id = #{id}
+    </delete>
+
+    <delete id="deleteTbAlarmMediaByIds" parameterType="String">
+        delete from tb_alarm_media where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

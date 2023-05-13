@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.monitor.domain.TbDeviceGroup;
 import com.ruoyi.monitor.domain.vo.DeviceStat;
 import com.ruoyi.monitor.domain.vo.DeviceVO;
@@ -130,7 +131,7 @@ public class TbDeviceController extends BaseController
     public AjaxResult statusStat() {
 
         List<DeviceVO> devices = tbDeviceService.selectTbDeviceList(new TbDevice());
-        DeviceStat stat = deviceStat(devices);
+        DeviceStat stat = deviceStat(devices,null);
         return AjaxResult.success(stat);
     }
     @GetMapping("/status/groupStat")
@@ -143,15 +144,18 @@ public class TbDeviceController extends BaseController
         TbDevice tbDevice = new TbDevice();
         List<DeviceVO> devices = tbDeviceService.selectTbDeviceList(tbDevice);
         for (String grpName:resultMap.keySet()) {
-            DeviceStat stat = deviceStat(devices);
+            DeviceStat stat = deviceStat(devices,grpName);
             resultMap.put(grpName,stat);
         }
         return AjaxResult.success(resultMap);
     }
 
-    private DeviceStat deviceStat(List<DeviceVO> deviceList){
+    private DeviceStat deviceStat(List<DeviceVO> deviceList,String grpName){
         DeviceStat stat = new DeviceStat();
-        for (TbDevice device:deviceList){
+        for (DeviceVO device:deviceList){
+            if (StringUtils.isNotNull(grpName) && !device.getGroupName().equals(grpName)){
+                continue;
+            }
             if(device.getEnable() == 0){
                 if (device.getStatus().equals(AlarmEnum.OK.getCode())){
                     stat.setOk(stat.getOk()+1);

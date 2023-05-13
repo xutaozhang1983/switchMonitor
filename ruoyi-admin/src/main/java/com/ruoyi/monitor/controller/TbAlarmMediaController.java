@@ -16,8 +16,8 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.monitor.domain.TbSmtpConf;
-import com.ruoyi.monitor.service.ITbSmtpConfService;
+import com.ruoyi.monitor.domain.TbAlarmMedia;
+import com.ruoyi.monitor.service.ITbAlarmMediaService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
 
@@ -25,80 +25,80 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * smtp 服务配置Controller
  * 
  * @author ruoyi
- * @date 2023-05-07
+ * @date 2023-05-13
  */
 @RestController
-@RequestMapping("/monitor/conf")
-public class TbSmtpConfController extends BaseController
+@RequestMapping("/monitor/media")
+public class TbAlarmMediaController extends BaseController
 {
     @Autowired
-    private ITbSmtpConfService tbSmtpConfService;
+    private ITbAlarmMediaService tbAlarmMediaService;
 
     /**
      * 查询smtp 服务配置列表
      */
-    @PreAuthorize("@ss.hasPermi('monitor:conf:list')")
+    @PreAuthorize("@ss.hasPermi('monitor:media:list')")
     @GetMapping("/list")
-    public TableDataInfo list(TbSmtpConf tbSmtpConf)
+    public TableDataInfo list(TbAlarmMedia tbAlarmMedia)
     {
         startPage();
-        List<TbSmtpConf> list = tbSmtpConfService.selectTbSmtpConfList(tbSmtpConf);
+        List<TbAlarmMedia> list = tbAlarmMediaService.selectTbAlarmMediaList(tbAlarmMedia);
         return getDataTable(list);
     }
 
     /**
      * 导出smtp 服务配置列表
      */
-    @PreAuthorize("@ss.hasPermi('monitor:conf:export')")
+    @PreAuthorize("@ss.hasPermi('monitor:media:export')")
     @Log(title = "smtp 服务配置", businessType = BusinessType.EXPORT)
     @PostMapping("/export")
-    public void export(HttpServletResponse response, TbSmtpConf tbSmtpConf)
+    public void export(HttpServletResponse response, TbAlarmMedia tbAlarmMedia)
     {
-        List<TbSmtpConf> list = tbSmtpConfService.selectTbSmtpConfList(tbSmtpConf);
-        ExcelUtil<TbSmtpConf> util = new ExcelUtil<TbSmtpConf>(TbSmtpConf.class);
+        List<TbAlarmMedia> list = tbAlarmMediaService.selectTbAlarmMediaList(tbAlarmMedia);
+        ExcelUtil<TbAlarmMedia> util = new ExcelUtil<TbAlarmMedia>(TbAlarmMedia.class);
         util.exportExcel(response, list, "smtp 服务配置数据");
     }
 
     /**
      * 获取smtp 服务配置详细信息
      */
-    @PreAuthorize("@ss.hasPermi('monitor:conf:query')")
+    @PreAuthorize("@ss.hasPermi('monitor:media:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
-        return success(tbSmtpConfService.selectTbSmtpConfById(id));
+        return success(tbAlarmMediaService.selectTbAlarmMediaById(id));
     }
 
     /**
      * 新增smtp 服务配置
      */
-    @PreAuthorize("@ss.hasPermi('monitor:conf:add')")
+    @PreAuthorize("@ss.hasPermi('monitor:media:add')")
     @Log(title = "smtp 服务配置", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@RequestBody TbSmtpConf tbSmtpConf)
+    public AjaxResult add(@RequestBody TbAlarmMedia tbAlarmMedia)
     {
-        return toAjax(tbSmtpConfService.insertTbSmtpConf(tbSmtpConf));
+        return toAjax(tbAlarmMediaService.insertTbAlarmMedia(tbAlarmMedia));
     }
 
     /**
      * 修改smtp 服务配置
      */
-    @PreAuthorize("@ss.hasPermi('monitor:conf:edit')")
+    @PreAuthorize("@ss.hasPermi('monitor:media:edit')")
     @Log(title = "smtp 服务配置", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@RequestBody TbSmtpConf tbSmtpConf)
+    public AjaxResult edit(@RequestBody TbAlarmMedia tbAlarmMedia)
     {
-        return toAjax(tbSmtpConfService.updateTbSmtpConf(tbSmtpConf));
+        return toAjax(tbAlarmMediaService.updateTbAlarmMedia(tbAlarmMedia));
     }
 
     /**
      * 删除smtp 服务配置
      */
-    @PreAuthorize("@ss.hasPermi('monitor:conf:remove')")
+    @PreAuthorize("@ss.hasPermi('monitor:media:remove')")
     @Log(title = "smtp 服务配置", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)
     {
-        return toAjax(tbSmtpConfService.deleteTbSmtpConfByIds(ids));
+        return toAjax(tbAlarmMediaService.deleteTbAlarmMediaByIds(ids));
     }
 }
