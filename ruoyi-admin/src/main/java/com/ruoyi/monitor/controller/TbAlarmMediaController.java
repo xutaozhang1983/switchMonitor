@@ -2,7 +2,13 @@ package com.ruoyi.monitor.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.core.redis.RedisCache;
+import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.utils.EmailService;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -75,21 +81,11 @@ public class TbAlarmMediaController extends BaseController
         return toAjax(tbAlarmMediaService.updateTbAlarmMedia(tbAlarmMedia));
     }
 
-    /**
-     * 删除smtp 服务配置
-     */
-    @PreAuthorize("@ss.hasPermi('monitor:media:remove')")
-    @Log(title = "smtp 服务配置", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
-        return toAjax(tbAlarmMediaService.deleteTbAlarmMediaByIds(ids));
-    }
 
-
-    @GetMapping("/emailTest")
-    public AjaxResult remove(@RequestParam String receive)
-    {
+    @ApiOperation("报警媒体测试")
+    @GetMapping("/test")
+    public AjaxResult remove(@ApiParam(name = "接收人") @RequestParam String receive,
+                             @ApiParam(name = "报警媒体类型") @RequestParam String mediaType) {
         String sub = "测试邮件";
         String content ="测试邮件内容";
         return emailService.SendEmail(receive,sub,content);
