@@ -5,7 +5,7 @@
 <script setup lang="ts">
   import { use } from 'echarts/core'
   import { CanvasRenderer } from 'echarts/renderers'
-  import { BarChart } from 'echarts/charts'
+  import { SunburstChart } from 'echarts/charts'
   import VChart from 'vue-echarts'
   import { TitleComponent, TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
   import merge from 'deepmerge'
@@ -22,27 +22,15 @@
 
   const option = ref({})
   const defaultOption = ref({
-    tooltip: {
-      trigger: 'item'
-    },
-    legend: {},
-    grid: {
-    },
-    xAxis: {
-    },
-    yAxis: {
-    }
   })
 
   watchEffect(() => {
-    console.log("!!!")
     option.value = merge(defaultOption.value, props.option)
-
   })
 
   use([
     CanvasRenderer,
-    BarChart,
+    SunburstChart,
     GridComponent,
     TitleComponent,
     TooltipComponent,

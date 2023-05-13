@@ -1,42 +1,42 @@
 <template>
   <el-dialog :title="postStore.formTitle" v-model="postStore.showFormDialog" width="500px" append-to-body>
-      <el-form ref="postRef" :model="postStore.formData" :rules="rules" label-width="80px">
-        <el-form-item label="岗位名称" prop="postName">
-          <el-input v-model="postStore.formData.postName" placeholder="请输入岗位名称" />
-        </el-form-item>
-        <el-form-item label="岗位编码" prop="postCode">
-          <el-input v-model="postStore.formData.postCode" placeholder="请输入编码名称" />
-        </el-form-item>
-        <el-form-item label="岗位顺序" prop="postSort">
-          <el-input-number
-            v-model="postStore.formData.postSort"
-            controls-position="right"
-            :min="0" />
-        </el-form-item>
-        <el-form-item label="岗位状态" prop="status">
-          <el-radio-group v-model="postStore.formData.status">
-            <el-radio
-              v-for="dict in sys_normal_disable"
-              :key="dict.value"
-              :label="dict.value"
-              >{{ dict.label }}</el-radio
-            >
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input
-            v-model="postStore.formData.remark"
-            type="textarea"
-            placeholder="请输入内容" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <el-form ref="postRef" :model="postStore.formData" :rules="rules" label-width="80px">
+      <el-form-item label="岗位名称" prop="postName">
+        <el-input v-model="postStore.formData.postName" placeholder="请输入岗位名称" />
+      </el-form-item>
+      <el-form-item label="岗位编码" prop="postCode">
+        <el-input v-model="postStore.formData.postCode" placeholder="请输入编码名称" />
+      </el-form-item>
+      <el-form-item label="岗位顺序" prop="postSort">
+        <el-input-number
+          v-model="postStore.formData.postSort"
+          controls-position="right"
+          :min="0" />
+      </el-form-item>
+      <el-form-item label="岗位状态" prop="status">
+        <el-radio-group v-model="postStore.formData.status">
+          <el-radio
+            v-for="dict in sys_normal_disable"
+            :key="dict.value"
+            :label="dict.value"
+            >{{ dict.label }}</el-radio
+          >
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item label="备注" prop="remark">
+        <el-input
+          v-model="postStore.formData.remark"
+          type="textarea"
+          placeholder="请输入内容" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button @click="cancel">取 消</el-button>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <script setup lang="ts">
