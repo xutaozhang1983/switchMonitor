@@ -92,7 +92,6 @@
   
   // 查询
   function handleQuery() {
-    console.log(timeRange)
     queryParams.value.startClock = timeRange.value[0] + ':00'
     queryParams.value.endClock = timeRange.value[1] + ':00'
     getItemHisByItemId(queryParams.value).then((response: any) => {

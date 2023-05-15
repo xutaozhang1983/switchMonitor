@@ -63,9 +63,9 @@
 </template>
 
 <script setup name="Profile" lang="ts">
-   import userAvatar from "./userAvatar.vue";
-   import userInfo from "./userInfo.vue";
-   import resetPwd from "./resetPwd.vue";
+   import userAvatar from "./components/userAvatar.vue"
+   import userInfo from "./components/userInfo.vue"
+   import resetPwd from "./components/resetPwd.vue"
    import useProfileStore from './store'
 
    const profileStore = useProfileStore()

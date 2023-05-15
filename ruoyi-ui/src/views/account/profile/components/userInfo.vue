@@ -24,7 +24,7 @@
 
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
-  import useProfileStore from './store'
+  import useProfileStore from '../store'
 
   const { proxy } = getCurrentInstance() as any
   const profileStore = useProfileStore()
