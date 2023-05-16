@@ -21,9 +21,6 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 
 import './permission' // permission control
 
-import { useDict } from '@/utils/dict'
-import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/common'
-
 // 分页组件
 import Pagination from '@/components/Pagination/index.vue'
 // 自定义表格工具组件
@@ -36,25 +33,15 @@ import ImageUpload from "@/components/ImageUpload/index.vue"
 import ImagePreview from "@/components/ImagePreview/index.vue"
 // 自定义树选择组件
 import TreeSelect from '@/components/TreeSelect/index.vue'
-// 字典标签组件
-import DictTag from '@/components/DictTag/index.vue'
 
 import { localStorage } from '@/utils/storage'
 
 const app = createApp(App)
 
 // 全局方法挂载
-app.config.globalProperties.useDict = useDict
 app.config.globalProperties.download = download
-app.config.globalProperties.parseTime = parseTime
-app.config.globalProperties.resetForm = resetForm
-app.config.globalProperties.handleTree = handleTree
-app.config.globalProperties.addDateRange = addDateRange
-app.config.globalProperties.selectDictLabel = selectDictLabel
-app.config.globalProperties.selectDictLabels = selectDictLabels
 
 // 全局组件挂载
-app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('TreeSelect', TreeSelect)
 app.component('FileUpload', FileUpload)

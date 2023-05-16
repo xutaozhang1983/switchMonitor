@@ -28,14 +28,14 @@
           <el-col :span="12">
             <el-form-item label="厂商" prop="manufacturer">
               <el-select v-model="deviceStore.formData.manufacturer" placeholder="请选择" style="width:100%">
-                <el-option v-for="(item, index) in sys_manufacturer" :key="index" :label="item.label" :value="item.label"></el-option>
+                <el-option v-for="(item, index) in dictDeviceManufacturer" :key="index" :label="item.label" :value="item.label"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="24">
             <el-form-item label="是否开启监控">
               <el-radio-group v-model="deviceStore.formData.enable">
-                <el-radio v-for="dict in sys_device_enable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
+                <el-radio v-for="dict in dictOpenClose" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
               </el-radio-group>
             </el-form-item>
           </el-col>
@@ -56,7 +56,7 @@
           <el-col :span="12">
             <el-form-item label="版本号" prop="snmpVersion">
               <el-select v-model="deviceStore.formData.snmpVersion" placeholder="请选择" style="width:100%">
-                <el-option v-for="(item, index) in sys_snmp_version" :key="index" :label="item.label" :value="item.value"></el-option>
+                <el-option v-for="(item, index) in dictSnmpVersion" :key="index" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -90,21 +90,10 @@
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
   import useNetworkDeviceStore from '../store'
+  import { dictDeviceManufacturer, dictSnmpVersion, dictOpenClose } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const deviceStore = useNetworkDeviceStore()
-
-  const {
-    sys_manufacturer,
-    sys_device_enable,
-    sys_snmp_version }: {
-    sys_manufacturer: DictType[],
-    sys_device_enable: DictType[],
-    sys_snmp_version: DictType[] } = proxy.useDict(
-    "sys_manufacturer",
-    "sys_device_enable",
-    "sys_snmp_version"
-  )
   
   const rules = {
     deviceName: [

@@ -147,7 +147,7 @@
               </template>
               <el-radio-group v-model="menuStore.formData.visible">
                 <el-radio
-                  v-for="dict in sys_show_hide"
+                  v-for="dict in dictShowHide"
                   :key="dict.value"
                   :label="dict.value"
                 >{{ dict.label }}</el-radio>
@@ -166,7 +166,7 @@
               </template>
               <el-radio-group v-model="menuStore.formData.status">
                 <el-radio
-                  v-for="dict in sys_normal_disable"
+                  v-for="dict in dictNormalDisable"
                   :key="dict.value"
                   :label="dict.value"
                 >{{ dict.label }}</el-radio>
@@ -190,16 +190,12 @@
   import IconSelect from '@/components/IconSelect/index.vue'
   import { ClickOutside as vClickOutside } from 'element-plus'
   import useMenuStore from '../store'
+  import { dictNormalDisable, dictShowHide } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const menuStore = useMenuStore()
 
   const menuRef = ref<InstanceType<typeof ElTree>>()
-  const { sys_normal_disable, sys_show_hide }: 
-    { sys_normal_disable: DictType[], sys_show_hide: DictType[] } = proxy.useDict(
-    "sys_normal_disable",
-    "sys_show_hide"
-  )
 
   const showChooseIcon = ref(false)
   const iconSelectRef = ref<InstanceType<typeof IconSelect> | null>(null)

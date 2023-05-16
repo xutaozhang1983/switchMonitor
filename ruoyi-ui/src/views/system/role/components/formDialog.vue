@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item label="状态">
         <el-radio-group v-model="roleStore.formData.status">
-          <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
+          <el-radio v-for="dict in dictNormalDisable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="菜单权限">
@@ -54,14 +54,12 @@
 <script setup lang="ts">
   import { ElMessage, ElTree } from 'element-plus'
   import useRoleStore from '../store'
+  import { dictNormalDisable } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const roleStore = useRoleStore()
 
   const menuRef = ref<InstanceType<typeof ElTree>>()
-  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
-    "sys_normal_disable"
-  )
   
   const rules = {
     roleName: [

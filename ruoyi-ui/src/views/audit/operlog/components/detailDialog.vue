@@ -44,16 +44,13 @@
 <script setup lang="ts">
   import useOperLogStore from '../store'
   import dayjs from 'dayjs'
+  import { dictOperType } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const operLogStore = useOperLogStore()
 
-  const { sys_oper_type }: { sys_oper_type: DictType[] } = proxy.useDict(
-    "sys_oper_type"
-  )
-
   /** 操作日志类型字典翻译 */
   function typeFormat(row: any) {
-    return (sys_oper_type as any).value.filter((item: any) => item.value === row.businessType.toString())[0].label
+    return (dictOperType).filter((item: any) => item.value === row.businessType.toString())[0].label
   }
 </script>

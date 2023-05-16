@@ -7,7 +7,7 @@
     <el-table-column label="岗位排序" align="center" prop="postSort" />
     <el-table-column label="状态" align="center" prop="status">
       <template #default="scope">
-        <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
+        <dict-tag :options="dictNormalDisable" :value="scope.row.status" />
       </template>
     </el-table-column>
     <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -38,13 +38,9 @@
   import { ElMessageBox, ElMessage } from 'element-plus'
   import usePostStore from '../store'
   import { dayjs } from 'element-plus'
+  import { dictNormalDisable } from '@/utils/dict'
 
-  const { proxy } = getCurrentInstance() as any
   const postStore = usePostStore()
-  
-  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
-    'sys_normal_disable'
-  )
 
   // 选择条数
   function handleSelectionChange(selection: any) {

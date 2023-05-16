@@ -13,12 +13,12 @@
       </el-form-item>
       <el-form-item label="设备状态" prop="status">
         <el-select v-model="deviceStore.queryParams.status" placeholder="请选择" clearable style="width: 240px">
-          <el-option v-for="dict in sys_device_status" :key="dict.value" :label="dict.label" :value="dict.value"/>
+          <el-option v-for="dict in dictNormalAbnormal" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="监控状态" prop="enable">
         <el-select v-model="deviceStore.queryParams.enable" placeholder="请选择" clearable style="width: 240px">
-          <el-option v-for="dict in sys_device_enable" :key="dict.value" :label="dict.label" :value="dict.value"/>
+          <el-option v-for="dict in dictOpenClose" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -31,20 +31,12 @@
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
   import useNetworkDeviceStore from '../store'
+  import { dictNormalAbnormal, dictOpenClose } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const deviceStore = useNetworkDeviceStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
-
-  const {
-    sys_device_status,
-    sys_device_enable }: {
-    sys_device_status: DictType[],
-    sys_device_enable: DictType[] } = proxy.useDict(
-    "sys_device_status",
-    "sys_device_enable"
-  )
 
   /** 搜索按钮操作 */
   function handleQuery() {

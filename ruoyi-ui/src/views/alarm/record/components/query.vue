@@ -15,7 +15,7 @@
       </el-form-item>
       <el-form-item label="发送状态" prop="status">
         <el-select v-model="recordStore.queryParams.status" placeholder="请选择" clearable style="width: 240px">
-          <el-option v-for="dict in sys_common_status" :key="dict.value" :label="dict.label" :value="dict.value"/>
+          <el-option v-for="dict in dictSuccessFail" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -28,15 +28,12 @@
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
   import useRecordStore from '../store'
+  import { dictSuccessFail } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const recordStore = useRecordStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
-
-  const { sys_common_status }: { sys_common_status: DictType[] } = proxy.useDict(
-    "sys_common_status"
-  )
 
   const timeRange = ref([])
 

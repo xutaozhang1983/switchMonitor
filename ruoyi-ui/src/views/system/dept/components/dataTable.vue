@@ -10,7 +10,7 @@
     <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
     <el-table-column prop="status" label="状态" width="100">
       <template #default="scope">
-        <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
+        <dict-tag :options="dictNormalDisable" :value="scope.row.status" />
       </template>
     </el-table-column>
     <el-table-column label="创建时间" align="center" prop="createTime" width="200">
@@ -32,14 +32,9 @@
   import { ElMessageBox, ElMessage } from 'element-plus'
   import useDeptStore from '../store'
   import { dayjs } from 'element-plus'
+  import { dictNormalDisable } from '@/utils/dict'
 
-  const { proxy } = getCurrentInstance() as any
   const deptStore = useDeptStore()
-  const router = useRouter()
-  
-  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
-    'sys_normal_disable'
-  )
 
   // 新增按钮操作
   function handleAdd(row: any) {

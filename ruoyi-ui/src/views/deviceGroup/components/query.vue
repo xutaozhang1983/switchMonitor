@@ -5,7 +5,7 @@
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="deviceGroupStore.queryParams.status" placeholder="请选择" clearable style="width: 240px">
-          <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value"/>
+          <el-option v-for="dict in dictNormalAbnormal" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item>
@@ -18,15 +18,12 @@
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
   import useDeviceGroupStore from '../store'
+  import { dictNormalAbnormal } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const deviceGroupStore = useDeviceGroupStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
-
-  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
-    "sys_normal_disable"
-  )
 
   /** 搜索按钮操作 */
   function handleQuery() {

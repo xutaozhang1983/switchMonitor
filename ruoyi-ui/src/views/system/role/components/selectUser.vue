@@ -22,7 +22,7 @@
         <el-table-column label="手机" prop="phonenumber" :show-overflow-tooltip="true" />
         <el-table-column label="状态" align="center" prop="status">
           <template #default="scope">
-            <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
+            <dict-tag :options="dictNormalDisable" :value="scope.row.status" />
           </template>
         </el-table-column>
         <el-table-column label="创建时间" align="center" prop="createTime" width="180">
@@ -50,6 +50,7 @@
 <script setup name="SelectUser" lang="ts">
   import { authUserSelectAll, unallocatedUserList } from '@/api/system/role'
   import dayjs from 'dayjs'
+  import { dictNormalDisable } from '@/utils/dict'
 
   interface Props {
    roleId: number
@@ -66,7 +67,6 @@
   const props = defineProps<Props>()
 
   const { proxy } = getCurrentInstance() as any
-  const { sys_normal_disable } = proxy.useDict('sys_normal_disable')
 
   const userList = ref([])
   const visible = ref(false)

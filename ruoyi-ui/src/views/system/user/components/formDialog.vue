@@ -48,7 +48,7 @@
         <el-col :span="12">
           <el-form-item label="用户性别">
             <el-select v-model="userStore.formData.sex" placeholder="请选择">
-              <el-option v-for="dict in sys_user_sex" :key="dict.value"
+              <el-option v-for="dict in dictUserSex" :key="dict.value"
                 :label="dict.label"
                 :value="dict.value"
               ></el-option>
@@ -58,7 +58,7 @@
         <el-col :span="12">
           <el-form-item label="状态">
             <el-radio-group v-model="userStore.formData.status">
-              <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
+              <el-radio v-for="dict in dictNormalDisable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -99,14 +99,10 @@
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
   import useUserStore from '../store'
+  import { dictNormalDisable, dictUserSex } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any;
   const userStore = useUserStore()
-
-  const { sys_normal_disable, sys_user_sex }: { sys_normal_disable: DictType[], sys_user_sex: DictType[] } = proxy.useDict(
-    "sys_normal_disable",
-    "sys_user_sex"
-  )
 
   const rules = {
     userName: [

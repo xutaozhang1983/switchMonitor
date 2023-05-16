@@ -8,7 +8,7 @@
       </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="roleStore.queryParams.status" placeholder="角色状态" clearable style="width: 240px">
-          <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value"/>
+          <el-option v-for="dict in dictNormalDisable" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="创建时间" style="width: 308px">
@@ -25,15 +25,12 @@
   import { ElForm } from 'element-plus'
   import useRoleStore from '../store'
   import { dayjs } from 'element-plus'
+  import { dictNormalDisable } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any;
   const roleStore = useRoleStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
-
-  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
-    "sys_normal_disable"
-  );
 
   const dateRange = ref([])
 

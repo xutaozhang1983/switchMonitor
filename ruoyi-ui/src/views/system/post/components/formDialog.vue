@@ -16,7 +16,7 @@
       <el-form-item label="岗位状态" prop="status">
         <el-radio-group v-model="postStore.formData.status">
           <el-radio
-            v-for="dict in sys_normal_disable"
+            v-for="dict in dictNormalDisable"
             :key="dict.value"
             :label="dict.value"
             >{{ dict.label }}</el-radio
@@ -42,15 +42,10 @@
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
   import usePostStore from '../store'
+  import { dictNormalDisable } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const postStore = usePostStore()
-
-  const { sys_normal_disable, sys_show_hide }: 
-    { sys_normal_disable: DictType[], sys_show_hide: DictType[] } = proxy.useDict(
-    "sys_normal_disable",
-    "sys_show_hide"
-  )
   
   const rules = ref({
     parentId: [

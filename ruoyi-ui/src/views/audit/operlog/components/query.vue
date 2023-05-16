@@ -8,12 +8,12 @@
     </el-form-item>
     <el-form-item label="类型" prop="businessType">
       <el-select v-model="operLogStore.queryParams.businessType" placeholder="操作类型" clearable style="width: 240px">
-        <el-option v-for="dict in sys_oper_type" :key="dict.value" :label="dict.label" :value="dict.value" />
+        <el-option v-for="dict in dictOperType" :key="dict.value" :label="dict.label" :value="dict.value" />
       </el-select>
     </el-form-item>
     <el-form-item label="状态" prop="status">
       <el-select v-model="operLogStore.queryParams.status" placeholder="操作状态" clearable style="width: 240px">
-        <el-option v-for="dict in sys_common_status" :key="dict.value" :label="dict.label" :value="dict.value" />
+        <el-option v-for="dict in dictSuccessFail" :key="dict.value" :label="dict.label" :value="dict.value" />
       </el-select>
     </el-form-item>
     <el-form-item>
@@ -26,16 +26,12 @@
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
   import useOperLogStore from '../store'
+  import { dictOperType, dictSuccessFail } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const operLogStore = useOperLogStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
-
-  const { sys_oper_type, sys_common_status }: { sys_oper_type: DictType[], sys_common_status: DictType[] } = proxy.useDict(
-    "sys_oper_type",
-    "sys_common_status"
-  )
 
   /** 搜索按钮操作 */
   function handleQuery() {

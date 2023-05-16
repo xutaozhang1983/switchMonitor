@@ -45,7 +45,7 @@
         <el-col :span="12">
           <el-form-item label="部门状态">
             <el-radio-group v-model="deptStore.formData.status">
-              <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
+              <el-radio v-for="dict in dictNormalDisable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -61,17 +61,12 @@
 </template>
 
 <script setup lang="ts">
-  import { ElMessage, ElTree } from 'element-plus'
+  import { ElMessage } from 'element-plus'
   import useDeptStore from '../store'
+  import { dictNormalDisable } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const deptStore = useDeptStore()
-
-  const { sys_normal_disable, sys_show_hide }: 
-    { sys_normal_disable: DictType[], sys_show_hide: DictType[] } = proxy.useDict(
-    "sys_normal_disable",
-    "sys_show_hide"
-  )
   
   const rules = ref({
     parentId: [

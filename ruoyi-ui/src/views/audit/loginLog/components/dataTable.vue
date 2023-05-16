@@ -9,7 +9,7 @@
     <el-table-column label="浏览器" align="center" prop="browser" :show-overflow-tooltip="true" />
     <el-table-column label="登录状态" align="center" prop="status">
       <template #default="scope">
-        <dict-tag :options="sys_common_status" :value="scope.row.status" />
+        <dict-tag :options="dictSuccessFail" :value="scope.row.status" />
       </template>
     </el-table-column>
     <el-table-column label="描述" align="center" prop="msg" />
@@ -31,13 +31,9 @@
 <script setup lang="ts">
   import useLoginLogStore from '../store'
   import dayjs from 'dayjs'
+  import { dictSuccessFail } from '@/utils/dict'
 
-  const { proxy } = getCurrentInstance() as any
   const loginLogStore = useLoginLogStore()
-
-  const { sys_common_status }: { sys_common_status: DictType[] } = proxy.useDict(
-    "sys_common_status"
-  )
 
   // 选择条数
   function handleSelectionChange(selection: any) {

@@ -8,7 +8,7 @@
     </el-form-item>
     <el-form-item label="状态" prop="status">
       <el-select v-model="postStore.queryParams.status" placeholder="岗位状态" clearable>
-        <el-option v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.label" :value="dict.value" />
+        <el-option v-for="dict in dictNormalDisable" :key="dict.value" :label="dict.label" :value="dict.value" />
       </el-select>
     </el-form-item>
     <el-form-item>
@@ -21,15 +21,12 @@
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
   import usePosttStore from '../store'
+  import { dictNormalDisable } from '@/utils/dict'
   
   const { proxy } = getCurrentInstance() as any
   const postStore = usePosttStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
-
-  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
-    "sys_normal_disable"
-  )
 
   // 搜索按钮操作
   function handleQuery() {

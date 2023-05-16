@@ -40,8 +40,7 @@
 <script setup lang="ts">
   import { ElMessage, ElTree } from 'element-plus'
   import useRoleStore from '../store'
-
-  const { proxy } = getCurrentInstance() as any
+  
   const roleStore = useRoleStore()
 
   const deptRef = ref<InstanceType<typeof ElTree>>()

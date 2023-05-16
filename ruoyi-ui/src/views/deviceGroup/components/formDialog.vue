@@ -14,7 +14,7 @@
       </el-form-item>
       <el-form-item label="状态" @change="handleChangeStatus">
         <el-radio-group v-model="deviceGroupStore.formData.status">
-          <el-radio v-for="dict in sys_normal_disable" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
+          <el-radio v-for="dict in dictNormalAbnormal" :key="dict.value" :label="dict.value">{{ dict.label }}</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="备注">
@@ -33,13 +33,10 @@
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
   import useDeviceGroupStore from '../store'
+  import { dictNormalAbnormal } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const deviceGroupStore = useDeviceGroupStore()
-
-  const { sys_normal_disable }: { sys_normal_disable: DictType[] } = proxy.useDict(
-    "sys_normal_disable"
-  )
 
   const alarmUserGrpIdList= ref<number[]>([])
   

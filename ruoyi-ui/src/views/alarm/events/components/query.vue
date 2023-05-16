@@ -12,12 +12,12 @@
       </el-form-item>
       <el-form-item label="告警级别" prop="alarmLevel">
         <el-select v-model="eventsStore.queryParams.alarmLevel" placeholder="请选择" clearable style="width: 240px">
-          <el-option v-for="dict in sys_alarm_level" :key="dict.value" :label="dict.label" :value="dict.value"/>
+          <el-option v-for="dict in dictAlarmLevel" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="告警状态" prop="status">
         <el-select v-model="eventsStore.queryParams.status" placeholder="请选择" clearable style="width: 240px">
-          <el-option v-for="dict in sys_alarm_status" :key="dict.value" :label="dict.label" :value="dict.value"/>
+          <el-option v-for="dict in dictOpenClose" :key="dict.value" :label="dict.label" :value="dict.value"/>
         </el-select>
       </el-form-item>
       <el-form-item label="告警时间">
@@ -40,16 +40,13 @@
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
   import useEventsStore from '../store'
+  import { dictOpenClose, dictAlarmLevel } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
   const eventsStore = useEventsStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
 
-  const { sys_alarm_status, sys_alarm_level }: { sys_alarm_status: DictType[], sys_alarm_level: DictType[] } = proxy.useDict(
-    "sys_alarm_status",
-    "sys_alarm_level"
-  )
   const groupId = ref(undefined)
   const showDeviceSelect = ref(false)
   const timeRange = ref([])
