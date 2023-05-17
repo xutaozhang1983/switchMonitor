@@ -5,9 +5,11 @@
 </template>
 
 <script setup lang="ts">
-const url = ref('http://doc.ruoyi.vip/ruoyi-vue');
+  import { ref } from 'vue'
 
-function goto() {
-  window.open(url.value)
-}
+  const url = ref('http://doc.ruoyi.vip/ruoyi-vue')
+
+  function goto() {
+    window.open(url.value)
+  }
 </script>

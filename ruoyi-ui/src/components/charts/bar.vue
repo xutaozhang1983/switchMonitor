@@ -1,5 +1,9 @@
 <template>
-  <v-chart class="chart" :style="{'--height': props.height + 'px'}" :option="option" autoresize></v-chart>
+  <v-chart
+    class="chart"
+    :style="{ '--height': props.height + 'px' }"
+    :option="option"
+    autoresize></v-chart>
 </template>
 
 <script setup lang="ts">
@@ -7,11 +11,16 @@
   import { CanvasRenderer } from 'echarts/renderers'
   import { BarChart } from 'echarts/charts'
   import VChart from 'vue-echarts'
-  import { TitleComponent, TooltipComponent, GridComponent, LegendComponent } from 'echarts/components'
+  import {
+    TitleComponent,
+    TooltipComponent,
+    GridComponent,
+    LegendComponent
+  } from 'echarts/components'
   import merge from 'deepmerge'
 
   interface Props {
-    height: number,
+    height: number
     option?: any
   }
 
@@ -26,18 +35,14 @@
       trigger: 'item'
     },
     legend: {},
-    grid: {
-    },
-    xAxis: {
-    },
-    yAxis: {
-    }
+    grid: {},
+    xAxis: {},
+    yAxis: {}
   })
 
   watchEffect(() => {
-    console.log("!!!")
+    console.log('!!!')
     option.value = merge(defaultOption.value, props.option)
-
   })
 
   use([
@@ -52,6 +57,6 @@
 
 <style lang="scss" scoped>
   .chart {
-    height: var(--height)
+    height: var(--height);
   }
 </style>

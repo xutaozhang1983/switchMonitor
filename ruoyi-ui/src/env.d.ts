@@ -1,5 +1,7 @@
 /// <reference types="vite/client" />
 
+declare module '@vueup/vue-quill'
+
 declare module '*.vue' {
   import { DefineComponent } from 'vue';
   const component: DefineComponent<{}, {}, any>;
@@ -11,6 +13,7 @@ import { _RouteRecordBase } from 'vue-router'
 declare module "vue-router" {
   interface _RouteRecordBase {
     hidden?: boolean,
+    parentPath?: string,
     permissions?: string[]
   }
 }

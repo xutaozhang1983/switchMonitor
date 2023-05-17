@@ -33,6 +33,8 @@ import ImageUpload from "@/components/ImageUpload/index.vue"
 import ImagePreview from "@/components/ImagePreview/index.vue"
 // 自定义树选择组件
 import TreeSelect from '@/components/TreeSelect/index.vue'
+// 字典标签组件
+import DictTag from '@/components/DictTag/index.vue'
 
 import { localStorage } from '@/utils/storage'
 
@@ -42,6 +44,7 @@ const app = createApp(App)
 app.config.globalProperties.download = download
 
 // 全局组件挂载
+app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('TreeSelect', TreeSelect)
 app.component('FileUpload', FileUpload)

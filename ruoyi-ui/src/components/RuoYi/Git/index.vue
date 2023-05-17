@@ -5,9 +5,11 @@
 </template>
 
 <script setup lang="ts">
-const url = ref('https://gitee.com/y_project/RuoYi-Vue');
+  import { ref } from 'vue'
 
-function goto() {
-  window.open(url.value)
-}
+  const url = ref('https://gitee.com/y_project/RuoYi-Vue')
+
+  function goto() {
+    window.open(url.value)
+  }
 </script>

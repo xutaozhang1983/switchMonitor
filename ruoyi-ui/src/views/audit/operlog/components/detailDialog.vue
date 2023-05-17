@@ -46,7 +46,6 @@
   import dayjs from 'dayjs'
   import { dictOperType } from '@/utils/dict'
 
-  const { proxy } = getCurrentInstance() as any
   const operLogStore = useOperLogStore()
 
   /** 操作日志类型字典翻译 */

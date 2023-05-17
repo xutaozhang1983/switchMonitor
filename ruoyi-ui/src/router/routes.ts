@@ -24,7 +24,7 @@ import { RouteRecordRaw } from 'vue-router'
  */
 
 // 公共路由
-export const constantRoutes: Array<RouteRecordRaw> = [
+export const constantRoutes: RouteRecordRaw[] = [
   {
     path: '/redirect',
     component: Layout,
@@ -91,7 +91,7 @@ export const constantRoutes: Array<RouteRecordRaw> = [
 ]
 
 // 动态路由，基于用户权限动态去加载
-export const dynamicRoutes: Array<RouteRecordRaw> = [
+export const dynamicRoutes: RouteRecordRaw[] = [
   {
     path: '/system/user-auth',
     component: Layout,
@@ -117,20 +117,6 @@ export const dynamicRoutes: Array<RouteRecordRaw> = [
         component: () => import('@/views/system/role/components/authUser.vue'),
         name: 'AuthUser',
         meta: { title: '分配用户', activeMenu: '/system/role' }
-      }
-    ]
-  },
-  {
-    path: '/system/dict-data',
-    component: Layout,
-    hidden: true,
-    permissions: ['system:dict:list'],
-    children: [
-      {
-        path: 'index/:dictId(\\d+)',
-        component: () => import('@/views/system/dict/data.vue'),
-        name: 'Data',
-        meta: { title: '字典数据', activeMenu: '/system/dict' }
       }
     ]
   },

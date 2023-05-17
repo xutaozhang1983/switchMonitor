@@ -10,7 +10,10 @@
       <template #suffix><i class="el-icon-search el-input__icon" /></template>
     </el-input>
     <div class="icon-list">
-      <div v-for="(item, index) in iconList" :key="index" @click="selectedIcon(item)">
+      <div
+        v-for="(item, index) in iconList"
+        :key="index"
+        @click="selectedIcon(item)">
         <svg-icon :icon-class="item" style="height: 30px; width: 16px" />
         <span>{{ item }}</span>
       </div>
@@ -19,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+  import { ref } from 'vue'
   import icons from './requireIcons'
 
   const iconName = ref('')
@@ -34,7 +38,7 @@
     }
   }
 
-  function selectedIcon(name: string) {
+  function selectedIcon(name: any) {
     emit('selected', name)
     document.body.click()
   }
