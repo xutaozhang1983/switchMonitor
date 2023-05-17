@@ -10,7 +10,7 @@ export const getRouters = () => {
 }
 
 // 查询菜单列表
-export function listMenu(query: MenuQueryParam) {
+export function listMenu(query?: MenuQueryParam) {
   return request({
     url: '/system/menu/list',
     method: 'get',

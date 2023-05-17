@@ -41,7 +41,6 @@
   })
 
   watchEffect(() => {
-    console.log('!!!')
     option.value = merge(defaultOption.value, props.option)
   })
 

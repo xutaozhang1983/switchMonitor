@@ -4,9 +4,9 @@
     <Query></Query>
     <!--操作区域-->
     <Operate></Operate>
-    <!--角色数据-->
+    <!--任务数据-->
     <DataTable></DataTable>
-    <!-- 添加、修改用户配置对话框 -->
+    <!-- 添加、修改任务配置对话框 -->
     <FormDialog></FormDialog>
     <!-- Cron表达式生成器对话框 -->
     <CronDialog></CronDialog>

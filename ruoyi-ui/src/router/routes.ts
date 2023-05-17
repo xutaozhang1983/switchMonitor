@@ -121,14 +121,14 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     ]
   },
   {
-    path: '/tool/gen-edit',
+    path: '/tool/genedit',
     component: Layout,
     hidden: true,
     permissions: ['tool:gen:edit'],
     children: [
       {
         path: 'index/:tableId(\\d+)',
-        component: () => import('@/views/tool/gen/editTable.vue'),
+        component: () => import('@/views/tool/gen/edit/index.vue'),
         name: 'GenEdit',
         meta: { title: '修改生成配置', activeMenu: '/tool/gen' }
       }

@@ -1,7 +1,8 @@
 import request from '@/utils/request'
+import { GenQueryParam } from '@/types/api/tool/gen'
 
 // 查询生成表数据
-export function listTable(query) {
+export function listTable(query: GenQueryParam) {
   return request({
     url: '/tool/gen/list',
     method: 'get',
