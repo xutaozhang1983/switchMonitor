@@ -11,7 +11,7 @@ import com.ruoyi.monitor.service.ITbDeviceItemService;
 import com.ruoyi.monitor.service.ITbDeviceService;
 import com.ruoyi.monitor.service.ITbEventsService;
 import com.ruoyi.utils.PingUtil;
-import com.ruoyi.utils.SnmpDeviceData;
+import com.ruoyi.snmpUtils.SnmpDeviceData;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -118,18 +118,22 @@ public class MonitorTask {
             Long allOut = 0L;
             for (String key: ifStatusMap.keySet()) {
                 boolean itemExists = false;
-                String value = "0,0";
+                String lastValue = "0,0";
                 for (TbDeviceItem deviceItem:itemList) {
                     if (deviceItem.getItemName().equals(key)) {
                         itemExists = true;
-                        value = StringUtils.isNotNull(deviceItem.getValue()) ? deviceItem.getValue() : value;
-                        String[] lastFlow = value.split(",");
+                        lastValue = StringUtils.isNotNull(deviceItem.getLastValue()) ? deviceItem.getLastValue() : lastValue;
+                        String[] lastFlow = lastValue.split(",");
                         deviceItem.setStatus(ifStatusMap.get(key));  // 端口状态
                         if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)) {  // 获取不到端口的流量不更新流量 不写his
+                            log.info("端口出入流量"+ifInFlowMap.get(key)+"----"+ifOutFlowMap.get(key));
+                            deviceItem.setLastValue(lastValue);
                             Long ifIn = ifInFlowMap.get(key) - Long.parseLong(lastFlow[0]);
                             Long ifOut = ifOutFlowMap.get(key) - Long.parseLong(lastFlow[1]);
-                            deviceItem.setLastValue(value);
+                            ifIn = (ifIn <= 0) ? 0L : ifIn;
+                            ifOut = (ifOut <= 0) ? 0L : ifOut;
                             deviceItem.setValue(ifIn+ "," + ifOut);
+                            deviceItem.setLastValue(ifInFlowMap.get(key)+","+ifOutFlowMap.get(key)); // 本次获取流量总
                             itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), ifIn, DeviceItem.IFIN.getItem()));
                             itemHisList.add(formatItemHis(deviceItem.getId(), device.getId(), ifOut, DeviceItem.IFOUT.getItem()));
                             allIn = allIn+ ifIn;
@@ -152,10 +156,10 @@ public class MonitorTask {
                 } // 循环处理item
                 if(!itemExists){
                     if (ifInFlowMap.containsKey(key) && ifOutFlowMap.containsKey(key)){
-                        value = ifInFlowMap.get(key)+","+ifOutFlowMap.get(key);
+                        lastValue = ifInFlowMap.get(key)+","+ifOutFlowMap.get(key);
                     }
                     String counter = DeviceItem.IFIN.getItem()+"," + DeviceItem.IFOUT.getItem();
-                    saveItem(DeviceItem.IFIN.getIsPort(), device.getId(),key , counter, value,ifStatusMap.get(key));
+                    saveItem(DeviceItem.IFIN.getIsPort(), device.getId(),key , counter, lastValue,ifStatusMap.get(key));
                 }
 
             } // snmp item 信息

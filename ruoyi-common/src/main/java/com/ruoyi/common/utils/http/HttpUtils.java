@@ -11,12 +11,19 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
+import java.util.Map;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
+
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.ruoyi.common.constant.Constants;
@@ -30,6 +37,19 @@ import com.ruoyi.common.utils.StringUtils;
 public class HttpUtils
 {
     private static final Logger log = LoggerFactory.getLogger(HttpUtils.class);
+    private static final Integer timeout = 15000;
+//    private static Map<String,String> headers;
+
+    private static Map<String,String> getHeaders(){
+        Map<String,String> headers = new HashMap<>();
+        if(StringUtils.isNull(headers)){
+            headers.put("user-agent", "Mozilla/4.0");
+            headers.put("Accept-Charset", "utf-8");
+            headers.put("contentType", "utf-8");
+            headers.put("accept", "*/*");
+        }
+        return headers;
+    }
 
     /**
      * 向指定 URL 发送GET方法的请求
@@ -42,6 +62,7 @@ public class HttpUtils
         return sendGet(url, StringUtils.EMPTY);
     }
 
+
     /**
      * 向指定 URL 发送GET方法的请求
      *
@@ -51,9 +72,15 @@ public class HttpUtils
      */
     public static String sendGet(String url, String param)
     {
-        return sendGet(url, param, Constants.UTF8);
+
+        return sendGet(url, param, Constants.UTF8,getHeaders());
     }
 
+
+    public static String sendGet(String url, String param,String contentType)
+    {
+        return sendGet(url, param, contentType,getHeaders());
+    }
     /**
      * 向指定 URL 发送GET方法的请求
      *
@@ -62,7 +89,7 @@ public class HttpUtils
      * @param contentType 编码类型
      * @return 所代表远程资源的响应结果
      */
-    public static String sendGet(String url, String param, String contentType)
+    public static String sendGet(String url, String param, String contentType,Map<String,String> headers)
     {
         StringBuilder result = new StringBuilder();
         BufferedReader in = null;
@@ -72,9 +99,11 @@ public class HttpUtils
             log.info("sendGet - {}", urlNameString);
             URL realUrl = new URL(urlNameString);
             URLConnection connection = realUrl.openConnection();
-            connection.setRequestProperty("accept", "*/*");
-            connection.setRequestProperty("connection", "Keep-Alive");
-            connection.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                connection.setRequestProperty(entry.getKey(), entry.getValue());
+            }
+            connection.setConnectTimeout(timeout);
             connection.connect();
             in = new BufferedReader(new InputStreamReader(connection.getInputStream(), contentType));
             String line;
@@ -116,6 +145,9 @@ public class HttpUtils
         }
         return result.toString();
     }
+    public static String sendPost(String url, String param){
+        return sendPost(url,param,getHeaders());
+    }
 
     /**
      * 向指定 URL 发送POST方法的请求
@@ -124,7 +156,7 @@ public class HttpUtils
      * @param param 请求参数，请求参数应该是 name1=value1&name2=value2 的形式。
      * @return 所代表远程资源的响应结果
      */
-    public static String sendPost(String url, String param)
+    public static String sendPost(String url, String param,Map<String,String> headers)
     {
         PrintWriter out = null;
         BufferedReader in = null;
@@ -134,11 +166,9 @@ public class HttpUtils
             log.info("sendPost - {}", url);
             URL realUrl = new URL(url);
             URLConnection conn = realUrl.openConnection();
-            conn.setRequestProperty("accept", "*/*");
-            conn.setRequestProperty("connection", "Keep-Alive");
-            conn.setRequestProperty("user-agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-            conn.setRequestProperty("Accept-Charset", "utf-8");
-            conn.setRequestProperty("contentType", "utf-8");
+            for (Map.Entry<String, String> entry : headers.entrySet()) {
+                conn.setRequestProperty(entry.getKey(), entry.getValue());
+            }
             conn.setDoOutput(true);
             conn.setDoInput(true);
             out = new PrintWriter(conn.getOutputStream());

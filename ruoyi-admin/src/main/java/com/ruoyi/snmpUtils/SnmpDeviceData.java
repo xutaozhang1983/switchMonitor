@@ -1,12 +1,12 @@
-package com.ruoyi.utils;
+package com.ruoyi.snmpUtils;
 
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.web.domain.server.Sys;
 import com.ruoyi.monitor.constants.OidConstants;
 import com.ruoyi.monitor.constants.OidEnum;
 import com.ruoyi.monitor.domain.DeviceInfoDTO;
 import com.ruoyi.monitor.domain.TbDevice;
 import com.ruoyi.monitor.enums.DeviceItem;
+import com.ruoyi.snmpUtils.SnmpConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.snmp4j.PDU;
 import org.snmp4j.Target;
@@ -26,7 +26,7 @@ public class SnmpDeviceData extends SnmpConfig {
     TbDevice tbDevice;
     Target target;
 
-        public SnmpDeviceData(TbDevice tbDevice){
+    public SnmpDeviceData(TbDevice tbDevice){
         this.tbDevice = tbDevice;
     }
 

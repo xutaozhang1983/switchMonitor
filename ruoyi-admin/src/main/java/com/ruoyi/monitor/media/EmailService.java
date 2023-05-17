@@ -1,9 +1,8 @@
-package com.ruoyi.utils;
+package com.ruoyi.monitor.media;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.redis.RedisCache;
 import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.monitor.domain.TbAlarmMedia;
 import com.ruoyi.monitor.service.ITbAlarmMediaService;
 import com.sun.mail.util.MailSSLSocketFactory;
@@ -22,10 +21,16 @@ public class EmailService {
     private final static String smtpConfKey = "smtpConfKey";
     private final static String mediaType = "EMAIL";
     private final static String timeout = "20000";
-    @Autowired
-    private ITbAlarmMediaService alarmMediaService;
 
-    private  TbAlarmMedia smtpConf(){
+    private final static ITbAlarmMediaService alarmMediaService;
+
+    static {
+        alarmMediaService = SpringUtils.getBean(ITbAlarmMediaService.class);
+    }
+
+
+
+    private static TbAlarmMedia smtpConf(){
         TbAlarmMedia alarmMedia = alarmMediaService.selectAlarmMedia(mediaType);
         if(!alarmMedia.getStatus().equals("0")){
             return null;
@@ -40,7 +45,7 @@ public class EmailService {
      * @param content 邮件内容
      * @return
      */
-    public AjaxResult SendEmail(String receives, String subject, String content){
+    public static AjaxResult SendEmail(String receives, String subject, String content){
         //发送人邮箱号码
 
         TbAlarmMedia smtpConf = smtpConf();
@@ -66,7 +71,7 @@ public class EmailService {
         return AjaxResult.success();
     }
 
-    private Properties createProp(TbAlarmMedia smtpConf) throws GeneralSecurityException {
+    private static Properties createProp(TbAlarmMedia smtpConf) throws GeneralSecurityException {
         Properties prop = new Properties();
         //发送邮件协议名称
         prop.setProperty("mail.transport.protocol", "smtp");
@@ -87,7 +92,7 @@ public class EmailService {
         }
         return prop;
     }
-    private MimeMessage createMimeMessage(Session session,String subject,String content, String sendMail, String receives) throws Exception {
+    private static MimeMessage createMimeMessage(Session session,String subject,String content, String sendMail, String receives) throws Exception {
 
         // 1. 创建一封邮件
         MimeMessage message = new MimeMessage(session);
@@ -112,13 +117,6 @@ public class EmailService {
         return message;
     }
 
-    public static void main(String[] args) {
-//        String smtpConf = redisCache.getCacheObject(smtpConfKey);
-//        System.out.println(smtpConf);
-//        TbAlarmMedia alarmMedia =  strToAlarmMedia(smtpConf);
-//
-//        System.out.println(alarmMedia);
-    }
 
 }
 

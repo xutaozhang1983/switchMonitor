@@ -31,7 +31,7 @@ public class PingUtil {
                 tries++;
             }
             if (!status){
-                return isPingIPReachable(address.getHostAddress());
+                return pingReachable(address.getHostAddress());
             }
 
         }catch (Exception e){
@@ -39,7 +39,7 @@ public class PingUtil {
         }
         return false;
     }
-    private static final boolean isPingIPReachable(String hostname) {
+    private static final boolean pingReachable(String hostname) {
         try {
             return 0 == Runtime.getRuntime().exec("ping -c 2 " + hostname).waitFor();
         } catch (InterruptedException | IOException e) {

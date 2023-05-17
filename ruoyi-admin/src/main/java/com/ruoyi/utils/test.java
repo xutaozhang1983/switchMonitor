@@ -1,13 +1,7 @@
 package com.ruoyi.utils;
 
 import com.ruoyi.monitor.domain.TbDevice;
-import com.ruoyi.monitor.service.ITbDeviceService;
-import com.ruoyi.monitor.task.MonitorTask;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-
-import javax.annotation.Resource;
-import java.util.List;
+import com.ruoyi.snmpUtils.SnmpDeviceData;
 
 
 public class test {

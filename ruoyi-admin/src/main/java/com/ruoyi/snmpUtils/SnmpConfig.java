@@ -1,4 +1,4 @@
-package com.ruoyi.utils;
+package com.ruoyi.snmpUtils;
 
 import com.ruoyi.common.utils.StringUtils;
 import org.snmp4j.*;
