@@ -96,7 +96,9 @@ public class TrapReceiver {
 
     private static String getAddress(){
         try{
-            return java.net.InetAddress.getLocalHost().getHostAddress()+"/8088";
+            System.out.println(java.net.InetAddress.getLocalHost().getHostAddress());
+            return "127.0.0.1/8088";
+//            return java.net.InetAddress.getLocalHost().getHostAddress()+"/8088";
         }catch (UnknownHostException e){
             throw new RuntimeException();
         }

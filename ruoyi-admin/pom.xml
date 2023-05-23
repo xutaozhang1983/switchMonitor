@@ -54,7 +54,11 @@
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-quartz</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.eclipse.paho</groupId>
+            <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+            <version>1.2.5</version>
+        </dependency>
         <!-- 代码生成-->
         <dependency>
             <groupId>com.ruoyi</groupId>
@@ -78,6 +82,25 @@
             <artifactId>dysmsapi20170525</artifactId>
             <version>2.0.23</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.digitalpetri.modbus</groupId>
+            <artifactId>modbus-master-tcp</artifactId>
+            <version>1.1.0</version>
+        </dependency>
+        <!-- modbus -->
+        <dependency>
+            <groupId>com.intelligt.modbus</groupId>
+            <artifactId>jlibmodbus</artifactId>
+            <version>1.2.9.7</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>com.infiniteautomation</groupId>
+            <artifactId>modbus4j</artifactId>
+            <version>3.0.3</version>
+        </dependency>
         <dependency>
             <groupId>com.hikvision.ga</groupId>
             <artifactId>artemis-http-client</artifactId>
@@ -87,7 +110,30 @@
             <systemPath>${basedir}/lib/artemis-http-client-1.1.8.jar</systemPath>
         </dependency>
     </dependencies>
-
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <id>ias-snapshots</id>
+            <name>Infinite Automation Snapshot Repository</name>
+            <url>https://maven.mangoautomation.net/repository/ias-snapshot/</url>
+        </repository>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>ias-releases</id>
+            <name>Infinite Automation Release Repository</name>
+            <url>https://maven.mangoautomation.net/repository/ias-release/</url>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>

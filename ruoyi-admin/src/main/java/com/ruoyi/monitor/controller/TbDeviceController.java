@@ -166,6 +166,7 @@ public class TbDeviceController extends BaseController
                 stat.setUnknow(stat.getUnknow()+1);
             }
         }
+        stat.setAll(deviceList.size());
         return stat;
     }
 
