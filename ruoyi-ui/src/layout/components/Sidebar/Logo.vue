@@ -25,7 +25,7 @@ defineProps({
   }
 })
 
-const title = ref('SwitchManager');
+const title = ref('SoftStarManager');
 const settingsStore = useSettingsStore();
 const sideTheme = computed(() => settingsStore.sideTheme);
 </script>

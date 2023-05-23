@@ -1,99 +1,64 @@
 <template>
-  <el-card header="设备统计">
-    <el-row :gutter="10">
-      <el-col :span="6">
-        <div class="countCard">
-          <div class="header" :style="{ 'background-color': '#2d8cf0' }">总数</div>
-          <div class="body">
-            <div class="text">
-              <span>{{ deviceTotal }}</span>
-            </div>
-          </div>
+  <el-row :gutter="10">
+    <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+      <div class="countCard" :style="{'background': `url(${DeviceBg}) center / 100% no-repeat`}">
+        <div class="body">
+          <div>设备总数</div>
+          <div class="value">{{ homeStore.deviceData.total }}</div>
         </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="countCard">
-          <div class="header" :style="{ 'background-color': '#19be6b' }">正常</div>
-          <div class="body">
-            <div class="text">
-              <span>{{ deviceNormal }}</span>
-            </div>
-          </div>
+      </div>
+    </el-col>
+    <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+      <div class="countCard" :style="{'background': `url(${MonitorBg}) center / 100% no-repeat`}">
+        <div class="body">
+          <div>监控设备数</div>
+          <div class="value">{{ homeStore.deviceData.monitor }}</div>
         </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="countCard">
-          <div class="header" :style="{ 'background-color': '#ffa23a' }">异常</div>
-          <div class="body">
-            <div class="text">
-              <span>{{ deviceAbnormal }}</span>
-            </div>
-          </div>
+      </div>
+    </el-col>
+    <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+      <div class="countCard" :style="{'background': `url(${DeviceNormalBg}) center / 100% no-repeat`}">
+        <div class="body">
+          <div>正常设备数</div>
+          <div class="value">{{ homeStore.deviceData.normal }}</div>
         </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="countCard">
-          <div class="header" :style="{ 'background-color': '#c5c8ce' }">未监控</div>
-          <div class="body">
-            <div class="text">
-              <span>{{ deviceUnknow }}</span>
-            </div>
-          </div>
+      </div>
+    </el-col>
+    <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6">
+      <div class="countCard" :style="{'background': `url(${DeviceAbnormalBg}) center / 100% no-repeat`}">
+        <div class="body">
+          <div>异常设备数</div>
+          <div class="value">{{ homeStore.deviceData.abnormal }}</div>
         </div>
-      </el-col>
-    </el-row>
-  </el-card>
+      </div>
+    </el-col>
+  </el-row>
 </template>
 
 <script setup lang="ts">
-  import { getDeviceCount } from '@/api/home'
+  import DeviceBg from '@/assets/images/deviceBg.png'
+  import MonitorBg from '@/assets/images/monitorBg.png'
+  import DeviceNormalBg from '@/assets/images/deviceNormalBg.png'
+  import DeviceAbnormalBg from '@/assets/images/deviceAbnormalBg.png'
 
-  const deviceTotal = ref(0)
-  const deviceNormal = ref(0)
-  const deviceAbnormal = ref(0)
-  const deviceUnknow = ref(0)
+  import useHomeStore from '../store'
 
-  // 获取设备统计数据
-  function getDeviceCountData () {
-    getDeviceCount().then((response: any) => {
-      deviceTotal.value = response.data.all || 0
-      deviceNormal.value = response.data.ok || 0
-      deviceAbnormal.value = response.data.err || 0
-      deviceUnknow.value = response.data.unknow || 0
-    })
-  }
-
-  getDeviceCountData()
+  const homeStore = useHomeStore()
 
 </script>
 
 <style lang="scss" scoped>
   .countCard {
-    height: 200px;
-    .header {
-      height: 20%;
-      display: flex;
-      align-items: center;
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-      color: #ffffff;
-      font-size: 16px;
-      padding-left: 10px;
-    }
+    position: relative;
+    height: 140px;
+    color: #ffffff;
     .body {
-      height: 80%;
-      border-left: 2px solid #E4E7ED;
-      border-right: 2px solid #E4E7ED;
-      border-bottom: 2px solid #E4E7ED;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      .text {
-        font-size: 40px;
-        .unit {
-          font-size: 20px;
-          color: #808695;
-        }
+      position: absolute;
+      top: 25%;
+      left: 48%;
+      .value {
+        font-size: 32px;
+        font-weight: bold;
       }
     }
   }

@@ -3,7 +3,7 @@
     <el-form ref="loginRef" :model="loginForm" :rules="loginRules" class="login-form">
       <div class="header">
         <img class="img" :src="Logo"/>
-        <h3 class="title">SwitchManager</h3>
+        <h3 class="title">SoftStarManager</h3>
       </div>
       <el-form-item prop="username">
         <el-input v-model="loginForm.username" type="text" size="large" auto-complete="off" placeholder="账号">
@@ -18,16 +18,6 @@
             <svg-icon icon-class="password" class="el-input__icon input-icon"/>
           </template>
         </el-input>
-      </el-form-item>
-      <el-form-item prop="code" v-if="captchaEnabled">
-        <el-input v-model="loginForm.code" size="large" auto-complete="off" placeholder="验证码" style="width: 63%" @keyup.enter="handleLogin">
-          <template #prefix>
-            <svg-icon icon-class="validCode" class="el-input__icon input-icon"/>
-          </template>
-        </el-input>
-        <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img" />
-        </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin: 0px 0px 25px 0px">记住密码</el-checkbox>
       <el-form-item style="width: 100%">
@@ -48,7 +38,6 @@
 </template>
 
 <script setup lang="ts">
-  import { getCodeImg } from '@/api/account'
   import { encrypt, decrypt } from '@/utils/jsencrypt'
   import useUserStore from '@/store/modules/account'
   import { localStorage } from '@/utils/storage'
@@ -62,20 +51,16 @@
     username: 'admin',
     password: 'admin123',
     rememberMe: false,
-    code: '',
     uuid: ''
   })
 
   const loginRules = {
     username: [{ required: true, trigger: 'blur', message: '请输入您的账号' }],
-    password: [{ required: true, trigger: 'blur', message: '请输入您的密码' }],
-    code: [{ required: true, trigger: 'change', message: '请输入验证码' }]
+    password: [{ required: true, trigger: 'blur', message: '请输入您的密码' }]
   }
 
-  const codeUrl = ref('')
   const loading = ref(false)
-  // 验证码开关
-  const captchaEnabled = ref(true)
+
   // 注册开关
   const register = ref(false)
   const redirect = ref(undefined)
@@ -101,23 +86,7 @@
           router.push({ path: redirect.value || '/' })
         }).catch(() => {
           loading.value = false
-          // 重新获取验证码
-          if (captchaEnabled.value) {
-            getCode()
-          }
         })
-      }
-    })
-  }
-
-  // 获取验证码
-  function getCode() {
-    getCodeImg().then((res: any) => {
-      captchaEnabled.value =
-        res.captchaEnabled === undefined ? true : res.captchaEnabled
-      if (captchaEnabled.value) {
-        codeUrl.value = 'data:image/gif;base64,' + res.img
-        loginForm.value.uuid = res.uuid
       }
     })
   }
@@ -132,12 +101,10 @@
       password:
         password === undefined ? loginForm.value.password : decrypt(password),
       rememberMe: rememberMe === undefined ? false : Boolean(rememberMe),
-      code: '',
       uuid: ''
     }
   }
 
-  getCode()
   getCookie()
 </script>
 

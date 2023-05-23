@@ -1,27 +1,27 @@
 <template>
   <div class="app-container">
+    <!--设备总数-->
+    <Device/>
     <el-row :gutter="10">
-      <el-col :span="12">
-        <!--设备统计-->
-        <Device/>
-      </el-col>
-      <el-col :span="12">
-        <!--设备组-->
-        <Group/>
-      </el-col>
-    </el-row>
-    <el-row :gutter="10">
-      <el-col :span="24">
+      <el-col :xs="24" :sm="12" :md="12" :lg="16" :xl="16">
         <!--告警事件-->
         <Events class="mt10"/>
       </el-col>
+      <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+        <!--设备类型分布-->
+        <DeviceType class="mt10"/>
+      </el-col>
     </el-row>
     <el-row :gutter="10">
-      <el-col :span="12">
+      <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
+        <!--设备组-->
+        <DeviceGroup class="mt10"/>
+      </el-col>
+      <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
         <!--设备流量TOP-->
         <DeviceFlowTop class="mt10"/>
       </el-col>
-      <el-col :span="12">
+      <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8">
         <!--端口流量TOP-->
         <PortFlowTop class="mt10"/>
       </el-col>
@@ -31,29 +31,19 @@
 
 <script setup lang="ts">
   import Device from './components/device.vue'
-  import Group from './components/group.vue'
+  import DeviceGroup from './components/deviceGroup.vue'
   import Events from './components/events.vue'
+  import DeviceType from './components/deviceType.vue'
   import DeviceFlowTop from './components/deviceFlowTop.vue'
   import PortFlowTop from './components/portFlowTop.vue'
- 
-  /*watchEffect(() => {
-    if (deviceFlowRadio.value == 'in') {
-      deviceFlowOption.value.series.data = [998, 2587, 5894, 12534, 35264]
-      deviceFlowOption.value.series.itemStyle.color = '#409EFF'
-    } else {
-      deviceFlowOption.value.series.data = [1234, 2598, 5894, 12534, 35264]
-      deviceFlowOption.value.series.itemStyle.color = '#67C23A'
-    }
-    if (portFlowRadio.value == 'in') {
-      portFlowOption.value.series.data = [998, 2587, 5894, 12534, 35264]
-      portFlowOption.value.series.itemStyle.color = '#409EFF'
-    } else {
-      portFlowOption.value.series.data = [1234, 2598, 5894, 12534, 35264]
-      portFlowOption.value.series.itemStyle.color = '#67C23A'
-    }
-  })*/
 
-  
+  import useHomeStore from './store'
+
+  const homeStore = useHomeStore()
+
+  onMounted(() => {
+    homeStore.initPage()
+  })
 </script>
 
 <style lang="scss" scoped>

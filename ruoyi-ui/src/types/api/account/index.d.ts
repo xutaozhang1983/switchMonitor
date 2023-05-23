@@ -4,7 +4,6 @@
 export interface LoginFormData {
   username: string,
   password: string,
-  code: string,
   uuid: string
 }
 
@@ -15,6 +14,5 @@ interface RegisterFormData {
   username: string,
   password: string,
   confirmPassword: string,
-  code: string,
   uuid: string
 }

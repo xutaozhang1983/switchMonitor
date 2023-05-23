@@ -91,7 +91,8 @@
   // 获取流量统计数据
   function getFlowCountData () {
     let sendData = {
-      hours: 4,
+      //hours: 4,
+      hours: 1000,
       topType: 2
     }
     getFlowCount(sendData).then((response: any) => {

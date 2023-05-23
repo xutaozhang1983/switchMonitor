@@ -9,7 +9,7 @@
             INFO
           </div>
           <div class="seamlessScroll-header-tips-item">
-            <el-icon class="mr5" color="#ffa23a" size="20px"><WarningFilled/></el-icon>
+            <el-icon class="mr5" color="#f99f6b" size="20px"><WarningFilled/></el-icon>
             WARNING
           </div>
           <div class="seamlessScroll-header-tips-item">
@@ -25,11 +25,11 @@
         <el-col :span="17"><span>内容</span></el-col>
         <el-col :span="4"><span>来源</span></el-col>
       </el-row>
-      <Vue3SeamlessScroll :list="eventsData" class="list" hover :limitScrollNum=12 :step=0.7 :singleWaitTime=0>
-        <el-row v-for="(item, index) in eventsData" :key="index" class="item" :gutter="16">
+      <Vue3SeamlessScroll :list="homeStore.eventsData" class="list" hover :limitScrollNum=12 :step=0.7 :singleWaitTime=0>
+        <el-row v-for="(item, index) in homeStore.eventsData" :key="index" class="item" :gutter="16">
           <el-col :span="3">
             <el-icon class="mr5" color="#808695" size="20px" v-if="item.alarmLevel === 'INFO'"><WarningFilled/></el-icon>
-            <el-icon class="mr5" color="#ffa23a" size="20px" v-if="item.alarmLevel === 'WARNING'"><WarningFilled/></el-icon>
+            <el-icon class="mr5" color="#f99f6b" size="20px" v-if="item.alarmLevel === 'WARNING'"><WarningFilled/></el-icon>
             <el-icon class="mr5" color="#ed4014" size="20px" v-if="item.alarmLevel === 'ERROR'"><WarningFilled/></el-icon>
           </el-col>
           <el-col :span="17"><div class="message">{{ item.alarmContent }}</div></el-col>
@@ -41,26 +41,11 @@
 </template>
 
 <script setup lang="ts">
-  import { listEvents } from '@/api/alarm/events'
   import { Vue3SeamlessScroll } from 'vue3-seamless-scroll'
-  import dayjs from 'dayjs'
 
-  const eventsData = ref<any>([])
+  import useHomeStore from '../store'
 
-  // 获取事件数据
-  function getEventsData () {
-    let sendData = {
-      pageNum: 1,
-      pageSize: 9999,
-      startTime: dayjs().format("YYYY-MM-DD") + ' 00:00:00',
-      endTime: dayjs().format("YYYY-MM-DD") + ' 23:59:59'
-    }
-    listEvents(sendData).then((response: any) => {
-      eventsData.value = response.rows
-    })
-  }
-
-  getEventsData()
+  const homeStore = useHomeStore()
 </script>
 
 <style lang="scss" scoped>

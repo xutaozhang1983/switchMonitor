@@ -5,19 +5,16 @@
 </template>
 
 <script setup lang="ts">
-  import { getDeviceGroupCount } from '@/api/home'
   import ChartBar from '@/components/charts/bar.vue'
 
-  const xAxisData = ref<string[]>([])
-  const deviceNormal = ref<number[]>([])
-  const deviceAbnormal = ref<number[]>([])
-  const deviceUnknow = ref<number[]>([])
+  import useHomeStore from '../store'
 
+  const homeStore = useHomeStore()
 
   const deviceGroupOption = ref({
     legend: { orient: 'vertical', aligh: 'right', right: '0' },
     grid: { left: '5%', right: '15%', top: '10%', bottom: '10%' },
-    xAxis: { type: 'category', data: xAxisData.value },
+    xAxis: { type: 'category', data: homeStore.deviceGroupData.xAxisData },
     yAxis: { type:'value' },
     series: [
       {
@@ -34,7 +31,7 @@
         emphasis: {
           focus: 'series'
         },
-        data: deviceNormal.value,
+        data: homeStore.deviceGroupData.deviceNormal,
         itemStyle: {
           color: '#19be6b'
         }
@@ -53,13 +50,13 @@
         emphasis: {
           focus: 'series'
         },
-        data: deviceAbnormal.value,
+        data: homeStore.deviceGroupData.deviceAbnormal,
         itemStyle: {
           color: '#ffa23a'
         }
       },
       {
-        name: '未监控',
+        name: '已监控',
         type: 'bar',
         stack: 'total',
         label: {
@@ -72,27 +69,14 @@
         emphasis: {
           focus: 'series'
         },
-        data: deviceUnknow.value,
+        data: homeStore.deviceGroupData.deviceMonitor,
         itemStyle: {
-          color: '#c5c8ce'
+          color: '#52aafe'
         }
       }
     ]
   })
 
-  // 获取设备组统计数据
-  function getDeviceGroupCountData () {
-    getDeviceGroupCount().then((response: any) => {
-      for (let key in response.data) {
-        xAxisData.value.push(key)
-        deviceNormal.value.push(response.data[key].ok)
-        deviceAbnormal.value.push(response.data[key].err)
-        deviceUnknow.value.push(response.data[key].unknow)
-      }
-    })
-  }
-
-  getDeviceGroupCountData()
 </script>
 
 <style lang="scss" scoped>
