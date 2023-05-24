@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-tabs v-model="activeTab">
+    <el-tabs v-model="activeTab" type="card">
         <el-tab-pane label="邮件服务器" name="smtp">
           <Smtp />
         </el-tab-pane>
