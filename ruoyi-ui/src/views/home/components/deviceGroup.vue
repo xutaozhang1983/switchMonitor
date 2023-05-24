@@ -11,10 +11,14 @@
 
   const homeStore = useHomeStore()
 
+  const xAxisData = computed(() => homeStore.deviceGroupData.xAxisData)
+  const deviceNormal = computed(() => homeStore.deviceGroupData.deviceNormal)
+  const deviceAbnormal = computed(() => homeStore.deviceGroupData.deviceAbnormal)
+
   const deviceGroupOption = ref({
     legend: { orient: 'vertical', aligh: 'right', right: '0' },
     grid: { left: '5%', right: '15%', top: '10%', bottom: '10%' },
-    xAxis: { type: 'category', data: homeStore.deviceGroupData.xAxisData },
+    xAxis: { type: 'category', data: xAxisData.value },
     yAxis: { type:'value' },
     series: [
       {
@@ -31,9 +35,9 @@
         emphasis: {
           focus: 'series'
         },
-        data: homeStore.deviceGroupData.deviceNormal,
+        data: deviceNormal.value,
         itemStyle: {
-          color: '#19be6b'
+          color: '#60d7a7'
         }
       },
       {
@@ -50,28 +54,9 @@
         emphasis: {
           focus: 'series'
         },
-        data: homeStore.deviceGroupData.deviceAbnormal,
+        data: deviceAbnormal.value,
         itemStyle: {
-          color: '#ffa23a'
-        }
-      },
-      {
-        name: '已监控',
-        type: 'bar',
-        stack: 'total',
-        label: {
-          show: true,
-          color: '#fff',
-          formatter: (params: any) => {
-            return params.value ? params.value : ''
-          }
-        },
-        emphasis: {
-          focus: 'series'
-        },
-        data: homeStore.deviceGroupData.deviceMonitor,
-        itemStyle: {
-          color: '#52aafe'
+          color: '#f99f6b'
         }
       }
     ]

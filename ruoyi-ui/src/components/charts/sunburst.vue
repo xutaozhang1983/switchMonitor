@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart" :style="{'--height': props.height + 'px'}" :option="option" autoresize></v-chart>
+  <v-chart ref="chartRef" class="chart" :style="{'--height': props.height + 'px'}" :option="option" autoresize></v-chart>
 </template>
 
 <script setup lang="ts">
@@ -20,13 +20,10 @@
     option: () => {}
   })
 
-  const option = ref({})
-  const defaultOption = ref({
-  })
+  const chartRef = ref<any>(null)
 
-  watchEffect(() => {
-    option.value = merge(defaultOption.value, props.option)
-  })
+  const option = ref({})
+  const defaultOption = ref({})
 
   use([
     CanvasRenderer,
@@ -36,6 +33,14 @@
     TooltipComponent,
     LegendComponent
   ])
+
+  watchEffect(() => {
+    option.value = merge(defaultOption.value, props.option)
+    if (chartRef.value) {
+      chartRef.value.setOption(option.value, true)
+    }
+  })
+
 </script>
 
 <style lang="scss" scoped>

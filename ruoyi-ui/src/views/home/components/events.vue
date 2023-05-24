@@ -25,7 +25,7 @@
         <el-col :span="17"><span>内容</span></el-col>
         <el-col :span="4"><span>来源</span></el-col>
       </el-row>
-      <Vue3SeamlessScroll :list="homeStore.eventsData" class="list" hover :limitScrollNum=12 :step=0.7 :singleWaitTime=0>
+      <Vue3SeamlessScroll :list="homeStore.eventsData" class="list" hover :limitScrollNum=6 :step=0.7 :singleWaitTime=0>
         <el-row v-for="(item, index) in homeStore.eventsData" :key="index" class="item" :gutter="16">
           <el-col :span="3">
             <el-icon class="mr5" color="#808695" size="20px" v-if="item.alarmLevel === 'INFO'"><WarningFilled/></el-icon>
@@ -49,6 +49,9 @@
 </script>
 
 <style lang="scss" scoped>
+  .el-card :deep(.el-card__body) {
+    padding: 10px !important;
+  }
   .seamlessScroll-header {
     display: flex;
     justify-content: space-between;
@@ -69,7 +72,6 @@
   .seamlessScroll-box {
     height: 200px;
     width: 100%;
-    margin: 0 auto;
     overflow: hidden;
     font-size: 14px;
     .header {

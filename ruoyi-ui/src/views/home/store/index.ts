@@ -1,4 +1,4 @@
-import { getDeviceCount, getDeviceGroupCount } from "@/api/home"
+import { getDeviceCount, getDeviceGroupCount, getFlowCount } from "@/api/home"
 import { listEvents } from '@/api/alarm/events'
 
 import dayjs from 'dayjs'
@@ -16,22 +16,38 @@ const useHomeStore = defineStore('useHomeStore',
       deviceTypeData: [] as any[], // 设备类型数据
       deviceGroupData: {
         xAxisData: [] as string[],
-        deviceMonitor: [] as number[],
         deviceNormal: [] as number[],
         deviceAbnormal: [] as number[]
       }, // 设备组数据
-      showFormDialog: false, // 显示设备新增、修改对话框
-      formTitle: '', // 设备新增、修改对话框标题
-      single: true, // 选择1条数据
-      multiple: true, // 选择多条数据
-      ids: [] as number[], // 选择数据的id集合
+      deviceFlowData: {
+        inData: {
+          yAxisData: [] as string[],
+          seriesData: [] as (string|number)[]
+        },
+        outData: {
+          yAxisData: [] as string[],
+          seriesData: [] as (string|number)[]
+        }
+      }, // 设备流量数据
+      portFlowData: {
+        inData: {
+          yAxisData: [] as string[],
+          seriesData: [] as (string|number)[]
+        },
+        outData: {
+          yAxisData: [] as string[],
+          seriesData: [] as (string|number)[]
+        }
+      } // 端口流量数据
     }),
     actions: {
       // 初始化界面
-      async initPage() {
-        await this.getDeviceCount()
-        await this.listEvents()
-        await this.getDeviceGroupCount()
+      initPage() {
+        this.getDeviceCount()
+        this.listEvents()
+        this.getDeviceGroupCount()
+        this.getDeviceFlowCount()
+        this.getPortFlowCount()
       },
       // 查询设备数据
       async getDeviceCount() {
@@ -45,8 +61,7 @@ const useHomeStore = defineStore('useHomeStore',
             { value: this.deviceData.total, name: '网络设备' },
             { value: 0, name: '摄像头' }
           ]
-        } catch (error: any) {
-        }
+        } catch {}
       },
       // 查询告警数据
       async listEvents() {
@@ -54,26 +69,72 @@ const useHomeStore = defineStore('useHomeStore',
           let sendData = {
             pageNum: 1,
             pageSize: 9999,
-            startTime: dayjs().format("YYYY-MM-DD") + ' 00:00:00',
+            startTime: dayjs().subtract(7, 'day').format("YYYY-MM-DD") + ' 00:00:00',
             endTime: dayjs().format("YYYY-MM-DD") + ' 23:59:59'
           }
           let { rows }: any = await listEvents(sendData)
           this.eventsData = rows
-        } catch (error: any) {
-        }
+        } catch {}
       },
-       // 查询设备组数据
+      // 查询设备组数据
       async getDeviceGroupCount() {
         try {
           let { data }: any = await getDeviceGroupCount()
+          this.deviceGroupData.xAxisData.splice(0)
+          this.deviceGroupData.deviceNormal.splice(0)
+          this.deviceGroupData.deviceAbnormal.splice(0)
           for (let key in data) {
             this.deviceGroupData.xAxisData.push(key)
-            this.deviceGroupData.deviceMonitor.push(data[key].unknow)
             this.deviceGroupData.deviceNormal.push(data[key].ok)
             this.deviceGroupData.deviceAbnormal.push(data[key].err)
           }
-        } catch (error: any) {
-        }
+        } catch {}
+      },
+      // 查询设备流量排名
+      async getDeviceFlowCount() {
+        try {
+          let sendData = {
+            //hours: 4,
+            hours: 1000,
+            topType: 2
+          }
+          let { data }: any = await getFlowCount(sendData)
+          this.deviceFlowData.inData.yAxisData.splice(0)
+          this.deviceFlowData.inData.seriesData.splice(0)
+          this.deviceFlowData.outData.yAxisData.splice(0)
+          this.deviceFlowData.outData.seriesData.splice(0)
+          for (let item of data.ifIn) {
+            this.deviceFlowData.inData.yAxisData.push(item.deviceName)
+            this.deviceFlowData.inData.seriesData.push((item.value/8/1024).toFixed(2))
+          }
+          for (let item of data.ifOut) {
+            this.deviceFlowData.outData.yAxisData.push(item.deviceName)
+            this.deviceFlowData.outData.seriesData.push((item.value/8/1024).toFixed(2))
+          }
+        } catch {}
+      },
+      // 查询端口流量排名
+      async getPortFlowCount() {
+        try {
+          let sendData = {
+            //hours: 4,
+            hours: 1000,
+            topType: 1
+          }
+          let { data }: any = await getFlowCount(sendData)
+          this.portFlowData.inData.yAxisData.splice(0)
+          this.portFlowData.inData.seriesData.splice(0)
+          this.portFlowData.outData.yAxisData.splice(0)
+          this.portFlowData.outData.seriesData.splice(0)
+          for (let item of data.ifIn) {
+            this.portFlowData.inData.yAxisData.push(item.itemName)
+            this.portFlowData.inData.seriesData.push((item.value/8/1024).toFixed(2))
+          }
+          for (let item of data.ifOut) {
+            this.portFlowData.outData.yAxisData.push(item.itemName)
+            this.portFlowData.outData.seriesData.push((item.value/8/1024).toFixed(2))
+          }
+        } catch {}
       }
     }
   }

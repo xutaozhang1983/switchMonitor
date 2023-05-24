@@ -1,7 +1,5 @@
 <template>
-  <div :style="{ '--height': props.height + 'px' }">
-    <v-chart ref="chartRef" class="chart"  :option="option" autoresize></v-chart>
-  </div>
+  <v-chart ref="chartRef" class="chart" :style="{ '--height': props.height + 'px' }" :option="option" autoresize></v-chart>
 </template>
 
 <script setup lang="ts">

@@ -1,5 +1,5 @@
 <template>
-  <v-chart class="chart" :option="option" autoresize></v-chart>
+  <v-chart ref="chartRef" class="chart" :style="{ '--height': props.height + 'px' }" :option="option" autoresize></v-chart>
 </template>
 
 <script setup lang="ts">
@@ -19,6 +19,8 @@
     option: () => {}
   })
 
+  const chartRef = ref<any>(null)
+
   const option = ref({})
   const defaultOption = ref({
     tooltip: {
@@ -35,10 +37,6 @@
     series: []
   })
 
-  watchEffect(() => {
-    option.value = merge(defaultOption.value, props.option)
-  })
-
   use([
     CanvasRenderer,
     LineChart,
@@ -47,6 +45,13 @@
     TooltipComponent,
     LegendComponent
   ])
+
+  watchEffect(() => {
+    option.value = merge(defaultOption.value, props.option)
+    if (chartRef.value) {
+      chartRef.value.setOption(option.value, true)
+    }
+  })
 </script>
 
 <style lang="scss" scoped>

@@ -20,40 +20,50 @@
 <script setup lang="ts">
   import * as echarts from 'echarts'
   import ChartBar from '@/components/charts/bar.vue'
-  import { getFlowCount } from '@/api/home'
+
+  import useHomeStore from '../store'
+
+  const homeStore = useHomeStore()
 
   const portFlowRadio = ref('in')
-  const inData: any = ref({
-    yAxisData: [],
-    seriesData: []
-  })
-  const outData: any = ref({
-    yAxisData: [],
-    seriesData: []
-  })
+  
+  const inData: any = computed(() => homeStore.portFlowData.inData)
+  const outData: any = computed(() => homeStore.portFlowData.outData)
 
   const portFlowOption = ref({
     grid: {
-      left: '15%',
-      top: '15%',
+      left: '10%',
+      right: '12%',
+      top: '0',
       bottom: '10%'
     },
     label: {
       show: true,
-      position: 'right'
+      position: 'right',
+      formatter: (params: any) => {
+        return params.value + '（Kbps）'
+      }
     },
     xAxis: {
       type: 'value',
       min: 0,
-      boundaryGap : [ 0.2, 0.2 ]
+      splitLine: {
+        lineStyle: {
+          type: 'dashed'
+        }
+      }
     },
     yAxis: {
-      name: '单位: Kbps',
       axisTick: {
         show: false
       },
       axisLine: {
         show: false
+      },
+      axisLabel: {
+        formatter: (val: string) => {
+          return val.replace(/^(.)[a-zA-Z]+(.+)$/, "$1$2")
+        }
       },
       type: 'category',
       data: []
@@ -61,6 +71,10 @@
     series: {
       type: 'bar',
       data: [],
+      showBackground: true,
+      backgroundStyle: {
+        color: 'rgba(180, 180, 180, 0.2)'
+      },
       itemStyle: {}
     }
   })
@@ -88,27 +102,8 @@
     }
   }
 
-  // 获取流量统计数据
-  function getFlowCountData () {
-    let sendData = {
-      //hours: 4,
-      hours: 1000,
-      topType: 1
-    }
-    getFlowCount(sendData).then((response: any) => {
-      for (let item of response.data.ifIn) {
-        inData.value.yAxisData.push(item.itemName)
-        inData.value.seriesData.push((item.value/8/1024).toFixed(2))
-      }
-      for (let item of response.data.ifOut) {
-        outData.value.yAxisData.push(item.itemName)
-        outData.value.seriesData.push((item.value/8/1024).toFixed(2))
-      }
-      handleChange('in')
-    })
-  }
+  handleChange('in')
 
-  getFlowCountData()
 </script>
 
 <style lang="scss" scoped>

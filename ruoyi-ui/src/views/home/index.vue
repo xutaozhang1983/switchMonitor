@@ -40,9 +40,15 @@
   import useHomeStore from './store'
 
   const homeStore = useHomeStore()
+  let timer: NodeJS.Timer | null = null
 
-  onMounted(() => {
+  homeStore.initPage()
+  timer = setInterval(() => {
     homeStore.initPage()
+  }, 300000)
+
+  onUnmounted(() => {
+    clearInterval(Number(timer))
   })
 </script>
 
