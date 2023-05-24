@@ -2,7 +2,10 @@
   <el-card>
     <template #header>
       <div class="flowHeader">
-        <div>端口流量TOP5</div>
+        <div class="left">
+          <div class="tag"></div>
+          <div>端口流量TOP5</div>
+        </div>
         <el-radio-group v-model="portFlowRadio" size="small" @change="handleChange">
           <el-radio-button label="in">入口</el-radio-button>
           <el-radio-button label="out">出口</el-radio-button>
@@ -111,5 +114,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .left {
+      display: flex;
+      align-items: center;
+      .tag {
+        height: 20px;
+        width: 10px;
+        border-radius: 0px 10px 10px 0px;
+        background-color: #64beff;
+        margin-right: 10px;
+      }
+    }
   }
 </style>

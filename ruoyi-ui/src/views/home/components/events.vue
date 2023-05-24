@@ -2,7 +2,10 @@
   <el-card>
     <template #header>
       <div class="seamlessScroll-header">
-        <div>告警事件</div>
+        <div class="left">
+          <div class="tag"></div>
+          <div>告警事件</div>
+        </div>
         <div class="seamlessScroll-header-tips">
           <div class="seamlessScroll-header-tips-item">
             <el-icon class="mr5" color="#808695" size="20px"><WarningFilled/></el-icon>
@@ -56,6 +59,17 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    .left {
+      display: flex;
+      align-items: center;
+      .tag {
+        height: 20px;
+        width: 10px;
+        border-radius: 0px 10px 10px 0px;
+        background-color: #64beff;
+        margin-right: 10px;
+      }
+    }
     &-tips {
       display: flex;
       align-items: center;

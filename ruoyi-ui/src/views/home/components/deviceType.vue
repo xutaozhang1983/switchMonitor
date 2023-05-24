@@ -1,5 +1,13 @@
 <template>
-  <el-card header="设备类型分布">
+  <el-card>
+    <template #header>
+      <div class="flowHeader">
+        <div class="left">
+          <div class="tag"></div>
+          <div>设备类型分布</div>
+        </div>
+      </div>
+    </template>
     <ChartPie :option="deviceTypeOption" :height="200"></ChartPie>
   </el-card>
 </template>
@@ -74,5 +82,20 @@
 </script>
 
 <style lang="scss" scoped>
-  
+  .flowHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .left {
+      display: flex;
+      align-items: center;
+      .tag {
+        height: 20px;
+        width: 10px;
+        border-radius: 0px 10px 10px 0px;
+        background-color: #64beff;
+        margin-right: 10px;
+      }
+    }
+  }
 </style>
