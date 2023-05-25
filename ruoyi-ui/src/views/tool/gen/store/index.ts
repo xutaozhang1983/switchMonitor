@@ -21,6 +21,7 @@ const useGenStore = defineStore('useGenStore',
       single: true, // 选择1条数据
       multiple: true, // 选择多条数据
       ids: [] as number[], // 选择数据的id集合
+      tableNames: [] as string[], // 选择数据的name集合
       formTitle: '', // 代码新增、修改对话框标题
       refreshTable: true, // 刷新表格数据
       isExpandAll: true // 表格数据是否全部展开
@@ -39,9 +40,9 @@ const useGenStore = defineStore('useGenStore',
         }
       },
       // 生成代码
-      async genCode(tableName: string) {
+      async genCode() {
         try {
-          await genCode(tableName)
+          await genCode(this.tableNames.join(','))
         } catch {}
       },
       // 预览代码

@@ -30,11 +30,11 @@
 
 <script setup lang="ts">
   import { ElForm } from 'element-plus'
-  import useNetworkDeviceStore from '../store'
+  import useNetDeviceStore from '../store'
   import { dictNormalAbnormal, dictOpenClose } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
-  const deviceStore = useNetworkDeviceStore()
+  const deviceStore = useNetDeviceStore()
 
   const queryRef = ref<InstanceType<typeof ElForm> | null>(null)
 

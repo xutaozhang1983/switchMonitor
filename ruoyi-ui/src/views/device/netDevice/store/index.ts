@@ -2,7 +2,7 @@ import { DeviceQueryParam, DeviceFormData } from '@/types/api/device'
 import { listDevice, getDevice, addDevice, updateDevice, delDevice, changeDeviceEnable } from "@/api/device"
 import { listDeviceGroup } from '@/api/deviceGroup'
 
-const useNetworkDeviceStore = defineStore('useNetworkDeviceStore',
+const useNetDeviceStore = defineStore('useNetDeviceStore',
   {
     state: () => ({
       loading: false, // 设备数据loading状态
@@ -90,4 +90,4 @@ const useNetworkDeviceStore = defineStore('useNetworkDeviceStore',
   }
 )
 
-export default useNetworkDeviceStore 
+export default useNetDeviceStore 

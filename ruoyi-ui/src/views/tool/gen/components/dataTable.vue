@@ -53,11 +53,10 @@
   const router = useRouter()
   const genStore = useGenStore()
 
-  const tableNames = ref([])
-
   // 选择条数
   function handleSelectionChange(selection: any) {
     genStore.ids = selection.map((item: any) => item.tableId)
+    genStore.tableNames = selection.map((item: any) => item.tableName)
     genStore.single = selection.length != 1
     genStore.multiple = !selection.length
   }
@@ -97,16 +96,16 @@
 
    /** 生成代码操作 */
    async function handleGenTable(row: any) {
-    const tbNames = row.tableName || tableNames.value
-    if (tbNames == '') {
+    genStore.tableNames = [ row.tableName ]
+    if (!genStore.tableNames.length) {
       ElMessage.error('请选择要生成的数据')
       return
     }
     if (row.genType === '1') {
-      await genStore.genCode(row.tableName)
+      await genStore.genCode()
       ElMessage.success('成功生成到自定义路径：' + row.genPath)
     } else {
-      proxy.$download.zip('/tool/gen/batchGenCode?tables=' + tbNames, 'ruoyi')
+      proxy.$download.zip('/tool/gen/batchGenCode?tables=' + genStore.tableNames[0], 'ruoyi')
     }
   }
 </script>

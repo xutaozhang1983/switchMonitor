@@ -19,10 +19,10 @@
 
 <script setup lang="ts">
   import { ElMessageBox, ElMessage } from 'element-plus'
-  import useNetworkDeviceStore from '../store'
+  import useNetDeviceStore from '../store'
 
   const { proxy } = getCurrentInstance() as any
-  const deviceStore = useNetworkDeviceStore()
+  const deviceStore = useNetDeviceStore()
   const emits = defineEmits(['setMenuChecked'])
 
   // 新增按钮操作

@@ -57,16 +57,16 @@
 
 <script setup lang="ts">
   import { ElMessageBox, ElMessage, ElTooltip } from 'element-plus'
-  import useNetworkDeviceStore from '../store'
+  import useNetDeviceStore from '../store'
 
-  const deviceStore = useNetworkDeviceStore()
+  const deviceStore = useNetDeviceStore()
   const router = useRouter()
 
   // 跳转到监控
   function handleClickRow(row: any) {
     console.log(router)
     router.push({
-      path: '/monitor/networkMonitor',
+      path: '/monitor/netMonitor',
       query: {
         id: row.id
       }

@@ -11,14 +11,14 @@
   </div>
 </template>
 
-<script setup name="NetworkDevice" lang="ts">
+<script setup name="NetDevice" lang="ts">
   import Query from './components/query.vue'
   import Operate from './components/operate.vue'
   import DataTable from './components/dataTable.vue'
   import FormDialog from './components/formDialog.vue'
-  import useNetworkDeviceStore from './store'
+  import useNetDeviceStore from './store'
 
-  const deviceStore = useNetworkDeviceStore()
+  const deviceStore = useNetDeviceStore()
 
   onBeforeMount(async () => {
     // 获取设备组数据

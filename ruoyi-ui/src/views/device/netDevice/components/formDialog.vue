@@ -89,11 +89,11 @@
 
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
-  import useNetworkDeviceStore from '../store'
+  import useNetDeviceStore from '../store'
   import { dictDeviceManufacturer, dictSnmpVersion, dictOpenClose } from '@/utils/dict'
 
   const { proxy } = getCurrentInstance() as any
-  const deviceStore = useNetworkDeviceStore()
+  const deviceStore = useNetDeviceStore()
   
   const rules = {
     deviceName: [
