@@ -83,6 +83,16 @@
         }
         // 调用action的登录方法
         userStore.login(loginForm.value).then(() => {
+          // 登录成功后获取许可证
+          if (!localStorage.get('license')) {
+            let license = {
+              guid: '043DD1A0-6C03-4DB7-B0E5-6602720C3A68',
+              custom: '北京中软星图信息技术有限公司',
+              expires: encrypt('1688140799000'),
+              devices: encrypt('100')
+            }
+            localStorage.set('license', JSON.stringify(license))
+          }
           router.push({ path: redirect.value || '/' })
         }).catch(() => {
           loading.value = false

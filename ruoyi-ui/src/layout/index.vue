@@ -16,7 +16,8 @@
         <tags-view v-if="needTagsView" />
       </div>
       <app-main />
-      <settings ref="settingRef" />
+      <Settings ref="settingRef" />
+      <License ref="licenceRef" />
     </div>
   </div>
 </template>
@@ -24,7 +25,7 @@
 <script setup lang="ts">
   import { useWindowSize } from '@vueuse/core'
   import Sidebar from './components/Sidebar/index.vue'
-  import { AppMain, Navbar, Settings, TagsView } from './components'
+  import { AppMain, Navbar, Settings, TagsView, License } from './components'
   import defaultSettings from '@/settings'
 
   import useAppStore from '@/store/modules/app'

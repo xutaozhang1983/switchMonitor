@@ -3,6 +3,7 @@ import { localStorage } from '@/utils/storage'
 const useAppStore = defineStore('app', {
   state: () => ({
     device: 'desktop',
+    showLicense: false,
     size: localStorage.get('size') || 'default',
     sidebar: {
       opened: localStorage.get('sidebarStatus')

@@ -29,7 +29,7 @@
           <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip>-->
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <!--<screenfull id="screenfull" class="right-menu-item hover-effect" />-->
 
         <!--<el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
@@ -50,6 +50,9 @@
               <router-link to="/account/profile">
                 <el-dropdown-item>个人中心</el-dropdown-item>
               </router-link>
+              <el-dropdown-item command="openLicense">
+                <span>查看授权</span>
+              </el-dropdown-item>
               <!--<el-dropdown-item command="setLayout">
                 <span>布局设置</span>
               </el-dropdown-item>-->
@@ -91,12 +94,19 @@
       case "setLayout":
         setLayout();
         break;
+      case "openLicense":
+        openLicense()
+        break
       case "logout":
         logout();
         break;
       default:
         break;
     }
+  }
+
+  function openLicense() {
+    appStore.showLicense = true
   }
 
   function logout() {
