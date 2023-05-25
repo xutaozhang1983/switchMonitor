@@ -39,4 +39,5 @@
     // 获取用户数据
     await userStore.getUserData()
   })
+  
 </script>

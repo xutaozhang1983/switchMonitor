@@ -121,6 +121,20 @@ export const dynamicRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: '/monitor/netMonitor/view',
+    component: Layout,
+    hidden: true,
+    permissions: ['monitor:netMonitor:view'],
+    children: [
+      {
+        path: ':id(\\d+)',
+        component: () => import('@/views/monitor/netMonitor/components/view/index.vue'),
+        name: 'NetMonitorView',
+        meta: { title: '监控视图', activeMenu: '/monitor/netMonitor' }
+      }
+    ]
+  },
+  {
     path: '/tool/genedit',
     component: Layout,
     hidden: true,

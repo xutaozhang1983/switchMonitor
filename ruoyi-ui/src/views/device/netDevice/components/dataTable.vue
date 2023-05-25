@@ -1,5 +1,5 @@
 <template>
-  <el-table v-loading="deviceStore.loading" :data="deviceStore.deviceData" @selection-change="handleSelectionChange" @row-click="handleClickRow">
+  <el-table v-loading="deviceStore.loading" :data="deviceStore.deviceData" @selection-change="handleSelectionChange">
     <el-table-column type="selection" width="55" align="center" />
     <el-table-column label="编号" prop="id" width="100"/>
     <el-table-column label="设备名称" prop="deviceName"/>
@@ -61,17 +61,6 @@
 
   const deviceStore = useNetDeviceStore()
   const router = useRouter()
-
-  // 跳转到监控
-  function handleClickRow(row: any) {
-    console.log(router)
-    router.push({
-      path: '/monitor/netMonitor',
-      query: {
-        id: row.id
-      }
-    })
-  }
 
   // 选择条数
   function handleSelectionChange(selection: any) {

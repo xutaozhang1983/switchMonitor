@@ -83,7 +83,7 @@
 
   const route = useRoute()
 
-  const deviceId = ref(Number(route.query.id))
+  const deviceId = ref(Number(route.params.id))
   const loading = ref(false)
   const portData = ref<any[]>([]) // 端口数据
   const loadData = ref<any>({ cpu: 0, memory: 0 }) // 负载数据

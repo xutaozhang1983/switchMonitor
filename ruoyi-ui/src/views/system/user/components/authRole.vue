@@ -66,7 +66,10 @@
   const pageSize = ref(10)
   const ids = ref([])
 
-  const authRole = ref<any>({}) // 授权角色
+  const authRole = ref({
+    user: {} as any,
+    roles: [] as any[]
+  }) // 授权角色
 
   // 单击选中行数据
   function clickRow(row: any) {
@@ -88,7 +91,7 @@
   // 提交按钮
   async function submitForm() {
     let sendData: UserUpdateAuthRole = {
-      userId: authRole.user.userId,
+      userId: authRole.value.user.userId,
       roleIds: ids.value.join(',')
     }
     updateAuthRole(sendData).then(() => {
@@ -107,7 +110,7 @@
         authRole.value.roles = response.roles
       })
       loading.value = false
-      authRole.roles.forEach((row: any) => {
+      authRole.value.roles.forEach((row: any) => {
         if (row.flag) {
           proxy.$refs["roleRef"].toggleRowSelection(row)
         }
