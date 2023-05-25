@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 
-@Component
+//@Component
 public class MyCache implements Cache {
 
     // 使用ConcurrentHashMap作为数据的存储
