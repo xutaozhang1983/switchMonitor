@@ -136,13 +136,12 @@ public class TbDeviceItemHisController extends BaseController
         return AjaxResult.success(mapList);
     }
     @ApiOperation("获取top5 流量")
-    @GetMapping("/selectTop5")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "hours", value = "几小时内", dataType = "Long", dataTypeClass = Long.class),
             @ApiImplicitParam(name = "topType", value = "1 端口流量 2 设备流量", dataType = "Integer", dataTypeClass = Integer.class),
     })
-    public AjaxResult selectGraph( @RequestParam Long hours,
-                                  @RequestParam Integer topType){
+    @GetMapping("/selectTop5")
+    public AjaxResult selectGraph( @RequestParam Long hours, @RequestParam Integer topType){
         ItemHisDto itemHisDto = new ItemHisDto();
         if(StringUtils.isNull(hours)){
             hours = 4L;

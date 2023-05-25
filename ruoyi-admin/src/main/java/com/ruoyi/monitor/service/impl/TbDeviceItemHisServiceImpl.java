@@ -15,6 +15,8 @@ import com.ruoyi.monitor.service.ITbDeviceItemHisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+
 /**
  * 设备监控指标Service业务层处理
  * 
