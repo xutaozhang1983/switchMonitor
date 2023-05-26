@@ -1,9 +1,9 @@
-package com.ruoyi.common.utils;
+package com.ruoyi.common.utils.bean;
 
 
 import com.ruoyi.common.annotation.CopyProperty;
-import com.ruoyi.common.utils.bean.BeanCopierKey;
-import com.ruoyi.common.utils.bean.BeanUtils;
+import com.ruoyi.common.utils.ReflectUtil;
+import com.ruoyi.common.utils.StringUtils;
 import org.springframework.asm.ClassVisitor;
 import org.springframework.asm.Label;
 import org.springframework.asm.Type;
@@ -143,7 +143,7 @@ public abstract class BladeBeanCopier {
                 for(int var13 = 0; var13 < var32; ++var13) {
                     PropertyDescriptor setter = var31[var13];
                     String propName = setter.getName();
-                    CopyProperty targetIgnoreCopy = (CopyProperty)ReflectUtil.getAnnotation(this.target, propName, CopyProperty.class);
+                    CopyProperty targetIgnoreCopy = (CopyProperty) ReflectUtil.getAnnotation(this.target, propName, CopyProperty.class);
                     if (targetIgnoreCopy != null) {
                         if (targetIgnoreCopy.ignore()) {
                             continue;

@@ -1,7 +1,6 @@
 package com.ruoyi.common.utils.bean;
 
 import com.fasterxml.jackson.databind.BeanProperty;
-import com.ruoyi.common.utils.BladeBeanCopier;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyAccessorFactory;

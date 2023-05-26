@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.TbDeviceEncodeMapper">
+    
+    <resultMap type="TbDeviceEncode" id="TbDeviceEncodeResult">
+        <result property="id"    column="id"    />
+        <result property="capability"    column="capability"    />
+        <result property="deviceType"    column="device_type"    />
+        <result property="devSerialNum"    column="dev_serial_num"    />
+        <result property="deviceCode"    column="device_code"    />
+        <result property="indexCode"    column="index_code"    />
+        <result property="manufacturer"    column="manufacturer"    />
+        <result property="name"    column="name"    />
+        <result property="regionIndexCode"    column="region_index_code"    />
+        <result property="resourceType"    column="resource_type"    />
+        <result property="treatyType"    column="treaty_type"    />
+        <result property="status"    column="status"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTbDeviceEncodeVo">
+        select id, capability, device_type, dev_serial_num, device_code, index_code, manufacturer, name, region_index_code, resource_type, treaty_type, status, create_by, create_time, update_by, update_time from tb_device_encode
+    </sql>
+
+    <select id="selectTbDeviceEncodeList" parameterType="TbDeviceEncode" resultMap="TbDeviceEncodeResult">
+        <include refid="selectTbDeviceEncodeVo"/>
+        <where>  
+            <if test="capability != null  and capability != ''"> and capability = #{capability}</if>
+            <if test="deviceType != null  and deviceType != ''"> and device_type = #{deviceType}</if>
+            <if test="devSerialNum != null  and devSerialNum != ''"> and dev_serial_num = #{devSerialNum}</if>
+            <if test="deviceCode != null  and deviceCode != ''"> and device_code = #{deviceCode}</if>
+            <if test="indexCode != null  and indexCode != ''"> and index_code = #{indexCode}</if>
+            <if test="manufacturer != null  and manufacturer != ''"> and manufacturer = #{manufacturer}</if>
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="regionIndexCode != null  and regionIndexCode != ''"> and region_index_code = #{regionIndexCode}</if>
+            <if test="resourceType != null  and resourceType != ''"> and resource_type = #{resourceType}</if>
+            <if test="treatyType != null  and treatyType != ''"> and treaty_type = #{treatyType}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbDeviceEncodeById" parameterType="Long" resultMap="TbDeviceEncodeResult">
+        <include refid="selectTbDeviceEncodeVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbDeviceEncode" parameterType="TbDeviceEncode" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_device_encode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="capability != null">capability,</if>
+            <if test="deviceType != null">device_type,</if>
+            <if test="devSerialNum != null">dev_serial_num,</if>
+            <if test="deviceCode != null">device_code,</if>
+            <if test="indexCode != null">index_code,</if>
+            <if test="manufacturer != null">manufacturer,</if>
+            <if test="name != null">name,</if>
+            <if test="regionIndexCode != null">region_index_code,</if>
+            <if test="resourceType != null">resource_type,</if>
+            <if test="treatyType != null">treaty_type,</if>
+            <if test="status != null">status,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="capability != null">#{capability},</if>
+            <if test="deviceType != null">#{deviceType},</if>
+            <if test="devSerialNum != null">#{devSerialNum},</if>
+            <if test="deviceCode != null">#{deviceCode},</if>
+            <if test="indexCode != null">#{indexCode},</if>
+            <if test="manufacturer != null">#{manufacturer},</if>
+            <if test="name != null">#{name},</if>
+            <if test="regionIndexCode != null">#{regionIndexCode},</if>
+            <if test="resourceType != null">#{resourceType},</if>
+            <if test="treatyType != null">#{treatyType},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbDeviceEncode" parameterType="TbDeviceEncode">
+        update tb_device_encode
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="capability != null">capability = #{capability},</if>
+            <if test="deviceType != null">device_type = #{deviceType},</if>
+            <if test="devSerialNum != null">dev_serial_num = #{devSerialNum},</if>
+            <if test="deviceCode != null">device_code = #{deviceCode},</if>
+            <if test="indexCode != null">index_code = #{indexCode},</if>
+            <if test="manufacturer != null">manufacturer = #{manufacturer},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="regionIndexCode != null">region_index_code = #{regionIndexCode},</if>
+            <if test="resourceType != null">resource_type = #{resourceType},</if>
+            <if test="treatyType != null">treaty_type = #{treatyType},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbDeviceEncodeById" parameterType="Long">
+        delete from tb_device_encode where id = #{id}
+    </delete>
+
+    <delete id="deleteTbDeviceEncodeByIds" parameterType="String">
+        delete from tb_device_encode where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
