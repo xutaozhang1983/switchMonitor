@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.SysLicenseMapper">
+    
+    <resultMap type="SysLicense" id="SysLicenseResult">
+    	<id     property="licenseId"      column="license_id"      />
+        <result property="license"    column="license"    />
+        <result property="createBy"      column="create_by"      />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"      column="update_by"      />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+    
+    <sql id="selectLicenseVo">
+        select *
+		from sys_license
+    </sql>
+    
+
+    <select id="selectLicenseById" parameterType="Long" resultMap="SysLicenseResult">
+        <include refid="selectLicenseVo"/>
+        where license_id = #{licenseId} limit 1
+    </select>
+
+	 
+    <update id="updateLicense" parameterType="SysLicense">
+        update sys_license
+        <set>
+            <if test="license != null and license != ''">license = #{license},</if>
+ 			update_time = sysdate()
+        </set>
+        where license_id = #{licenseId}
+    </update>
+
+</mapper>

@@ -9,6 +9,7 @@ import io.jsonwebtoken.Claims;
  */
 public class Constants
 {
+    public static final String license = "license";
     /**
      * UTF-8 字符集
      */

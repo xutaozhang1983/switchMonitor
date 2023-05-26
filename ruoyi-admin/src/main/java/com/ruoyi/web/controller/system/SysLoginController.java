@@ -2,6 +2,10 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import java.util.Set;
+
+import com.ruoyi.common.utils.des.DesUtil;
+import com.ruoyi.system.domain.SysLicense;
+import com.ruoyi.system.service.ISysLicenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,6 +38,8 @@ public class SysLoginController
     @Autowired
     private SysPermissionService permissionService;
 
+    @Autowired
+    private  ISysLicenseService sysLicenseService;
     /**
      * 登录方法
      * 
@@ -41,13 +47,13 @@ public class SysLoginController
      * @return 结果
      */
     @PostMapping("/login")
-    public AjaxResult login(@RequestBody LoginBody loginBody)
-    {
+    public AjaxResult login(@RequestBody LoginBody loginBody) throws Exception {
         AjaxResult ajax = AjaxResult.success();
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
                 loginBody.getUuid());
         ajax.put(Constants.TOKEN, token);
+
         return ajax;
     }
 
@@ -57,8 +63,7 @@ public class SysLoginController
      * @return 用户信息
      */
     @GetMapping("getInfo")
-    public AjaxResult getInfo()
-    {
+    public AjaxResult getInfo() throws Exception {
         SysUser user = SecurityUtils.getLoginUser().getUser();
         // 角色集合
         Set<String> roles = permissionService.getRolePermission(user);
@@ -68,6 +73,12 @@ public class SysLoginController
         ajax.put("user", user);
         ajax.put("roles", roles);
         ajax.put("permissions", permissions);
+        SysLicense license = sysLicenseService.selectLicenseById(0L);
+        String lic = license.getLicense()+
+                "";
+        System.out.println(lic);
+        System.out.println(license.getLicense());
+        ajax.put(Constants.license, DesUtil.AESDecrypt(lic,"9kbx68MBvkeCSGGg"));
         return ajax;
     }
 

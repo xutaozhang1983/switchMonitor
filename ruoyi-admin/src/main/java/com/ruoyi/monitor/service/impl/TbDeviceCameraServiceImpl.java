@@ -8,6 +8,8 @@ import com.ruoyi.monitor.mapper.TbDeviceCameraMapper;
 import com.ruoyi.monitor.domain.TbDeviceCamera;
 import com.ruoyi.monitor.service.ITbDeviceCameraService;
 
+import javax.annotation.Resource;
+
 /**
  * 摄像头Service业务层处理
  * 
@@ -17,7 +19,7 @@ import com.ruoyi.monitor.service.ITbDeviceCameraService;
 @Service
 public class TbDeviceCameraServiceImpl implements ITbDeviceCameraService 
 {
-    @Autowired
+    @Resource
     private TbDeviceCameraMapper tbDeviceCameraMapper;
 
     /**

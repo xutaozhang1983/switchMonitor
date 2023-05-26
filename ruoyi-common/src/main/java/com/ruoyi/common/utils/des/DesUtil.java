@@ -6,10 +6,21 @@ import org.springframework.lang.Nullable;
 
 
 import javax.crypto.Cipher;
+import javax.crypto.KeyGenerator;
+import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.Key;
+import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Objects;
+
+import static sun.security.x509.CertificateAlgorithmId.ALGORITHM;
 
 
 public class DesUtil {
@@ -85,5 +96,50 @@ public class DesUtil {
         } catch (Exception var6) {
             throw new Exception(var6);
         }
+    }
+
+
+    public static SecretKey getKey(String key) throws Exception {
+        try {
+            KeyGenerator keyGenerator = KeyGenerator.getInstance("AES");
+            SecureRandom random = new SecureRandom();
+            random.setSeed(key.getBytes());//设置加密用的种子，密钥
+            keyGenerator.init(random);
+            return keyGenerator.generateKey();
+
+        }catch (Exception e){
+            throw new Exception(e);
+        }
+
+    }
+
+    /**
+     * 加密测试
+     */
+
+    public static String AESEncrypt(String content,String key) throws Exception {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);
+        byte[] encryptedBytes = cipher.doFinal(content.getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(encryptedBytes);
+    }
+
+    /**
+     * 解密测试
+     */
+
+    public static String AESDecrypt(String content,String key) throws Exception {
+        try {
+            SecretKeySpec secretKeySpec = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "AES");
+            Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+            cipher.init(Cipher.DECRYPT_MODE, secretKeySpec);
+            byte[] decryptedBytes = cipher.doFinal(Base64.getDecoder().decode(content));
+            return new String(decryptedBytes,StandardCharsets.UTF_8);
+        }catch (Exception e){
+            return null;
+        }
+
+
     }
 }

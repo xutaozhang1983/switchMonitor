@@ -2,6 +2,10 @@ package com.ruoyi.utils;
 
 import com.ruoyi.common.utils.des.DesUtil;
 import com.ruoyi.framework.web.domain.Server;
+import com.ruoyi.framework.web.domain.server.Sys;
+import com.ruoyi.system.service.ISysLicenseService;
+
+import javax.crypto.SecretKey;
 
 
 public class test {
@@ -15,12 +19,14 @@ public class test {
 //        device.setSnmpCommunity("Public");
 //        SnmpDeviceData snmpConfig = new SnmpDeviceData(device);
 //        System.out.println(snmpConfig.acquireCpuMem("Huawei"));
-        Server server = new Server();
-        server.copyTo();
-        String data = "abcd";
-        String key = "18oRJtbLy7ied4Nl";
-        System.out.println(key+"---"+DesUtil.encryptToHex(data,key));
-        String enStr = "";
-        System.out.println(DesUtil.decryptFormHex("21f8bd61629eee27",key));
+        String key = "9kbx68MBvkeCSGGg";
+        System.out.println(key);
+
+
+        String data = "{\"GUID\":\"f4135e2c-ac06-9cf4-99e9-19206db83272\",\"CUSTOM\":\"SoftStar\",\"EXPIRES\":\"2023-06-25\",\"DEVICES\":\"50\"}";
+        System.out.println(DesUtil.AESEncrypt(data,key));
+        String aa = "Hcwhm79bSpd3sScTdSJsee2y4fhMP1OAmphQV254h0RSclXFxT5nFkIROmQMmBv0ja1MxofmmHCLe2J0XhaLM9pOUv0Dj8SO6O9WcD72Vh+bBVXEAKgABf/lEbbmnFgZ2baPGxQOpeqL1fDbXRUbgQ=="+"";
+        System.out.println(aa+"---"+DesUtil.AESDecrypt(aa,key));
+
     }
 }
