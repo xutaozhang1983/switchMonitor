@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.monitor.mapper.TbDeviceCameraMapper">
+    
+    <resultMap type="TbDeviceCamera" id="TbDeviceCameraResult">
+        <result property="id"    column="id"    />
+        <result property="altitude"    column="altitude"    />
+        <result property="cameraIndexCode"    column="camera_index_code"    />
+        <result property="cameraName"    column="camera_name"    />
+        <result property="cameraType"    column="camera_type"    />
+        <result property="cameraTypeName"    column="camera_type_name"    />
+        <result property="capabilitySet"    column="capability_set"    />
+        <result property="capabilitySetName"    column="capability_set_name"    />
+        <result property="intelligentSet"    column="intelligent_set"    />
+        <result property="intelligentSetName"    column="intelligent_set_name"    />
+        <result property="channelNo"    column="channel_no"    />
+        <result property="channelType"    column="channel_type"    />
+        <result property="channelTypeName"    column="channel_type_name"    />
+        <result property="encodeDevIndexCode"    column="encode_dev_index_code"    />
+        <result property="encodeDevResourceType"    column="encode_dev_resource_type"    />
+        <result property="encodeDevResourceTypeName"    column="encode_dev_resource_type_name"    />
+        <result property="gbIndexCode"    column="gb_index_code"    />
+        <result property="installLocation"    column="install_location"    />
+        <result property="keyBoardCode"    column="key_board_code"    />
+        <result property="latitude"    column="latitude"    />
+        <result property="longitude"    column="longitude"    />
+        <result property="pixel"    column="pixel"    />
+        <result property="ptz"    column="ptz"    />
+        <result property="ptzController"    column="ptz_controller"    />
+        <result property="ptzControllerName"    column="ptz_controller_name"    />
+        <result property="ptzName"    column="ptz_name"    />
+        <result property="recordLocation"    column="record_location"    />
+        <result property="recordLocationName"    column="record_location_name"    />
+        <result property="regionIndexCode"    column="region_index_code"    />
+        <result property="status"    column="status"    />
+        <result property="statusName"    column="status_name"    />
+        <result property="transType"    column="trans_type"    />
+        <result property="transTypeName"    column="trans_type_name"    />
+        <result property="treatyType"    column="treaty_type"    />
+        <result property="treatyTypeName"    column="treaty_type_name"    />
+        <result property="viewshed"    column="viewshed"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectTbDeviceCameraVo">
+        select id, altitude, camera_index_code, camera_name, camera_type, camera_type_name, capability_set, capability_set_name, intelligent_set, intelligent_set_name, channel_no, channel_type, channel_type_name, encode_dev_index_code, encode_dev_resource_type, encode_dev_resource_type_name, gb_index_code, install_location, key_board_code, latitude, longitude, pixel, ptz, ptz_controller, ptz_controller_name, ptz_name, record_location, record_location_name, region_index_code, status, status_name, trans_type, trans_type_name, treaty_type, treaty_type_name, viewshed, create_by, create_time, update_by, update_time from tb_device_camera
+    </sql>
+
+    <select id="selectTbDeviceCameraList" parameterType="TbDeviceCamera" resultMap="TbDeviceCameraResult">
+        <include refid="selectTbDeviceCameraVo"/>
+        <where>  
+            <if test="altitude != null  and altitude != ''"> and altitude = #{altitude}</if>
+            <if test="cameraIndexCode != null  and cameraIndexCode != ''"> and camera_index_code = #{cameraIndexCode}</if>
+            <if test="cameraName != null  and cameraName != ''"> and camera_name like concat('%', #{cameraName}, '%')</if>
+            <if test="cameraType != null "> and camera_type = #{cameraType}</if>
+            <if test="cameraTypeName != null  and cameraTypeName != ''"> and camera_type_name like concat('%', #{cameraTypeName}, '%')</if>
+            <if test="capabilitySet != null  and capabilitySet != ''"> and capability_set = #{capabilitySet}</if>
+            <if test="capabilitySetName != null  and capabilitySetName != ''"> and capability_set_name like concat('%', #{capabilitySetName}, '%')</if>
+            <if test="intelligentSet != null  and intelligentSet != ''"> and intelligent_set = #{intelligentSet}</if>
+            <if test="intelligentSetName != null  and intelligentSetName != ''"> and intelligent_set_name like concat('%', #{intelligentSetName}, '%')</if>
+            <if test="channelNo != null  and channelNo != ''"> and channel_no = #{channelNo}</if>
+            <if test="channelType != null  and channelType != ''"> and channel_type = #{channelType}</if>
+            <if test="channelTypeName != null  and channelTypeName != ''"> and channel_type_name like concat('%', #{channelTypeName}, '%')</if>
+            <if test="encodeDevIndexCode != null  and encodeDevIndexCode != ''"> and encode_dev_index_code = #{encodeDevIndexCode}</if>
+            <if test="encodeDevResourceType != null  and encodeDevResourceType != ''"> and encode_dev_resource_type = #{encodeDevResourceType}</if>
+            <if test="encodeDevResourceTypeName != null  and encodeDevResourceTypeName != ''"> and encode_dev_resource_type_name like concat('%', #{encodeDevResourceTypeName}, '%')</if>
+            <if test="gbIndexCode != null  and gbIndexCode != ''"> and gb_index_code = #{gbIndexCode}</if>
+            <if test="installLocation != null  and installLocation != ''"> and install_location = #{installLocation}</if>
+            <if test="keyBoardCode != null  and keyBoardCode != ''"> and key_board_code = #{keyBoardCode}</if>
+            <if test="latitude != null  and latitude != ''"> and latitude = #{latitude}</if>
+            <if test="longitude != null  and longitude != ''"> and longitude = #{longitude}</if>
+            <if test="pixel != null "> and pixel = #{pixel}</if>
+            <if test="ptz != null "> and ptz = #{ptz}</if>
+            <if test="ptzController != null "> and ptz_controller = #{ptzController}</if>
+            <if test="ptzControllerName != null  and ptzControllerName != ''"> and ptz_controller_name like concat('%', #{ptzControllerName}, '%')</if>
+            <if test="ptzName != null  and ptzName != ''"> and ptz_name like concat('%', #{ptzName}, '%')</if>
+            <if test="recordLocation != null  and recordLocation != ''"> and record_location = #{recordLocation}</if>
+            <if test="recordLocationName != null  and recordLocationName != ''"> and record_location_name like concat('%', #{recordLocationName}, '%')</if>
+            <if test="regionIndexCode != null  and regionIndexCode != ''"> and region_index_code = #{regionIndexCode}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="statusName != null  and statusName != ''"> and status_name like concat('%', #{statusName}, '%')</if>
+            <if test="transType != null "> and trans_type = #{transType}</if>
+            <if test="transTypeName != null  and transTypeName != ''"> and trans_type_name like concat('%', #{transTypeName}, '%')</if>
+            <if test="treatyType != null  and treatyType != ''"> and treaty_type = #{treatyType}</if>
+            <if test="treatyTypeName != null  and treatyTypeName != ''"> and treaty_type_name like concat('%', #{treatyTypeName}, '%')</if>
+            <if test="viewshed != null  and viewshed != ''"> and viewshed = #{viewshed}</if>
+        </where>
+    </select>
+    
+    <select id="selectTbDeviceCameraById" parameterType="Long" resultMap="TbDeviceCameraResult">
+        <include refid="selectTbDeviceCameraVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertTbDeviceCamera" parameterType="TbDeviceCamera" useGeneratedKeys="true" keyProperty="id">
+        insert into tb_device_camera
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="altitude != null">altitude,</if>
+            <if test="cameraIndexCode != null">camera_index_code,</if>
+            <if test="cameraName != null">camera_name,</if>
+            <if test="cameraType != null">camera_type,</if>
+            <if test="cameraTypeName != null">camera_type_name,</if>
+            <if test="capabilitySet != null">capability_set,</if>
+            <if test="capabilitySetName != null">capability_set_name,</if>
+            <if test="intelligentSet != null">intelligent_set,</if>
+            <if test="intelligentSetName != null">intelligent_set_name,</if>
+            <if test="channelNo != null">channel_no,</if>
+            <if test="channelType != null">channel_type,</if>
+            <if test="channelTypeName != null">channel_type_name,</if>
+            <if test="encodeDevIndexCode != null">encode_dev_index_code,</if>
+            <if test="encodeDevResourceType != null">encode_dev_resource_type,</if>
+            <if test="encodeDevResourceTypeName != null">encode_dev_resource_type_name,</if>
+            <if test="gbIndexCode != null">gb_index_code,</if>
+            <if test="installLocation != null">install_location,</if>
+            <if test="keyBoardCode != null">key_board_code,</if>
+            <if test="latitude != null">latitude,</if>
+            <if test="longitude != null">longitude,</if>
+            <if test="pixel != null">pixel,</if>
+            <if test="ptz != null">ptz,</if>
+            <if test="ptzController != null">ptz_controller,</if>
+            <if test="ptzControllerName != null">ptz_controller_name,</if>
+            <if test="ptzName != null">ptz_name,</if>
+            <if test="recordLocation != null">record_location,</if>
+            <if test="recordLocationName != null">record_location_name,</if>
+            <if test="regionIndexCode != null">region_index_code,</if>
+            <if test="status != null">status,</if>
+            <if test="statusName != null">status_name,</if>
+            <if test="transType != null">trans_type,</if>
+            <if test="transTypeName != null">trans_type_name,</if>
+            <if test="treatyType != null">treaty_type,</if>
+            <if test="treatyTypeName != null">treaty_type_name,</if>
+            <if test="viewshed != null">viewshed,</if>
+            <if test="createBy != null">create_by,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateBy != null">update_by,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="altitude != null">#{altitude},</if>
+            <if test="cameraIndexCode != null">#{cameraIndexCode},</if>
+            <if test="cameraName != null">#{cameraName},</if>
+            <if test="cameraType != null">#{cameraType},</if>
+            <if test="cameraTypeName != null">#{cameraTypeName},</if>
+            <if test="capabilitySet != null">#{capabilitySet},</if>
+            <if test="capabilitySetName != null">#{capabilitySetName},</if>
+            <if test="intelligentSet != null">#{intelligentSet},</if>
+            <if test="intelligentSetName != null">#{intelligentSetName},</if>
+            <if test="channelNo != null">#{channelNo},</if>
+            <if test="channelType != null">#{channelType},</if>
+            <if test="channelTypeName != null">#{channelTypeName},</if>
+            <if test="encodeDevIndexCode != null">#{encodeDevIndexCode},</if>
+            <if test="encodeDevResourceType != null">#{encodeDevResourceType},</if>
+            <if test="encodeDevResourceTypeName != null">#{encodeDevResourceTypeName},</if>
+            <if test="gbIndexCode != null">#{gbIndexCode},</if>
+            <if test="installLocation != null">#{installLocation},</if>
+            <if test="keyBoardCode != null">#{keyBoardCode},</if>
+            <if test="latitude != null">#{latitude},</if>
+            <if test="longitude != null">#{longitude},</if>
+            <if test="pixel != null">#{pixel},</if>
+            <if test="ptz != null">#{ptz},</if>
+            <if test="ptzController != null">#{ptzController},</if>
+            <if test="ptzControllerName != null">#{ptzControllerName},</if>
+            <if test="ptzName != null">#{ptzName},</if>
+            <if test="recordLocation != null">#{recordLocation},</if>
+            <if test="recordLocationName != null">#{recordLocationName},</if>
+            <if test="regionIndexCode != null">#{regionIndexCode},</if>
+            <if test="status != null">#{status},</if>
+            <if test="statusName != null">#{statusName},</if>
+            <if test="transType != null">#{transType},</if>
+            <if test="transTypeName != null">#{transTypeName},</if>
+            <if test="treatyType != null">#{treatyType},</if>
+            <if test="treatyTypeName != null">#{treatyTypeName},</if>
+            <if test="viewshed != null">#{viewshed},</if>
+            <if test="createBy != null">#{createBy},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateBy != null">#{updateBy},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateTbDeviceCamera" parameterType="TbDeviceCamera">
+        update tb_device_camera
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="altitude != null">altitude = #{altitude},</if>
+            <if test="cameraIndexCode != null">camera_index_code = #{cameraIndexCode},</if>
+            <if test="cameraName != null">camera_name = #{cameraName},</if>
+            <if test="cameraType != null">camera_type = #{cameraType},</if>
+            <if test="cameraTypeName != null">camera_type_name = #{cameraTypeName},</if>
+            <if test="capabilitySet != null">capability_set = #{capabilitySet},</if>
+            <if test="capabilitySetName != null">capability_set_name = #{capabilitySetName},</if>
+            <if test="intelligentSet != null">intelligent_set = #{intelligentSet},</if>
+            <if test="intelligentSetName != null">intelligent_set_name = #{intelligentSetName},</if>
+            <if test="channelNo != null">channel_no = #{channelNo},</if>
+            <if test="channelType != null">channel_type = #{channelType},</if>
+            <if test="channelTypeName != null">channel_type_name = #{channelTypeName},</if>
+            <if test="encodeDevIndexCode != null">encode_dev_index_code = #{encodeDevIndexCode},</if>
+            <if test="encodeDevResourceType != null">encode_dev_resource_type = #{encodeDevResourceType},</if>
+            <if test="encodeDevResourceTypeName != null">encode_dev_resource_type_name = #{encodeDevResourceTypeName},</if>
+            <if test="gbIndexCode != null">gb_index_code = #{gbIndexCode},</if>
+            <if test="installLocation != null">install_location = #{installLocation},</if>
+            <if test="keyBoardCode != null">key_board_code = #{keyBoardCode},</if>
+            <if test="latitude != null">latitude = #{latitude},</if>
+            <if test="longitude != null">longitude = #{longitude},</if>
+            <if test="pixel != null">pixel = #{pixel},</if>
+            <if test="ptz != null">ptz = #{ptz},</if>
+            <if test="ptzController != null">ptz_controller = #{ptzController},</if>
+            <if test="ptzControllerName != null">ptz_controller_name = #{ptzControllerName},</if>
+            <if test="ptzName != null">ptz_name = #{ptzName},</if>
+            <if test="recordLocation != null">record_location = #{recordLocation},</if>
+            <if test="recordLocationName != null">record_location_name = #{recordLocationName},</if>
+            <if test="regionIndexCode != null">region_index_code = #{regionIndexCode},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="statusName != null">status_name = #{statusName},</if>
+            <if test="transType != null">trans_type = #{transType},</if>
+            <if test="transTypeName != null">trans_type_name = #{transTypeName},</if>
+            <if test="treatyType != null">treaty_type = #{treatyType},</if>
+            <if test="treatyTypeName != null">treaty_type_name = #{treatyTypeName},</if>
+            <if test="viewshed != null">viewshed = #{viewshed},</if>
+            <if test="createBy != null">create_by = #{createBy},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateBy != null">update_by = #{updateBy},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteTbDeviceCameraById" parameterType="Long">
+        delete from tb_device_camera where id = #{id}
+    </delete>
+
+    <delete id="deleteTbDeviceCameraByIds" parameterType="String">
+        delete from tb_device_camera where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
