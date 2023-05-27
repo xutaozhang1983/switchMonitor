@@ -107,7 +107,7 @@
             <version>1.1.8</version>
             <type>jar</type>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/artemis-http-client-1.1.8.jar</systemPath>
+            <systemPath>${pom.basedir}/lib/artemis-http-client-1.1.8.jar</systemPath>
         </dependency>
     </dependencies>
     <repositories>

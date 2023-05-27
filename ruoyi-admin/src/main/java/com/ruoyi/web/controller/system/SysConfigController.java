@@ -2,6 +2,9 @@ package com.ruoyi.web.controller.system;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.system.domain.SysLicense;
+import com.ruoyi.system.service.ISysLicenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +36,8 @@ public class SysConfigController extends BaseController
 {
     @Autowired
     private ISysConfigService configService;
-
+    @Autowired
+    private ISysLicenseService licenseService;
     /**
      * 获取参数配置列表
      */
@@ -129,5 +133,10 @@ public class SysConfigController extends BaseController
     {
         configService.resetConfigCache();
         return success();
+    }
+
+    @PutMapping("/lic")
+    public AjaxResult updateLic(@RequestBody SysLicense lic){
+        return toAjax(licenseService.updateLicense(lic));
     }
 }
