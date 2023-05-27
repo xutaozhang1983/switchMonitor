@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <resultMap type="DeviceVO" id="TbDeviceResult">
         <result property="id"    column="id"    />
+        <result property="model"    column="model"    />
         <result property="groupId"    column="group_id"    />
         <result property="deviceName"    column="device_name"    />
         <result property="deviceType"    column="device_type"    />
@@ -45,7 +46,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectTbDeviceList" parameterType="TbDevice" resultMap="TbDeviceResult">
         <include refid="selectTbDeviceVo"/>
-        <where>  
+        <where>
+            <if test="model != null "> and d.model = #{model}</if>
             <if test="groupId != null "> and d.group_id = #{groupId}</if>
             <if test="deviceName != null  and deviceName != ''"> and d.device_name like concat('%', #{deviceName}, '%')</if>
             <if test="deviceType != null  and deviceType != ''"> and d.device_type = #{deviceType}</if>
@@ -61,6 +63,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
       select d.* ,dg.group_name as group_name from tb_device d
       left join tb_device_group dg on d.group_id = dg.id
         <where>
+            <if test="model != null "> and d.model = #{model}</if>
             <if test="groupId != null "> and d.group_id = #{groupId}</if>
             <if test="deviceType != null "> and d.device_type = #{deviceType}</if>
             <if test="deviceName != null  and deviceName != ''"> and d.device_name like concat('%', #{deviceName}, '%')</if>
@@ -78,6 +81,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <insert id="insertTbDevice" parameterType="TbDevice" useGeneratedKeys="true" keyProperty="id">
         insert into tb_device
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="model != null">model,</if>
             <if test="groupId != null">group_id,</if>
             <if test="deviceName != null">device_name,</if>
             <if test="deviceType != null">device_type,</if>
@@ -109,6 +113,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="remark != null">remark,</if>
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="model != null">#{model},</if>
             <if test="groupId != null">#{groupId},</if>
             <if test="deviceName != null">#{deviceName},</if>
             <if test="deviceType != null">#{deviceType},</if>
@@ -144,6 +149,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateTbDevice" parameterType="TbDevice">
         update tb_device
         <trim prefix="SET" suffixOverrides=",">
+            <if test="model != null">model = #{model},</if>
             <if test="groupId != null">group_id = #{groupId},</if>
             <if test="deviceName != null">device_name = #{deviceName},</if>
             <if test="deviceType != null">device_type = #{deviceType},</if>
