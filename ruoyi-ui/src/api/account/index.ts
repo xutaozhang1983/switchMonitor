@@ -52,3 +52,12 @@ export function getCodeImg() {
     timeout: 20000
   })
 }
+
+// 更新授权
+export function upDateLic(data: { license: string }) {
+  return request({
+    url: '/system/config/lic',
+    method: 'put',
+    data
+  })
+}

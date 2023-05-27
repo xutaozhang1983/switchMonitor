@@ -36,8 +36,8 @@
   <!--更新授权码-->
   <el-dialog title="更新授权" v-model="showDialog" width="500px" append-to-body :show-close="false">
     <el-form :model="formData" ref="licenseRef" :rules="rules">
-      <el-form-item label="授权码" prop="licenseCode">
-        <el-input v-model="formData.licenseCode" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" placeholder="请输入内容"></el-input>
+      <el-form-item label="授权码" prop="license">
+        <el-input v-model="formData.license" type="textarea" :autosize="{ minRows: 4, maxRows: 10 }" placeholder="请输入内容"></el-input>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -51,6 +51,7 @@
 
 <script setup lang="ts">
   import { ElMessage } from 'element-plus'
+  import { upDateLic } from '@/api/account'
   import useAppStore from '@/store/modules/app'
   import useAccountStore from '@/store/modules/account'
   import dayjs from 'dayjs'
@@ -61,10 +62,10 @@
 
   const showDialog = ref(false)
   const formData = ref({
-    licenseCode: undefined
+    license: ''
   })
   const rules = {
-    licenseCode: [
+    license: [
       { required: true, message: "授权码不能为空", trigger: "blur" },
     ]
   }
@@ -87,16 +88,18 @@
   function handleSubmit () {
     proxy.$refs["licenseRef"].validate(async (valid: boolean) => {
       if (valid) {
-        ElMessage.success('更新授权成功')
-        showDialog.value = false
-        accountStore.getInfo()
+        upDateLic(formData.value).then((response: any) => {
+          ElMessage.success('更新授权成功')
+          showDialog.value = false
+          accountStore.getInfo()
+        })
       }
     })
   }
 
   // 关闭窗口
   function handleClose () {
-    formData.value.licenseCode = undefined
+    formData.value.license = ''
     showDialog.value = false
   }
 </script>
