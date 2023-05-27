@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.Resource;
+
 /**
  * 设备列Service业务层处理
  * 
@@ -23,10 +25,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class TbDeviceServiceImpl implements ITbDeviceService
 {
-    @Autowired
+    @Resource
     private TbDeviceMapper tbDeviceMapper;
 
-    @Autowired
+    @Resource
     TbDeviceItemMapper tbDeviceItemMapper;
 
     /**

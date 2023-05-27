@@ -86,6 +86,7 @@ public class MonitorTask {
         TbDevice tbDevice = new TbDevice();
 //        tbDevice.setEnable(0);
 //        tbDevice.setStatus("0");
+        tbDevice.setModel(1L);
         tbDevice.setId(2L);
         List<TbDevice> deviceDTOList= tbDeviceService.selectDeviceList(tbDevice);
         List<TbDeviceItemHis> itemHisList = new ArrayList<>();
