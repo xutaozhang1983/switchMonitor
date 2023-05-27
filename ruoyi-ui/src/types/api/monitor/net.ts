@@ -1,4 +1,11 @@
 /**
+ * 设备项查询参数类型声明
+ */
+export interface DeviceItemQueryParam {
+  deviceId?: number // 设备ID
+}
+
+/**
  * 设备监控数据查询参数类型声明
  */
 export interface DeviceItemHisQueryParam {

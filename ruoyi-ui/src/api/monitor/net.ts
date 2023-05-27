@@ -1,5 +1,15 @@
 import request from '@/utils/request'
-import { DeviceItemHisQueryParam } from '@/types/api/deviceItemHis'
+import { DeviceItemQueryParam } from '@/types/api/monitor/net'
+import { DeviceItemHisQueryParam } from '@/types/api/monitor/net'
+
+// 查询设备项列表
+export function listDeviceItem(query: DeviceItemQueryParam) {
+  return request({
+    url: '/monitor/item/list',
+    method: 'get',
+    params: query
+  })
+}
 
 // 通过设备id查询监控数据
 export function getItemHisByDeviceId(data: DeviceItemHisQueryParam) {

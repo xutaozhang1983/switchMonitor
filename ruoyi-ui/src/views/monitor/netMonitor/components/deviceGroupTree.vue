@@ -8,7 +8,7 @@
       :props="defaultProps"
       :expand-on-click-node="false"
       :filter-node-method="filterNode"
-      ref="deviceGroupRef"
+      ref="deviceGroupTreeRef"
       node-key="id"
       highlight-current
       default-expand-all
@@ -29,7 +29,7 @@
   }
 
   const groupName = ref('')
-  const deviceGroupRef = ref<InstanceType<typeof ElTree> | null>(null)
+  const deviceGroupTreeRef = ref<InstanceType<typeof ElTree> | null>(null)
 
   // 通过条件过滤节点
   const filterNode = (value: string, data: any) => {
@@ -39,13 +39,13 @@
 
   // 根据名称筛选设备组树
   watch(groupName, (val) => {
-    deviceGroupRef.value!.filter(val)
+    deviceGroupTreeRef.value!.filter(val)
   })
 
   // 监听是否需要重置部门树的key
   watchEffect(() => {
     if (deviceStore.resetDeviceGroupKey) {
-      (deviceGroupRef.value as any).setCurrentKey(null)
+      (deviceGroupTreeRef.value as any).setCurrentKey(null)
       deviceStore.resetDeviceGroupKey = false
     }
   })

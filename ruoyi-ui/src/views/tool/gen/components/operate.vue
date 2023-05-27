@@ -35,11 +35,12 @@
       ElMessage.error('请选择要生成的数据')
       return
     }
+    console.log(row)
     if (row.genType === '1') {
       await genStore.genCode()
       ElMessage.success('成功生成到自定义路径：' + row.genPath)
     } else {
-      proxy.$download.zip('/tool/gen/batchGenCode?tables=' + genStore.tableNames[0], 'ruoyi')
+      proxy.$download.zip('/tool/gen/batchGenCode?tables=' + genStore.tableNames, 'ruoyi')
     }
   }
 

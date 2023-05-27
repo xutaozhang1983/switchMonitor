@@ -105,7 +105,7 @@
       await genStore.genCode()
       ElMessage.success('成功生成到自定义路径：' + row.genPath)
     } else {
-      proxy.$download.zip('/tool/gen/batchGenCode?tables=' + genStore.tableNames[0], 'ruoyi')
+      proxy.$download.zip('/tool/gen/batchGenCode?tables=' + genStore.tableNames, 'ruoyi')
     }
   }
 </script>

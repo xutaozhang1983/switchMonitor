@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <!--设备组数据-->
+      <!--编码设备数据-->
       <el-col :span="4" :xs="24">
-        <DeviceGroupTree></DeviceGroupTree>
+        <EncodeTree></EncodeTree>
       </el-col>
       <el-col :span="20" :xs="24">
         <!--查询条件-->
@@ -16,18 +16,18 @@
 </template>
 
 <script setup name="NetMonitor" lang="ts">
-  import DeviceGroupTree from './components/deviceGroupTree.vue'
+  import EncodeTree from './components/EncodeTree.vue'
   import Query from './components/query.vue'
   import DataTable from './components/dataTable.vue'
-  import useNetMonitorStore from './store'
+  import useCameraMonitorStore from './store'
 
-  const deviceStore = useNetMonitorStore()
+  const deviceStore = useCameraMonitorStore()
 
   onBeforeMount(async () => {
-    // 获取设备组数据
-    await deviceStore.getDeviceGroupData()
-    // 获取设备数据
-    await deviceStore.getDeviceData()
+    // 获取编码设备数据
+    await deviceStore.getEncodeData()
+    // 获取摄像头数据
+    await deviceStore.getCameraData()
   })
 
 </script>
