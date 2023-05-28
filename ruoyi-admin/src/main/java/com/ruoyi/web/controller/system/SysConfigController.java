@@ -3,6 +3,8 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.utils.des.DesUtil;
 import com.ruoyi.system.domain.SysLicense;
 import com.ruoyi.system.service.ISysLicenseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -136,7 +138,16 @@ public class SysConfigController extends BaseController
     }
 
     @PutMapping("/lic")
-    public AjaxResult updateLic(@RequestBody SysLicense lic){
-        return toAjax(licenseService.updateLicense(lic));
+    public AjaxResult updateLic(@RequestBody SysLicense lic) throws Exception {
+        if(StringUtils.isNull(lic.getLicense())){
+            return AjaxResult.error("license is Null");
+        }
+
+        String license = DesUtil.AESDecrypt(lic.getLicense(),licenseService.getKey());
+        if (StringUtils.isNull(lic)){
+            return AjaxResult.error("license is error");
+        }
+        licenseService.updateLicense(lic);
+        return AjaxResult.success(license);
     }
 }

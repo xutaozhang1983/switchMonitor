@@ -32,6 +32,8 @@ public class Sys
      */
     private String osArch;
 
+    private String sysKey;
+
     public String getComputerName()
     {
         return computerName;
@@ -80,5 +82,13 @@ public class Sys
     public void setOsArch(String osArch)
     {
         this.osArch = osArch;
+    }
+
+    public String getSysKey() {
+        return sysKey;
+    }
+
+    public void setSysKey(String sysKey) {
+        this.sysKey = sysKey;
     }
 }

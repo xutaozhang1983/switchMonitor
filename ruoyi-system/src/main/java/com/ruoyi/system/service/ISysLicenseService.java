@@ -14,4 +14,6 @@ public interface ISysLicenseService
 
 
     public int updateLicense(SysLicense license);
+
+    String getKey();
 }

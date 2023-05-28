@@ -78,7 +78,7 @@ public class SysLoginController
                 "";
         System.out.println(lic);
         System.out.println(license.getLicense());
-        ajax.put(Constants.license, DesUtil.AESDecrypt(lic,"9kbx68MBvkeCSGGg"));
+        ajax.put(Constants.license, DesUtil.AESDecrypt(lic,sysLicenseService.getKey()));
         return ajax;
     }
 

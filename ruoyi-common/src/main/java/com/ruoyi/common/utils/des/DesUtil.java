@@ -11,11 +11,14 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Key;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.Objects;
@@ -139,7 +142,26 @@ public class DesUtil {
         }catch (Exception e){
             return null;
         }
+    }
 
-
+    public static String generateMD5(String input) {
+        try {
+            // 创建MD5摘要算法实例
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            // 计算输入字符串的MD5哈希值
+            byte[] mdBytes = md.digest(input.getBytes());
+            // 将MD5哈希值转换为16进制表示
+            BigInteger bigInt = new BigInteger(1, mdBytes);
+            String md5Hash = bigInt.toString(16);
+            // 如果MD5哈希值长度不足32位，前面补0
+            while (md5Hash.length() < 32) {
+                md5Hash = "0" + md5Hash;
+            }
+            // 截取前16位作为密码
+            return md5Hash.substring(0, 16);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

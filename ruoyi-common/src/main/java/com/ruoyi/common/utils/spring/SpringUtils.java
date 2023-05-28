@@ -24,6 +24,9 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
 
     private static ApplicationContext applicationContext;
 
+    public SpringUtils() {
+
+    }
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException 
     {
@@ -58,12 +61,23 @@ public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationC
      * @throws org.springframework.beans.BeansException
      *
      */
-    public static <T> T getBean(Class<T> clz) throws BeansException
-    {
-        T result = (T) beanFactory.getBean(clz);
-        return result;
+//    public static <T> T getBean(Class<T> clz) throws BeansException
+//    {
+//        T result = (T) beanFactory.getBean(clz);
+//        return result;
+//    }
+
+    public static <T> T getBean(Class<T> clazz) {
+        return clazz == null ? null : applicationContext.getBean(clazz);
     }
 
+    public static <T> T getBean(String beanName, Class<T> clazz) {
+        if (null != beanName && !"".equals(beanName.trim())) {
+            return clazz == null ? null : applicationContext.getBean(beanName, clazz);
+        } else {
+            return null;
+        }
+    }
     /**
      * 如果BeanFactory包含一个与所给名称匹配的bean定义，则返回true
      *
