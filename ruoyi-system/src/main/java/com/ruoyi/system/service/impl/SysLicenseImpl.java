@@ -1,5 +1,7 @@
 package com.ruoyi.system.service.impl;
 
+import cn.hutool.core.net.NetUtil;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.des.DesUtil;
 import com.ruoyi.system.domain.SysLicense;
 import com.ruoyi.system.mapper.SysLicenseMapper;
@@ -27,7 +29,11 @@ public class SysLicenseImpl implements ISysLicenseService {
 
 
     public String getKey(){
-        return DesUtil.generateMD5("FVFCP35NP3Y1");
+        String mac =  NetUtil.getLocalMacAddress();
+        if(StringUtils.isNotNull(mac)){
+            return DesUtil.generateMD5(mac);
+        }
+        return DesUtil.generateMD5(NetUtil.getMacAddress(NetUtil.getLocalhost()));
     }
 
 }

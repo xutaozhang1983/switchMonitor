@@ -1,5 +1,6 @@
 package com.ruoyi.utils;
 
+import cn.hutool.core.net.NetUtil;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.des.DesUtil;
 import com.ruoyi.common.utils.sign.Md5Utils;
@@ -17,6 +18,8 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.Scanner;
 
 
@@ -38,7 +41,9 @@ public class test {
         String data = "{\"GUID\":\"f4135e2c-ac06-9cf4-99e9-19206db83272\",\"CUSTOM\":\"SoftStar\",\"EXPIRES\":\"2023-06-25\",\"DEVICES\":\"50\"}";
         System.out.println(DesUtil.AESEncrypt(data,key));
         String aa = "Hcwhm79bSpd3sScTdSJsee2y4fhMP1OAmphQV254h0RSclXFxT5nFkIROmQMmBv0ja1MxofmmHCLe2J0XhaLM9pOUv0Dj8SO6O9WcD72Vh+bBVXEAKgABf/lEbbmnFgZ2baPGxQOpeqL1fDbXRUbgQ==";
-        System.out.println(aa+"---"+DesUtil.AESDecrypt(aa,key));
+        System.out.println(NetUtil.getMacAddress(NetUtil.getLocalhost()));
 
+//        System.out.println(NetUtil.getMacAddress(InetAddress.getLocalHost()));
     }
+
 }
