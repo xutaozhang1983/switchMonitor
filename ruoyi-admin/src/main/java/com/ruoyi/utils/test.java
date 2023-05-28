@@ -35,13 +35,12 @@ public class test {
 //        device.setSnmpCommunity("Public");
 //        SnmpDeviceData snmpConfig = new SnmpDeviceData(device);
 //        System.out.println(snmpConfig.acquireCpuMem("Huawei"));
-        String key = DesUtil.generateMD5("FVFCP35NP3Y1");
+        String key = DesUtil.generateMD5(NetUtil.getMacAddress(NetUtil.getLocalhost()));
         System.out.println(key);
 
-        String data = "{\"GUID\":\"f4135e2c-ac06-9cf4-99e9-19206db83272\",\"CUSTOM\":\"SoftStar\",\"EXPIRES\":\"2023-06-25\",\"DEVICES\":\"50\"}";
+        String data = "{\"GUID\":\"f4135e2c-ac06-9cf4-99e9-19206db83272\",\"CUSTOM\":\"SoftStar\",\"EXPIRES\":\"2023-06-25\",\"DEVICES\":\"50\",\"STAR\":\"2023-05-01\"}";
         System.out.println(DesUtil.AESEncrypt(data,key));
-        String aa = "Hcwhm79bSpd3sScTdSJsee2y4fhMP1OAmphQV254h0RSclXFxT5nFkIROmQMmBv0ja1MxofmmHCLe2J0XhaLM9pOUv0Dj8SO6O9WcD72Vh+bBVXEAKgABf/lEbbmnFgZ2baPGxQOpeqL1fDbXRUbgQ==";
-        System.out.println(NetUtil.getMacAddress(NetUtil.getLocalhost()));
+        System.out.println(DesUtil.AESDecrypt(DesUtil.AESEncrypt(data,key),key));
 
 //        System.out.println(NetUtil.getMacAddress(InetAddress.getLocalHost()));
     }
